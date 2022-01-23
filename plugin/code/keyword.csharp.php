@@ -5,11 +5,11 @@
  * Modified:   <2014/01/11 ruche>
  */
 
-$switchHash['#'] = PLUGIN_CODE_SPECIAL_IDENTIFIRE;  // # ¤«¤é»Ï¤Þ¤ëÍ½Ìó¸ì¤¢¤ê
-$switchHash['\''] = PLUGIN_CODE_STRING_LITERAL;     // HACK: '¡Á' ¤âÊ¸»úÎó¥ê¥Æ¥é¥ë°·¤¤(¼ÂºÝ¤ÏÊ¸»ú¥ê¥Æ¥é¥ë)
+$switchHash['#'] = PLUGIN_CODE_SPECIAL_IDENTIFIRE;  // # ã‹ã‚‰å§‹ã¾ã‚‹äºˆç´„èªžã‚ã‚Š
+$switchHash['\''] = PLUGIN_CODE_STRING_LITERAL;     // HACK: 'ï½ž' ã‚‚æ–‡å­—åˆ—ãƒªãƒ†ãƒ©ãƒ«æ‰±ã„(å®Ÿéš›ã¯æ–‡å­—ãƒªãƒ†ãƒ©ãƒ«)
 
-// ¥³¥á¥ó¥ÈÄêµÁ
-$switchHash['/'] = PLUGIN_CODE_COMMENT;        //  ¥³¥á¥ó¥È¤Ï /* ¤«¤é */ ¤Þ¤Ç¤È // ¤«¤é²þ¹Ô¤Þ¤Ç
+// ã‚³ãƒ¡ãƒ³ãƒˆå®šç¾©
+$switchHash['/'] = PLUGIN_CODE_COMMENT;        //  ã‚³ãƒ¡ãƒ³ãƒˆã¯ /* ã‹ã‚‰ */ ã¾ã§ã¨ // ã‹ã‚‰æ”¹è¡Œã¾ã§
 $code_comment = Array(
 	'/' => Array(
 				 Array('/^\/\*/', '*/', 2),
@@ -17,7 +17,7 @@ $code_comment = Array(
 	)
 );
 
-// ¥¢¥¦¥È¥é¥¤¥óÍÑ
+// ã‚¢ã‚¦ãƒˆãƒ©ã‚¤ãƒ³ç”¨
 if($mkoutline){
   $switchHash['{'] = PLUGIN_CODE_BLOCK_START;
   $switchHash['}'] = PLUGIN_CODE_BLOCK_END;
@@ -25,13 +25,13 @@ if($mkoutline){
 
 
 $code_css = Array(
-  'operator',	// ¥ª¥Ú¥ì¡¼¥¿´Ø¿ô
-  'identifier',	// ¤½¤ÎÂ¾¤Î¼±ÊÌ»Ò
-  'pragma',		// module, import ¤È pragma
-  'system',		// ½èÍý·ÏÁÈ¤ß¹þ¤ß¤ÎÅÛ __stdcall ¤È¤«
+  'operator',	// ã‚ªãƒšãƒ¬ãƒ¼ã‚¿é–¢æ•°
+  'identifier',	// ãã®ä»–ã®è­˜åˆ¥å­
+  'pragma',		// module, import ã¨ pragma
+  'system',		// å‡¦ç†ç³»çµ„ã¿è¾¼ã¿ã®å¥´ __stdcall ã¨ã‹
   );
 
-// ¥¹¥Ú¡¼¥¹¤ò´Þ¤à¥­¡¼¥ï¡¼¥É
+// ã‚¹ãƒšãƒ¼ã‚¹ã‚’å«ã‚€ã‚­ãƒ¼ãƒ¯ãƒ¼ãƒ‰
 $code_space_keyword = Array(
 	'partial class' => 2,
 	'yield return' => 2,

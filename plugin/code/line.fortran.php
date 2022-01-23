@@ -1,15 +1,15 @@
 <?php
 /**
- * Fortran (60, 77, 90) ¥­¡¼¥ï¡¼¥ÉÄêµÁ¥Õ¥¡¥¤¥ë
+ * Fortran (60, 77, 90) ã‚­ãƒ¼ãƒ¯ãƒ¼ãƒ‰å®šç¾©ãƒ•ã‚¡ã‚¤ãƒ«
  */
 
-$switchHash['\''] = PLUGIN_CODE_NONESCAPE_LITERAL;   // ' ¤Ï¥¨¥¹¥±¡¼¥×¤·¤Ê¤¤Ê¸»úÎó¥ê¥Æ¥é¥ë
-$capital = 1;                        // Í½Ìó¸ì¤ÎÂçÊ¸»ú¾®Ê¸»ú¤ò¶èÊÌ¤·¤Ê¤¤
+$switchHash['\''] = PLUGIN_CODE_NONESCAPE_LITERAL;   // ' ã¯ã‚¨ã‚¹ã‚±ãƒ¼ãƒ—ã—ãªã„æ–‡å­—åˆ—ãƒªãƒ†ãƒ©ãƒ«
+$capital = 1;                        // äºˆç´„èªã®å¤§æ–‡å­—å°æ–‡å­—ã‚’åŒºåˆ¥ã—ãªã„
 
-$switchHash['c'] = PLUGIN_CODE_CHAR_COMMENT;   // ¥³¥á¥ó¥È¤Ï¹ÔÆ¬¤Î c/C ¤«¤é²ş¹Ô¤Ş¤Ç (f66)
+$switchHash['c'] = PLUGIN_CODE_CHAR_COMMENT;   // ã‚³ãƒ¡ãƒ³ãƒˆã¯è¡Œé ­ã® c/C ã‹ã‚‰æ”¹è¡Œã¾ã§ (f66)
 $switchHash['C'] = PLUGIN_CODE_CHAR_COMMENT;
-$switchHash['*'] = PLUGIN_CODE_HEAD_COMMENT;   // ¥³¥á¥ó¥È¤Ï¹ÔÆ¬¤Î  * ¤«¤é²ş¹Ô¤Ş¤Ç (f77)
-$switchHash['!'] = PLUGIN_CODE_HEAD_COMMENT;   // ¥³¥á¥ó¥È¤Ï¹ÔÆ¬¤Î  ! ¤«¤é²ş¹Ô¤Ş¤Ç (f90)
+$switchHash['*'] = PLUGIN_CODE_HEAD_COMMENT;   // ã‚³ãƒ¡ãƒ³ãƒˆã¯è¡Œé ­ã®  * ã‹ã‚‰æ”¹è¡Œã¾ã§ (f77)
+$switchHash['!'] = PLUGIN_CODE_HEAD_COMMENT;   // ã‚³ãƒ¡ãƒ³ãƒˆã¯è¡Œé ­ã®  ! ã‹ã‚‰æ”¹è¡Œã¾ã§ (f90)
 
 $code_comment = Array(
 	'c' => Array(
@@ -33,10 +33,10 @@ $outline_def = Array(
 
 
 $code_css = Array(
-  'operator',		// ¥ª¥Ú¥ì¡¼¥¿´Ø¿ô
-  'identifier',	// ¤½¤ÎÂ¾¤Î¼±ÊÌ»Ò
-  'pragma',		// module, import ¤È pragma
-  'system',		// ½èÍı·ÏÁÈ¤ß¹ş¤ß¤ÎÅÛ __stdcall ¤È¤«
+  'operator',		// ã‚ªãƒšãƒ¬ãƒ¼ã‚¿é–¢æ•°
+  'identifier',	// ãã®ä»–ã®è­˜åˆ¥å­
+  'pragma',		// module, import ã¨ pragma
+  'system',		// å‡¦ç†ç³»çµ„ã¿è¾¼ã¿ã®å¥´ __stdcall ã¨ã‹
 );
 
 $code_keyword = Array(

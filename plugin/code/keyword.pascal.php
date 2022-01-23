@@ -3,11 +3,11 @@
  * Pascal
  */
 
-$capital = 1;                        // Í½Ìó¸ì¤ÎÂçÊ¸»ú¾®Ê¸»ú¤ò¶èÊÌ¤·¤Ê¤¤
+$capital = 1;                        // äºˆç´„èªžã®å¤§æ–‡å­—å°æ–‡å­—ã‚’åŒºåˆ¥ã—ãªã„
 $switchHash['\''] = PLUGIN_CODE_NONESCAPE_LITERAL;
 
-$switchHash['('] = PLUGIN_CODE_COMMENT;       // ¥³¥á¥ó¥È¤Ï (* ¤«¤é *) ¤Þ¤Ç
-$switchHash['{'] = PLUGIN_CODE_COMMENT;       // ¥³¥á¥ó¥È¤Ï { ¤«¤é } ¤Þ¤Ç
+$switchHash['('] = PLUGIN_CODE_COMMENT;       // ã‚³ãƒ¡ãƒ³ãƒˆã¯ (* ã‹ã‚‰ *) ã¾ã§
+$switchHash['{'] = PLUGIN_CODE_COMMENT;       // ã‚³ãƒ¡ãƒ³ãƒˆã¯ { ã‹ã‚‰ } ã¾ã§
 $code_comment = Array(
 	'(' => Array(
 				 Array('/^\(\*/', '*)', 2),
@@ -24,15 +24,15 @@ $outline_def = Array(
 
 
 $code_css = array(
-  'operator',		// ¥ª¥Ú¥ì¡¼¥¿´Ø¿ô
-  'identifier',	// ¤½¤ÎÂ¾¤Î¼±ÊÌ»Ò
-  'pragma',		// module, import ¤È pragma
-  'system',		// ½èÍý·ÏÁÈ¤ß¹þ¤ß¤ÎÅÛ __stdcall ¤È¤«
+  'operator',		// ã‚ªãƒšãƒ¬ãƒ¼ã‚¿é–¢æ•°
+  'identifier',	// ãã®ä»–ã®è­˜åˆ¥å­
+  'pragma',		// module, import ã¨ pragma
+  'system',		// å‡¦ç†ç³»çµ„ã¿è¾¼ã¿ã®å¥´ __stdcall ã¨ã‹
   );
 
 $code_keyword = array(
-  //'operator',		// ¥ª¥Ú¥ì¡¼¥¿´Ø¿ô
-  //'identifier',	// ¤½¤ÎÂ¾¤Î¼±ÊÌ»Ò
+  //'operator',		// ã‚ªãƒšãƒ¬ãƒ¼ã‚¿é–¢æ•°
+  //'identifier',	// ãã®ä»–ã®è­˜åˆ¥å­
 'absolute'  => 2,
 'abstract'  => 2,
 'all'  => 2,
@@ -102,7 +102,7 @@ $code_keyword = array(
 'while'  => 2,
 'with'  => 2,
 'xor' => 2,
-  //'pragma',		// module, import ¤È pragma
-  //'system',		// ½èÍý·ÏÁÈ¤ß¹þ¤ß¤ÎÅÛ __stdcall ¤È¤«
+  //'pragma',		// module, import ã¨ pragma
+  //'system',		// å‡¦ç†ç³»çµ„ã¿è¾¼ã¿ã®å¥´ __stdcall ã¨ã‹
   );
 ?>

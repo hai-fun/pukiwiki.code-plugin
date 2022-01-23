@@ -1,7 +1,7 @@
 <?php
 /**
- * diff ¥­¡¼¥ï¡¼¥ÉÄêµÁ¥Õ¥¡¥¤¥ë
- * ¹Ô»Ø¸þ¥â¡¼¥ÉÍÑ
+ * diff ã‚­ãƒ¼ãƒ¯ãƒ¼ãƒ‰å®šç¾©ãƒ•ã‚¡ã‚¤ãƒ«
+ * è¡ŒæŒ‡å‘ãƒ¢ãƒ¼ãƒ‰ç”¨
  */
 
 $switchHash['!'] = PLUGIN_CODE_IDENTIFIRE_CHAR;   // changed
@@ -16,8 +16,8 @@ $switchHash['*'] = PLUGIN_CODE_IDENTIFIRE_CHAR;   // control
 $switchHash['\\']= PLUGIN_CODE_IDENTIFIRE_CHAR;   // control
 $switchHash['@'] = PLUGIN_CODE_IDENTIFIRE_CHAR;   // control
 
-$mkoutline = $option['outline'] = 0; // ¥¢¥¦¥È¥é¥¤¥ó¥â¡¼¥ÉÉÔ²Ä 
-$linemode = 1; // ¹ÔÆâ¤ò²òÀÏ¤·¤Ê¤¤
+$mkoutline = $option['outline'] = 0; // ã‚¢ã‚¦ãƒˆãƒ©ã‚¤ãƒ³ãƒ¢ãƒ¼ãƒ‰ä¸å¯ 
+$linemode = 1; // è¡Œå†…ã‚’è§£æžã—ãªã„
 
 // 
 $code_identifire = array(
@@ -30,8 +30,8 @@ $code_identifire = array(
 	 );
 
 
-// ¥³¥á¥ó¥ÈÄêµÁ
-$switchHash['#'] = PLUGIN_CODE_COMMENT;	// ¥³¥á¥ó¥È¤Ï # ¤«¤é²þ¹Ô¤Þ¤Ç
+// ã‚³ãƒ¡ãƒ³ãƒˆå®šç¾©
+$switchHash['#'] = PLUGIN_CODE_COMMENT;	// ã‚³ãƒ¡ãƒ³ãƒˆã¯ # ã‹ã‚‰æ”¹è¡Œã¾ã§
 
 $code_css = Array(
 					   'changed', //

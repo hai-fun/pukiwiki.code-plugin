@@ -1,13 +1,13 @@
 <?php
 /**
- * gnuplot ¥­¡¼¥ï¡¼¥ÉÄêµÁ¥Õ¥¡¥¤¥ë
+ * gnuplot ã‚­ãƒ¼ãƒ¯ãƒ¼ãƒ‰å®šç¾©ãƒ•ã‚¡ã‚¤ãƒ«
  */
 
-$switchHash['$'] = PLUGIN_CODE_ESCAPE;            // $ ¤Ï¥¨¥¹¥±¡¼¥×
-$switchHash['\''] = PLUGIN_CODE_NONESCAPE_LITERAL; // ' ¤Ï¥¨¥¹¥±¡¼¥×¤·¤Ê¤¤Ê¸»úÎó¥ê¥Æ¥é¥ë
+$switchHash['$'] = PLUGIN_CODE_ESCAPE;            // $ ã¯ã‚¨ã‚¹ã‚±ãƒ¼ãƒ—
+$switchHash['\''] = PLUGIN_CODE_NONESCAPE_LITERAL; // ' ã¯ã‚¨ã‚¹ã‚±ãƒ¼ãƒ—ã—ãªã„æ–‡å­—åˆ—ãƒªãƒ†ãƒ©ãƒ«
 
-// ¥³¥á¥ó¥ÈÄêµÁ
-$switchHash['#'] = PLUGIN_CODE_COMMENT;	// ¥³¥á¥ó¥È¤Ï # ¤«¤é²ş¹Ô¤Ş¤Ç (Îã³°¤¢¤ê)
+// ã‚³ãƒ¡ãƒ³ãƒˆå®šç¾©
+$switchHash['#'] = PLUGIN_CODE_COMMENT;	// ã‚³ãƒ¡ãƒ³ãƒˆã¯ # ã‹ã‚‰æ”¹è¡Œã¾ã§ (ä¾‹å¤–ã‚ã‚Š)
 $code_comment = Array(
 	'#' => Array(
 				 Array('/^#/', "\n", 1),
@@ -16,11 +16,11 @@ $code_comment = Array(
 
 
 $code_css = Array(
-  'operator',		// ¥ª¥Ú¥ì¡¼¥¿´Ø¿ô
-  'identifier',	// ¤½¤ÎÂ¾¤Î¼±ÊÌ»Ò
-  'pragma',		// module, import ¤È pragma
-  'system',		// ½èÍı·ÏÁÈ¤ß¹ş¤ß¤ÎÅÛ __stdcall ¤È¤«
-  'environment',  // ´Ä¶­ÊÑ¿ô 
+  'operator',		// ã‚ªãƒšãƒ¬ãƒ¼ã‚¿é–¢æ•°
+  'identifier',	// ãã®ä»–ã®è­˜åˆ¥å­
+  'pragma',		// module, import ã¨ pragma
+  'system',		// å‡¦ç†ç³»çµ„ã¿è¾¼ã¿ã®å¥´ __stdcall ã¨ã‹
+  'environment',  // ç’°å¢ƒå¤‰æ•° 
   );
 
 $code_keyword = Array(

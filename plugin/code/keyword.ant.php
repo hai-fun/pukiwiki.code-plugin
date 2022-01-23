@@ -1,9 +1,9 @@
 <?php
 /**
- * apatch-ant (XML) ¥­¡¼¥ï¡¼¥ÉÄêµÁ¥Õ¥¡¥¤¥ë
+ * apatch-ant (XML) ã‚­ãƒ¼ãƒ¯ãƒ¼ãƒ‰å®šç¾©ãƒ•ã‚¡ã‚¤ãƒ«
  */
 
-// ¥³¥á¥ó¥ÈÄêµÁ
+// ã‚³ãƒ¡ãƒ³ãƒˆå®šç¾©
 $switchHash['<'] = PLUGIN_CODE_COMMENT;
 $code_comment = Array(
 	'<' => Array(
@@ -13,10 +13,10 @@ $code_comment = Array(
 );
 
 $code_css = array(
-  'operator',		// ¥ª¥Ú¥ì¡¼¥¿´Ø¿ô
-  'identifier',	// ¤½¤ÎÂ¾¤Î¼±ÊÌ»Ò
-  'pragma',		// module, import ¤È pragma
-  'system',		// ½èÍı·ÏÁÈ¤ß¹ş¤ß¤ÎÅÛ __stdcall ¤È¤«
+  'operator',		// ã‚ªãƒšãƒ¬ãƒ¼ã‚¿é–¢æ•°
+  'identifier',	// ãã®ä»–ã®è­˜åˆ¥å­
+  'pragma',		// module, import ã¨ pragma
+  'system',		// å‡¦ç†ç³»çµ„ã¿è¾¼ã¿ã®å¥´ __stdcall ã¨ã‹
   );
 
 $code_keyword = array(

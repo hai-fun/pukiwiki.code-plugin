@@ -6,8 +6,9 @@
  * GPL
  */
 
-require_once(PLUGIN_DIR . 'code.inc.php');
-
+if (exist_plugin("code")) {
+	require_once(PLUGIN_DIR . 'code.inc.php');
+}
 function plugin_pre_init()
 {
 	if (function_exists('plugin_code_init'))

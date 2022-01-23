@@ -3,7 +3,7 @@
  * Microsoft VBScript Web Content (ASP)
  */
 
-//$capital = true;                      // Í½Ìó¸ì¤ÎÂçÊ¸»ú¾®Ê¸»ú¤ò¶èÊÌ¤·¤Ê¤¤
+//$capital = true;                      // äºˆç´„èªžã®å¤§æ–‡å­—å°æ–‡å­—ã‚’åŒºåˆ¥ã—ãªã„
 $switchHash['"'] = PLUGIN_CODE_NONESCAPE_LITERAL;  
 
 $switchHash['\''] = PLUGIN_CODE_COMMENT;    
@@ -42,7 +42,7 @@ $code_css = Array(
 
 $code_keyword = Array(
 
-//MsgBox´Ø¿ô¤ÎÄê¿ô
+//MsgBoxé–¢æ•°ã®å®šæ•°
 
 'vbOKOnly' => 2,
 'vbOKCancel' => 2,
@@ -61,13 +61,13 @@ $code_keyword = Array(
 'vbApplicationModal' => 2,
 'vbSystemModal' => 2,
 
-//Tristate¤ÎÄê¿ô
+//Tristateã®å®šæ•°
 
 'TristateTrue' => 2,
 'TristateFalse' => 2,
 'TristateUseDefault' => 2,
 
-//VarType´Ø¿ô¤ÎÄê¿ô
+//VarTypeé–¢æ•°ã®å®šæ•°
 
 'vbEmpty' => 2,
 'vbNull' => 2,
@@ -87,7 +87,7 @@ $code_keyword = Array(
 'vbByte' => 2,
 'vbArray' => 2,
 
-//¿§¤ÎÄê¿ô
+//è‰²ã®å®šæ•°
 
 'vbBlack' => 2,
 'vbRed' => 2,
@@ -98,18 +98,18 @@ $code_keyword = Array(
 'vbCyan' => 2,
 'vbWhite' => 2,
 
-//ÆÃ¼ì¥Õ¥©¥ë¥À¤ÎÄê¿ô
+//ç‰¹æ®Šãƒ•ã‚©ãƒ«ãƒ€ã®å®šæ•°
 
 'WindowsFolder' => 2,
 'SystemFolder' => 2,
 'TemporaryFolder' => 2,
 
-//Èæ³Ó¤ÎÄê¿ô
+//æ¯”è¼ƒã®å®šæ•°
 'vbBinaryCompare' => 2,
 'vbTextCompare' => 2,
 'vbDatabaseCompare' => 2,
 
-//ÆüÉÕ¤È»þ¹ï¤ÎÄê¿ô
+//æ—¥ä»˜ã¨æ™‚åˆ»ã®å®šæ•°
 
 'vbSunday' => 2,
 'vbMonday' => 2,
@@ -124,14 +124,14 @@ $code_keyword = Array(
 'vbUseSystem' => 2,
 'vbUseSystemDayOfWeek' => 2,
 
-//ÆüÉÕ·Á¼°¤ÎÄê¿ô
+//æ—¥ä»˜å½¢å¼ã®å®šæ•°
 'vbGeneralDate' => 2,
 'vbLongDate' => 2,
 'vbShortDate' => 2,
 'vbLongTime' => 2,
 'vbShortTime' => 2,
 
-//¥Õ¥¡¥¤¥ëÂ°À­¤ÎÄê¿ô
+//ãƒ•ã‚¡ã‚¤ãƒ«å±žæ€§ã®å®šæ•°
 
 'Normal' => 2,
 'ReadOnly' => 2,
@@ -143,13 +143,13 @@ $code_keyword = Array(
 'Alias' => 2,
 'Compressed' => 2,
 
-//¥Õ¥¡¥¤¥ëÆþ½ÐÎÏ¤ÎÄê¿ô
+//ãƒ•ã‚¡ã‚¤ãƒ«å…¥å‡ºåŠ›ã®å®šæ•°
 
 'ForReading' => 2,
 'ForWriting' => 2,
 'ForAppending' => 2,
 
-//Ê¸»úÎó¤ÎÄê¿ô
+//æ–‡å­—åˆ—ã®å®šæ•°
 
 'vbCr' => 2,
 'vbCrLf' => 2,
@@ -161,14 +161,14 @@ $code_keyword = Array(
 'vbTab' => 2,
 'vbVerticalTab' => 2,
 
-//¤½¤ÎÂ¾¤ÎÄê¿ô
+//ãã®ä»–ã®å®šæ•°
 'vbObjectError' => 2,
 
-//¥¯¥é¥¹
+//ã‚¯ãƒ©ã‚¹
 'Class_Initialize' => 2,
 'Class_Terminate' => 2,
 
-//´Ø¿ô
+//é–¢æ•°
 
 'Abs' => 2,
 'Array' => 2,
@@ -264,16 +264,16 @@ $code_keyword = Array(
 'WeekdayName' => 2,
 'Year' => 2,
 
-//¥á¥½¥Ã¥É
+//ãƒ¡ã‚½ãƒƒãƒ‰
 'Clear' => 2,
 'Execute' => 2,
 'Raise' => 2,
 'Replace' => 2,
 'Test' => 2,
 
-//¥ª¥Ö¥¸¥§¥¯¥È
+//ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 
-//±é»»»Ò
+//æ¼”ç®—å­
 
 'Not' => 2,
 'And' => 2,
@@ -284,7 +284,7 @@ $code_keyword = Array(
 'Imp' => 2,
 'Is' => 2,
 
-//¥×¥í¥Ñ¥Æ¥£
+//ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£
 'Description' => 2,
 'FirstIndex' => 2,
 'Global' => 2,
@@ -297,7 +297,7 @@ $code_keyword = Array(
 'Source' => 2,
 'Value' => 2,
 
-//¥¹¥Æ¡¼¥È¥á¥ó¥È
+//ã‚¹ãƒ†ãƒ¼ãƒˆãƒ¡ãƒ³ãƒˆ
 'Call' => 2,
 'Case' => 2,
 'Class' => 2,

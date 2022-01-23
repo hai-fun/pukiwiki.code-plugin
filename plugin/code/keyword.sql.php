@@ -1,14 +1,14 @@
 <?php
 /**
- * SQL キーワード定義ファイル
+ * SQL 繝ｻL繝ｻ[繝ｻ繝ｻ繝ｻ[繝ｻh繝ｻ繝ｻ`繝ｻt繝ｻ@繝ｻC繝ｻ繝ｻ
  */
 
-$switchHash['\`'] = PLUGIN_CODE_STRING_LITERAL;  // ` も文字列リテラル
-$capital = 1;                    // 予約語の大文字小文字を区別しない
+$switchHash['\`'] = PLUGIN_CODE_STRING_LITERAL;  // ` 繝ｻ繝ｻ繝ｻ繝ｻ繝ｻ繝ｻ繝ｻ繝ｻe繝ｻ繝ｻ繝ｻ繝ｻ
+$capital = 1;                    // 繝ｻ\繝ｻ繝ｻ繝ｻ繝ｻ繝ｻ繝ｻ繝ｻ繝ｻ繝ｻ繝ｻ繝ｻ繝ｻ繝ｻ繝ｻ繝ｻ繝ｻ繝ｻ繝ｻ
 
-// コメント定義
-$switchHash['-'] = PLUGIN_CODE_COMMENT;    // コメントは -- から改行まで
-$switchHash['/'] = PLUGIN_CODE_COMMENT;    // コメントは /* から */ まで
+// 繝ｻR繝ｻ繝ｻ繝ｻ繝ｻ繝ｻg繝ｻ繝ｻ`
+$switchHash['-'] = PLUGIN_CODE_COMMENT;    // 繝ｻR繝ｻ繝ｻ繝ｻ繝ｻ繝ｻg繝ｻ繝ｻ-- 繝ｻ繝ｻ繝ｻ繝ｻs繝ｻ繝ｻ繝ｻ
+$switchHash['/'] = PLUGIN_CODE_COMMENT;    // 繝ｻR繝ｻ繝ｻ繝ｻ繝ｻ繝ｻg繝ｻ繝ｻ/* 繝ｻ繝ｻ繝ｻ*/ 繝ｻ繝ｻ繝ｻ
 $code_comment = Array(
  	'-' => Array(
 				 Array('/^--/', "\n", 1),
@@ -18,7 +18,7 @@ $code_comment = Array(
  	)
  );
 
-// アウトライン用
+// 繝ｻA繝ｻE繝ｻg繝ｻ繝ｻ繝ｻC繝ｻ繝ｻ繝ｻp
 if($mkoutline){
   $switchHash['('] = PLUGIN_CODE_BLOCK_START;
   $switchHash[')'] = PLUGIN_CODE_BLOCK_END;
@@ -29,10 +29,10 @@ $outline_def = Array(
 					 );
 
 $code_css = Array(
-  'operator',		// オペレータ関数
-  'identifier',	// その他の識別子
-  'pragma',		// module, import と pragma
-  'system',		// 処理系組み込みの奴 __stdcall とか
+  'operator',		// 繝ｻI繝ｻy繝ｻ繝ｻ繝ｻ[繝ｻ^繝ｻ繝ｻ繝ｻ
+  'identifier',	// 繝ｻ繝ｻ繝ｻ繝ｻ繝ｻ繝ｻ繝ｻq
+  'pragma',		// module, import 繝ｻ繝ｻpragma
+  'system',		// 繝ｻ繝ｻ繝ｻ繝ｻ繝ｻn繝ｻg繝ｻ繝ｻ繝ｻ繝ｻ繝ｻ繝ｻz __stdcall 繝ｻ繝ｻ繝ｻ
   );
 
 $code_keyword = Array(

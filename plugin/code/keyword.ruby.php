@@ -3,14 +3,14 @@
  * Ruby
  */
 
-$switchHash['$'] = PLUGIN_CODE_ESCAPE;            // $ ¤Ï¥¨¥¹¥±¡¼¥×
-$switchHash['\''] = PLUGIN_CODE_NONESCAPE_LITERAL; // ' ¤Ï¥¨¥¹¥±¡¼¥×¤·¤Ê¤¤Ê¸»úÎó¥ê¥Æ¥é¥ë
+$switchHash['$'] = PLUGIN_CODE_ESCAPE;            // $ ã¯ã‚¨ã‚¹ã‚±ãƒ¼ãƒ—
+$switchHash['\''] = PLUGIN_CODE_NONESCAPE_LITERAL; // ' ã¯ã‚¨ã‚¹ã‚±ãƒ¼ãƒ—ã—ãªã„æ–‡å­—åˆ—ãƒªãƒ†ãƒ©ãƒ«
 $switchHash['+'] = PLUGIN_CODE_STRING_CONCAT;
 
-// ¥³¥á¥ó¥ÈÄêµÁ
-$switchHash['#'] = PLUGIN_CODE_COMMENT;	// ¥³¥á¥ó¥È¤Ï # ¤«¤é²þ¹Ô¤Þ¤Ç (Îã³°¤¢¤ê)
-$switchHash['='] = PLUGIN_CODE_COMMENT;	// ¥³¥á¥ó¥È¤Ï =begin ¤«¤é =end ¤Þ¤Ç
-$switchHash['('] = PLUGIN_CODE_COMMENT;	// ¥³¥á¥ó¥È¤Ï (?# ¤«¤é ) ¤Þ¤Ç (Àµµ¬É½¸½Æâ)
+// ã‚³ãƒ¡ãƒ³ãƒˆå®šç¾©
+$switchHash['#'] = PLUGIN_CODE_COMMENT;	// ã‚³ãƒ¡ãƒ³ãƒˆã¯ # ã‹ã‚‰æ”¹è¡Œã¾ã§ (ä¾‹å¤–ã‚ã‚Š)
+$switchHash['='] = PLUGIN_CODE_COMMENT;	// ã‚³ãƒ¡ãƒ³ãƒˆã¯ =begin ã‹ã‚‰ =end ã¾ã§
+$switchHash['('] = PLUGIN_CODE_COMMENT;	// ã‚³ãƒ¡ãƒ³ãƒˆã¯ (?# ã‹ã‚‰ ) ã¾ã§ (æ­£è¦è¡¨ç¾å†…)
 $code_comment = Array(
 					  '#' => Array(
 								   Array('/^#[^{]/', "\n", 1),
@@ -34,18 +34,18 @@ $outline_def = Array(
 					 );
 			  
 $code_css = Array(
-  'operator',		// ¥ª¥Ú¥ì¡¼¥¿´Ø¿ô
-  'identifier',	// ¤½¤ÎÂ¾¤Î¼±ÊÌ»Ò
-  'pragma',		// module, import ¤È pragma
-  'system',		// ½èÍý·ÏÁÈ¤ß¹þ¤ß¤ÎÅÛ __stdcall ¤È¤«
+  'operator',		// ã‚ªãƒšãƒ¬ãƒ¼ã‚¿é–¢æ•°
+  'identifier',	// ãã®ä»–ã®è­˜åˆ¥å­
+  'pragma',		// module, import ã¨ pragma
+  'system',		// å‡¦ç†ç³»çµ„ã¿è¾¼ã¿ã®å¥´ __stdcall ã¨ã‹
   );
 
 $code_keyword = Array(
-  //'operator',		// ¥ª¥Ú¥ì¡¼¥¿´Ø¿ô
-  //'identifier',	// ¤½¤ÎÂ¾¤Î¼±ÊÌ»Ò
-  	// Àë¸À
+  //'operator',		// ã‚ªãƒšãƒ¬ãƒ¼ã‚¿é–¢æ•°
+  //'identifier',	// ãã®ä»–ã®è­˜åˆ¥å­
+  	// å®£è¨€
 
-  	// À©¸æ¹½Ê¸´Ø·¸
+  	// åˆ¶å¾¡æ§‹æ–‡é–¢ä¿‚
   	'for' => 2,
 	'in' => 2,
   	'while' => 2,
@@ -80,9 +80,9 @@ $code_keyword = Array(
 	'false' => 2,
 
 
-	// ÊÑ¿ô¥¿¥¤¥×´Ø·¸
+	// å¤‰æ•°ã‚¿ã‚¤ãƒ—é–¢ä¿‚
   	
-  	// ¥¯¥é¥¹Åù
+  	// ã‚¯ãƒ©ã‚¹ç­‰
   	'class' => 2,
   	'module' => 2,
   	'def' => 2,
@@ -92,14 +92,14 @@ $code_keyword = Array(
 	'self' => 2,
 	'super' => 2,
   	
-  	// Îã³°½èÍý 
+  	// ä¾‹å¤–å‡¦ç† 
 	'rescue' => 2,
 	'ensure' => 2,
 	'raise' => 2,
 
-  //'pragma',		// module, import ¤È pragma
+  //'pragma',		// module, import ã¨ pragma
   	'include' => 3,
   	'require' => 3,
-  //'system',		// ½èÍý·ÏÁÈ¤ß¹þ¤ß¤ÎÅÛ __stdcall ¤È¤«
+  //'system',		// å‡¦ç†ç³»çµ„ã¿è¾¼ã¿ã®å¥´ __stdcall ã¨ã‹
   );
 ?>

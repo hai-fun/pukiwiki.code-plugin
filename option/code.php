@@ -6,18 +6,20 @@
  *
  * r 0.6.0_pr2
  */
-define('SOURCE_ENCODING', 'euc-jp');
+ // v0.6.1 PHP8.0å¯¾å¿œ 2021-12-17 byã¯ã„ãµã‚“
+
+define('SOURCE_ENCODING', 'utf-8');
 define('LANG', 'ja');
 
 
-define('PKWK_HOME', 'pukiwiki/');
+define('PKWK_HOME', './');
 define('PLUGIN_CODE_HEADER', 'code_');
 define('PLUGIN_DIR', PKWK_HOME.'plugin/');
 
-// ¥Æ¡¼¥Ö¥ë¤ò»È¤¦¤«Èİ¤«(FALSE¤ÏCSS¤Îdiv¤Ë¤è¤ëÊ¬³ä)
+// ãƒ†ãƒ¼ãƒ–ãƒ«ã‚’ä½¿ã†ã‹å¦ã‹(FALSEã¯CSSã®divã«ã‚ˆã‚‹åˆ†å‰²)
 //define('PLUGIN_CODE_TABLE',     false);
 
-// TABÉı
+// TABå¹…
 define('PLUGIN_CODE_WIDTHOFTAB', '    ');
 
 // defined image files by PukiWiki
@@ -31,10 +33,7 @@ header('Pragma: no-cache');
 header('Content-Type: text/html; charset='.SOURCE_ENCODING);
 
 $header = '
-<?xml version="1.0" encoding="'.SOURCE_ENCODING.'"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="'.LANG.'" lang="'.LANG.'">
+<html lang="'.LANG.'">
 <head>
   <meta http-equiv="content-type" content="application/xhtml+xml; charset='.SOURCE_ENCODING.'" />
   <meta http-equiv="content-style-type" content="text/css" />
@@ -51,21 +50,21 @@ if (is_numeric($tabwidth)) {
 } else {
 	$tabs = "\t";
 }
-$lang = htmlspecialchars($_POST['lang']);
+$lang = htmlsc($_POST['lang']);
 $data = mb_convert_encoding($_POST['text'], SOURCE_ENCODING, 'auto')."\n";
 $option = array(
-				'number'      => FALSE,  // ¹ÔÈÖ¹æ¤òÉ½¼¨¤¹¤ë
-				'nonumber'    => FALSE,  // ¹ÔÈÖ¹æ¤òÉ½¼¨¤·¤Ê¤¤
-				'outline'     => FALSE,  // ¥¢¥¦¥È¥é¥¤¥ó ¥â¡¼¥É
-				'nooutline'   => FALSE,  // ¥¢¥¦¥È¥é¥¤¥ó Ìµ¸ú
-				'comment'     => FALSE,  // ¥³¥á¥ó¥È³«ÊÄ Í­¸ú
-				'nocomment'   => TRUE,   // ¥³¥á¥ó¥È³«ÊÄ Ìµ¸ú
-				'menu'        => FALSE,  // ¥á¥Ë¥å¡¼¤òÉ½¼¨¤¹¤ë
-				'nomenu'      => FALSE,  // ¥á¥Ë¥å¡¼¤òÉ½¼¨¤·¤Ê¤¤
-				'icon'        => FALSE,  // ¥¢¥¤¥³¥ó¤òÉ½¼¨¤¹¤ë
-				'noicon'      => FALSE,  // ¥¢¥¤¥³¥ó¤òÉ½¼¨¤·¤Ê¤¤
-				'link'        => FALSE,  // ¥ª¡¼¥È¥ê¥ó¥¯ Í­¸ú
-				'nolink'      => FALSE,  // ¥ª¡¼¥È¥ê¥ó¥¯ Ìµ¸ú
+				'number'      => FALSE,  // è¡Œç•ªå·ã‚’è¡¨ç¤ºã™ã‚‹
+				'nonumber'    => FALSE,  // è¡Œç•ªå·ã‚’è¡¨ç¤ºã—ãªã„
+				'outline'     => FALSE,  // ã‚¢ã‚¦ãƒˆãƒ©ã‚¤ãƒ³ ãƒ¢ãƒ¼ãƒ‰
+				'nooutline'   => FALSE,  // ã‚¢ã‚¦ãƒˆãƒ©ã‚¤ãƒ³ ç„¡åŠ¹
+				'comment'     => FALSE,  // ã‚³ãƒ¡ãƒ³ãƒˆé–‹é–‰ æœ‰åŠ¹
+				'nocomment'   => TRUE,   // ã‚³ãƒ¡ãƒ³ãƒˆé–‹é–‰ ç„¡åŠ¹
+				'menu'        => FALSE,  // ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã‚’è¡¨ç¤ºã™ã‚‹
+				'nomenu'      => FALSE,  // ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã‚’è¡¨ç¤ºã—ãªã„
+				'icon'        => FALSE,  // ã‚¢ã‚¤ã‚³ãƒ³ã‚’è¡¨ç¤ºã™ã‚‹
+				'noicon'      => FALSE,  // ã‚¢ã‚¤ã‚³ãƒ³ã‚’è¡¨ç¤ºã—ãªã„
+				'link'        => FALSE,  // ã‚ªãƒ¼ãƒˆãƒªãƒ³ã‚¯ æœ‰åŠ¹
+				'nolink'      => FALSE,  // ã‚ªãƒ¼ãƒˆãƒªãƒ³ã‚¯ ç„¡åŠ¹
 				);
 
 require_once(PLUGIN_DIR.'code/codehighlight.php');
@@ -80,7 +79,7 @@ if ($_POST) {
 	echo '
 <div>
 <form action="./code.php" method="post">
-<div><input type="hidden" name="encode_hint" value="¤×" /></div>
+<div><input type="hidden" name="encode_hint" value="ã·" /></div>
 <div>
 Language:
 <select name="lang" id="lang">
@@ -129,9 +128,9 @@ Language:
 <?php
 
 /**
- * ¹ÔÈÖ¹æ¤òºîÀ®¤¹¤ë
- * °ú¿ô¤Ï¹ÔÈÖ¹æ¤ÎÈÏ°Ï
- * À°·Á¤µ¤ì¤¿¹ÔÈÖ¹æ¤òÊÖ¤¹
+ * è¡Œç•ªå·ã‚’ä½œæˆã™ã‚‹
+ * å¼•æ•°ã¯è¡Œç•ªå·ã®ç¯„å›²
+ * æ•´å½¢ã•ã‚ŒãŸè¡Œç•ªå·ã‚’è¿”ã™
  */
 function _plugin_code_makeNumber($end, $begin=1)
 {
@@ -143,9 +142,9 @@ function _plugin_code_makeNumber($end, $begin=1)
 	return $number;
 }
 /**
- * ÃÊÁÈ¤ß¤·¤Æ½ĞÎÏ¤¹¤ë
+ * æ®µçµ„ã¿ã—ã¦å‡ºåŠ›ã™ã‚‹
  * 
- * À°·ÁHTML¤òÊÖ¤¹
+ * æ•´å½¢HTMLã‚’è¿”ã™
  */
 function _plugin_code_column(& $text, $number=null, $outline=null)
 {

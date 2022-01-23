@@ -1,8 +1,8 @@
 *lang [#a6072374]
-����ɽ�� code.inc.php ����ĥ�Ҥ�ưȽ�ꤹ��������Ѥ��ޤ���
+この表は code.inc.php が拡張子を自動判定する時に利用します。
 
-|~����̾|~��ĥ��|~����|h
-|pre|txt text|�ƥ����ȥե�����|
+|~言語名|~拡張子|~言語|h
+|pre|txt text|テキストファイル|
 |c|c cpp cxx|C/C++|
 |php|php|PHP|
 |java|java|Java|

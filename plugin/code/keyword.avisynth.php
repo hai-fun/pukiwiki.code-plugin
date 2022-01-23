@@ -1,13 +1,13 @@
 <?php
 /**
- * AviSynth ¥­¡¼¥ï¡¼¥ÉÄêµÁ¥Õ¥¡¥¤¥ë
+ * AviSynth ã‚­ãƒ¼ãƒ¯ãƒ¼ãƒ‰å®šç¾©ãƒ•ã‚¡ã‚¤ãƒ«
  */
 
 $switchHash['"'] = PLUGIN_CODE_NONESCAPE_LITERAL;
-$capital = 1;                    // Í½Ìó¸ì¤ÎÂçÊ¸»ú¾®Ê¸»ú¤ò¶èÊÌ¤·¤Ê¤¤
+$capital = 1;                    // äºˆç´„èªã®å¤§æ–‡å­—å°æ–‡å­—ã‚’åŒºåˆ¥ã—ãªã„
 
-// ¥³¥á¥ó¥ÈÄêµÁ
-$switchHash['#'] = PLUGIN_CODE_COMMENT;    // ¥³¥á¥ó¥È¤Ï # ¤«¤é²ş¹Ô¤Ş¤Ç
+// ã‚³ãƒ¡ãƒ³ãƒˆå®šç¾©
+$switchHash['#'] = PLUGIN_CODE_COMMENT;    // ã‚³ãƒ¡ãƒ³ãƒˆã¯ # ã‹ã‚‰æ”¹è¡Œã¾ã§
 $code_comment = Array(
 	'#' => Array(
 				 Array('/^#/', "\n", 1),
@@ -15,10 +15,10 @@ $code_comment = Array(
 );
 
 $code_css = Array(
-  'operator',		// ¥ª¥Ú¥ì¡¼¥¿´Ø¿ô
-  'identifier',	// ¤½¤ÎÂ¾¤Î¼±ÊÌ»Ò
-  'function',		// É¸½à´Ø¿ô
-  'system',		// ½èÍı·ÏÁÈ¤ß¹ş¤ß¤ÎÅÛ __stdcall ¤È¤«
+  'operator',		// ã‚ªãƒšãƒ¬ãƒ¼ã‚¿é–¢æ•°
+  'identifier',	// ãã®ä»–ã®è­˜åˆ¥å­
+  'function',		// æ¨™æº–é–¢æ•°
+  'system',		// å‡¦ç†ç³»çµ„ã¿è¾¼ã¿ã®å¥´ __stdcall ã¨ã‹
   );
 
 $code_keyword = Array(

@@ -1,44 +1,45 @@
 <?php
 /**
- * ¥³¡¼¥É¥Ï¥¤¥é¥¤¥Èµ¡Ç½¤òPukiWiki¤ËÄÉ²Ã¤¹¤ë
+ * ã‚³ãƒ¼ãƒ‰ãƒã‚¤ãƒ©ã‚¤ãƒˆæ©Ÿèƒ½ã‚’PukiWikiã«è¿½åŠ ã™ã‚‹
  * Time-stamp: <07/11/20 01:31:12 sky>
  * 
  * GPL
  *
  * r 0.6.0_pr3
  */
+ // v0.6.1 PHP8.0å¯¾å¿œ 2021-12-17 byã¯ã„ãµã‚“
 
-define('PLUGIN_CODE_LANGUAGE', 'c');  // É¸½à¸À¸ì Á´¤Æ¾®Ê¸»ú¤Ç»ØÄê
-// É¸½àÀßÄê
-define('PLUGIN_CODE_NUMBER',        1);  // ¹ÔÈÖ¹æ
-define('PLUGIN_CODE_FOLD',          1);  // ¥¢¥¦¥È¥é¥¤¥ó
-define('PLUGIN_CODE_FOLDBLOCK',     1);  // ¥Ö¥í¥Ã¥¯³«ÊÄ
-define('PLUGIN_CODE_FOLDLITERAL',   1);  // Ê¸»úÎó³«ÊÄ
-define('PLUGIN_CODE_FOLDCOMMENT',   1);  // ¥³¥á¥ó¥È³«ÊÄ
-define('PLUGIN_CODE_MENU',          1);  // ¥á¥Ë¥å¡¼¤ÎÉ½¼¨/ÈóÉ½¼¨;
-define('PLUGIN_CODE_FILE_ICON',     1);  // ÅºÉÕ¥Õ¥¡¥¤¥ë¤Ë¥À¥¦¥ó¥í¡¼¥É¥¢¥¤¥³¥ó¤òÉÕ¤±¤ë
-define('PLUGIN_CODE_LINK',          1);  // ¥ª¡¼¥È¥ê¥ó¥¯
-define('PLUGIN_CODE_CACHE',         0);  // ¥­¥ã¥Ã¥·¥å¤ò»È¤¦
+define('PLUGIN_CODE_LANGUAGE', 'c');  // æ¨™æº–è¨€èª å…¨ã¦å°æ–‡å­—ã§æŒ‡å®š
+// æ¨™æº–è¨­å®š
+define('PLUGIN_CODE_NUMBER',      1);  // è¡Œç•ªå·
+define('PLUGIN_CODE_FOLD',        1);  // ã‚¢ã‚¦ãƒˆãƒ©ã‚¤ãƒ³
+define('PLUGIN_CODE_FOLDBLOCK',   1);  // ãƒ–ãƒ­ãƒƒã‚¯é–‹é–‰
+define('PLUGIN_CODE_FOLDLITERAL', 1);  // æ–‡å­—åˆ—é–‹é–‰
+define('PLUGIN_CODE_FOLDCOMMENT', 1);  // ã‚³ãƒ¡ãƒ³ãƒˆé–‹é–‰
+define('PLUGIN_CODE_MENU',        1);  // ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã®è¡¨ç¤º/éè¡¨ç¤º;
+define('PLUGIN_CODE_FILE_ICON',   1);  // æ·»ä»˜ãƒ•ã‚¡ã‚¤ãƒ«ã«ãƒ€ã‚¦ãƒ³ãƒ­ãƒ¼ãƒ‰ã‚¢ã‚¤ã‚³ãƒ³ã‚’ä»˜ã‘ã‚‹
+define('PLUGIN_CODE_LINK',        1);  // ã‚ªãƒ¼ãƒˆãƒªãƒ³ã‚¯
+define('PLUGIN_CODE_CACHE',       0);  // ã‚­ãƒ£ãƒƒã‚·ãƒ¥ã‚’ä½¿ã†
 
 
-// URL¤Ç»ØÄê¤·¤¿¥Õ¥¡¥¤¥ë¤òÆÉ¤ß¹ş¤à¤«Èİ¤«
+// URLã§æŒ‡å®šã—ãŸãƒ•ã‚¡ã‚¤ãƒ«ã‚’èª­ã¿è¾¼ã‚€ã‹å¦ã‹
 define('PLUGIN_CODE_READ_URL',  0);
 
-// ¥Æ¡¼¥Ö¥ë¤ò»È¤¦¤«Èİ¤«(0¤ÏCSS¤Îdiv¤Ë¤è¤ëÊ¬³ä)
-define('PLUGIN_CODE_TABLE',     1);
+// ãƒ†ãƒ¼ãƒ–ãƒ«ã‚’ä½¿ã†ã‹å¦ã‹(0ã¯CSSã®divã«ã‚ˆã‚‹åˆ†å‰²)
+define('PLUGIN_CODE_TABLE',	 1);
 
-// TABÉı
+// TABå¹…
 define('PLUGIN_CODE_WIDTHOFTAB', '    ');
-// ²èÁü¥Õ¥¡¥¤¥ë¤ÎÀßÄê
+// ç”»åƒãƒ•ã‚¡ã‚¤ãƒ«ã®è¨­å®š
 define('PLUGIN_CODE_IMAGE_FILE', IMAGE_DIR.'code_dot.png');
 
 define('PLUGIN_CODE_OUTLINE_OPEN_FILE',  IMAGE_DIR.'code_outline_open.png');
 define('PLUGIN_CODE_OUTLINE_CLOSE_FILE', IMAGE_DIR.'code_outline_close.png');
 
 // plugin pre
-define('PLUGIN_PRE_NUMBER',        0);  // ¹ÔÈÖ¹æ
-define('PLUGIN_PRE_VERVATIM_HARD', 1);  // ¥¤¥ó¥é¥¤¥óÅ¸³«¤ò¤·¤Ê¤¤
-define('PLUGIN_PRE_FILE_ICON',     1);  // ÅºÉÕ¥Õ¥¡¥¤¥ë¤Ë¥À¥¦¥ó¥í¡¼¥É¥¢¥¤¥³¥ó¤òÉÕ¤±¤ë
+define('PLUGIN_PRE_NUMBER',		0);  // è¡Œç•ªå·
+define('PLUGIN_PRE_VERVATIM_HARD', 1);  // ã‚¤ãƒ³ãƒ©ã‚¤ãƒ³å±•é–‹ã‚’ã—ãªã„
+define('PLUGIN_PRE_FILE_ICON',	 1);  // æ·»ä»˜ãƒ•ã‚¡ã‚¤ãƒ«ã«ãƒ€ã‚¦ãƒ³ãƒ­ãƒ¼ãƒ‰ã‚¢ã‚¤ã‚³ãƒ³ã‚’ä»˜ã‘ã‚‹
 
 
 define('PLUGIN_CODE_HEADER', 'code_');
@@ -46,556 +47,583 @@ define('PLUGIN_PRE_HEADER', 'pre_');
 define('PLUGIN_PRE_COLOR_REGEX', '/^(#[0-9a-f]{3}|#[0-9a-f]{6}|[a-z-]+)$/i');
 
 if (! defined('FILE_ICON')) {
-    define('FILE_ICON',
-    '<img src="' . IMAGE_DIR . 'file.png" width="20" height="20"' .
-    ' alt="file" style="border-width:0px" />');
+	define('FILE_ICON',
+	'<img src="' . IMAGE_DIR . 'file.png" width="20" height="20"' .
+	' alt="file" style="border-width:0px" />');
 }
 
 define('PLUGIN_CODE_USAGE', 
-       '<p class="error">Plugin code: Usage:<br />#code[(Lang)]{{<br />src<br />}}</p>');
+	   '<p class="error">Plugin code: Usage:<br />#code[(Lang)]{{<br />src<br />}}</p>');
 
 define('PLUGIN_CODE_CONFIG_PAGE_MIME', 'plugin/code/mimetype');
 define('PLUGIN_CODE_CONFIG_PAGE_EXTENSION', 'plugin/code/extension');
 
-function pluing_code_init()
+// è¨€èªåã‚¨ã‚¤ãƒªã‚¢ã‚¹ ('ç•¥èª' => 'è¨€èªå')
+define('PLUGIN_CODE_LANG_ALIAS', array(
+	'cpp' => 'cppcli',
+	'cli' => 'cppcli',
+	'cxx' => 'cppcli',
+	'c++' => 'cppcli',
+	'cs' => 'csharp',
+	'c#' => 'csharp',
+	'js' => 'javascript',
+	'py' => 'python',
+	'htm' => 'html',
+	'mysql' => 'sql',
+	'pw' => 'pukiwiki',
+	'ph' => 'php',
+	'rb' => 'ruby',
+	'j' => 'java',
+));
+
+function plugin_code_init()
 {
-    global $javascript; $javascript = 1;
+	global $head_tags;
+	$head_tags[] = "<link href=\"skin/code.css\" rel=\"stylesheet\">";
+	//global $javascript; $javascript = 1;
 }
 function plugin_code_action()
 {
-    global $vars;
-    global $_source_messages;
-    
-    if (PKWK_SAFE_MODE) die_message('PKWK_SAFE_MODE prohibits this');
+	global $vars;
+	global $_source_messages;
+	
+	if (PKWK_SAFE_MODE) die_message('PKWK_SAFE_MODE prohibits this');
 
-    $vars['refer'] = $vars['page'];
+	$vars['refer'] = $vars['page'];
 
-    if (! is_page($vars['page']) || ! check_readable($vars['page'],0,0)) {
-        return array( 'msg' => $_source_messages['msg_notfound'],
-                      'body' => $_source_messages['err_notfound'] );
-    }
-    return array( 'msg' => $_source_messages['msg_title'],
-                  'body' => plugin_code_convert('pukiwiki',
-                                                join('',get_source($vars['page']))."\n"));
+	if (! is_page($vars['page']) || ! check_readable($vars['page'],0,0)) {
+		return array( 'msg' => $_source_messages['msg_notfound'],
+					  'body' => $_source_messages['err_notfound'] );
+	}
+	return array( 'msg' => $_source_messages['msg_title'],
+				  'body' => plugin_code_convert('pukiwiki',
+												join('',get_source($vars['page']))."\n"));
 }
 
 function plugin_code_convert()
 {
-    if (file_exists(PLUGIN_DIR.'code/codehighlight.php'))
-        require_once(PLUGIN_DIR.'code/codehighlight.php');
-    else
-        die_message('file '.PLUGIN_DIR.'code/codehighlight.php not exist or not readable.');
+	if (file_exists(PLUGIN_DIR.'code/codehighlight.php'))
+		require_once(PLUGIN_DIR.'code/codehighlight.php');
+	else
+		die_message('file '.PLUGIN_DIR.'code/codehighlight.php not exist or not readable.');
 
-    static $plugin_code_jscript_flag = 1;
-    
-    $title = '';
-    $lang = null;
-    $option = array(
-                    'number'      => 0,  // ¹ÔÈÖ¹æ¤òÉ½¼¨¤¹¤ë
-                    'nonumber'    => 0,  // ¹ÔÈÖ¹æ¤òÉ½¼¨¤·¤Ê¤¤
-                    'outline'     => 0,  // ¥¢¥¦¥È¥é¥¤¥ó ¥â¡¼¥É
-                    'nooutline'   => 0,  // ¥¢¥¦¥È¥é¥¤¥ó Ìµ¸ú
-                    'block'       => 0,  // ¥¢¥¦¥È¥é¥¤¥ó ¥Ö¥í¥Ã¥¯
-                    'noblock'     => 0,  // ¥¢¥¦¥È¥é¥¤¥ó ¥Ö¥í¥Ã¥¯
-                    'literal'     => 0,  // ¥¢¥¦¥È¥é¥¤¥ó Ê¸»úÎó
-                    'noliteral'   => 0,  // ¥¢¥¦¥È¥é¥¤¥ó Ê¸»úÎó
-                    'comment'     => 0,  // ¥¢¥¦¥È¥é¥¤¥ó ¥³¥á¥ó¥È
-                    'nocomment'   => 0,  // ¥¢¥¦¥È¥é¥¤¥ó ¥³¥á¥ó¥È
-                    'menu'        => 0,  // ¥á¥Ë¥å¡¼¤òÉ½¼¨¤¹¤ë
-                    'nomenu'      => 0,  // ¥á¥Ë¥å¡¼¤òÉ½¼¨¤·¤Ê¤¤
-                    'icon'        => 0,  // ¥¢¥¤¥³¥ó¤òÉ½¼¨¤¹¤ë
-                    'noicon'      => 0,  // ¥¢¥¤¥³¥ó¤òÉ½¼¨¤·¤Ê¤¤
-                    'link'        => 0,  // ¥ª¡¼¥È¥ê¥ó¥¯ Í­¸ú
-                    'nolink'      => 0,  // ¥ª¡¼¥È¥ê¥ó¥¯ Ìµ¸ú
-                    );
-    
-    $num_of_arg = func_num_args();
-    $args = func_get_args();
-    if ($num_of_arg < 1) {
-        return PLUGIN_CODE_USAGE;
-    }
+	static $plugin_code_jscript_flag = 1;
+	
+	$title = '';
+	$lang = null;
+	$option = array(
+					'number'	  => 0,  // è¡Œç•ªå·ã‚’è¡¨ç¤ºã™ã‚‹
+					'nonumber'	=> 0,  // è¡Œç•ªå·ã‚’è¡¨ç¤ºã—ãªã„
+					'outline'	 => 0,  // ã‚¢ã‚¦ãƒˆãƒ©ã‚¤ãƒ³ ãƒ¢ãƒ¼ãƒ‰
+					'nooutline'   => 0,  // ã‚¢ã‚¦ãƒˆãƒ©ã‚¤ãƒ³ ç„¡åŠ¹
+					'block'	   => 0,  // ã‚¢ã‚¦ãƒˆãƒ©ã‚¤ãƒ³ ãƒ–ãƒ­ãƒƒã‚¯
+					'noblock'	 => 0,  // ã‚¢ã‚¦ãƒˆãƒ©ã‚¤ãƒ³ ãƒ–ãƒ­ãƒƒã‚¯
+					'literal'	 => 0,  // ã‚¢ã‚¦ãƒˆãƒ©ã‚¤ãƒ³ æ–‡å­—åˆ—
+					'noliteral'   => 0,  // ã‚¢ã‚¦ãƒˆãƒ©ã‚¤ãƒ³ æ–‡å­—åˆ—
+					'comment'	 => 0,  // ã‚¢ã‚¦ãƒˆãƒ©ã‚¤ãƒ³ ã‚³ãƒ¡ãƒ³ãƒˆ
+					'nocomment'   => 0,  // ã‚¢ã‚¦ãƒˆãƒ©ã‚¤ãƒ³ ã‚³ãƒ¡ãƒ³ãƒˆ
+					'menu'		=> 0,  // ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã‚’è¡¨ç¤ºã™ã‚‹
+					'nomenu'	  => 0,  // ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã‚’è¡¨ç¤ºã—ãªã„
+					'icon'		=> 0,  // ã‚¢ã‚¤ã‚³ãƒ³ã‚’è¡¨ç¤ºã™ã‚‹
+					'noicon'	  => 0,  // ã‚¢ã‚¤ã‚³ãƒ³ã‚’è¡¨ç¤ºã—ãªã„
+					'link'		=> 0,  // ã‚ªãƒ¼ãƒˆãƒªãƒ³ã‚¯ æœ‰åŠ¹
+					'nolink'	  => 0,  // ã‚ªãƒ¼ãƒˆãƒªãƒ³ã‚¯ ç„¡åŠ¹
+					);
+	
+	$num_of_arg = func_num_args();
+	$args = func_get_args();
+	if ($num_of_arg < 1) {
+		return PLUGIN_CODE_USAGE;
+	}
 
-    $arg = $args[$num_of_arg-1];
-    if (strlen($arg) == 0) {
-        return PLUGIN_CODE_USAGE;
-    }
-    if ($num_of_arg != 1 && ! _plugin_code_check_argment($args[0], $option)) 
-        $lang = htmlspecialchars(strtolower($args[0])); // ¸À¸ìÌ¾¤«¥ª¥×¥·¥ç¥ó¤ÎÈ½Äê
+	$arg = $args[$num_of_arg-1];
+	if (strlen($arg) == 0) {
+		return PLUGIN_CODE_USAGE;
+	}
+	if ($num_of_arg != 1 && ! _plugin_code_check_argment($args[0], $option)) 
+		$lang = htmlsc(strtolower($args[0])); // è¨€èªåã‹ã‚ªãƒ—ã‚·ãƒ§ãƒ³ã®åˆ¤å®š
 
-    $begin = 1;
-    $end = null;
-    // ¥ª¥×¥·¥ç¥ó¤òÄ´¤Ù¤ë
-    for ($i = 1;$i < $num_of_arg-1; ++$i) {
-        if (! _plugin_code_check_argment($args[$i], $option))
-            _plugin_code_get_region($args[$i], $end, $begin);
-    }
-    $multiline = _plugin_code_multiline_argment($arg, $data, $lang, $option, $end, $begin);
+	$begin = 1;
+	$end = null;
+	// ã‚ªãƒ—ã‚·ãƒ§ãƒ³ã‚’èª¿ã¹ã‚‹
+	for ($i = 1;$i < $num_of_arg-1; ++$i) {
+		if (! _plugin_code_check_argment($args[$i], $option))
+			_plugin_code_get_region($args[$i], $end, $begin);
+	}
+	$multiline = _plugin_code_multiline_argment($arg, $data, $lang, $option, $end, $begin);
 
-    if (PLUGIN_CODE_CACHE && ! $multiline) { 
-        $html = _plugin_code_read_cache($arg);
-        if ($html != '' or $html != null)
-            return $html;
-    }
-    
-    if (isset($data['_error']) && $data['_error'] != '') {
-        return $data['_error'];
-    }
-    $lines = $data['data'];
-    $title = $data['title'];
+	if (PLUGIN_CODE_CACHE && ! $multiline) { 
+		$html = _plugin_code_read_cache($arg);
+		if ($html != '' or $html != null)
+			return $html;
+	}
+	
+	if (isset($data['_error']) && $data['_error'] != '') {
+		return $data['_error'];
+	}
+	$lines = $data['data'];
+	$title = $data['title'];
 
-    $highlight = new CodeHighlight;
-    $lines = $highlight->highlight($lang, $lines, $option, $end, $begin);
-    $lines = '<div class="'.$lang.'">'.$lines.'</div>';
-    
-    if ($plugin_code_jscript_flag && $option['outline']) {
-        $plugin_code_jscript_flag = 0;
-        $title .= '<script type="text/javascript" src="'.SKIN_DIR.'code.js"></script>'."\n";
-    }
-    $html = $title.$lines;
-    if (PLUGIN_CODE_CACHE && ! $multiline) {
-        _plugin_code_write_cache($arg, $html);
-    }
-    return $html;
+	$highlight = new CodeHighlight;
+	$lines = $highlight->highlight($lang, $lines, $option, $end, $begin);
+	$lines = '<div class="'.$lang.'">'.$lines.'</div>';
+	
+	if ($plugin_code_jscript_flag && $option['outline']) {
+		$plugin_code_jscript_flag = 0;
+		$title .= '<script type="text/javascript" src="'.SKIN_DIR.'code.js"></script>'."\n";
+	}
+	$html = $title.$lines;
+	if (PLUGIN_CODE_CACHE && ! $multiline) {
+		_plugin_code_write_cache($arg, $html);
+	}
+	return $html;
 }
 
 /**
- * ¥­¥ã¥Ã¥·¥å¤Ë½ñ¤­¹ş¤à
- * °ú¿ô¤ÏÅºÉÕ¥Õ¥¡¥¤¥ëÌ¾, HTMLÊÑ´¹¸å¤Î¥Õ¥¡¥¤¥ë
+ * ã‚­ãƒ£ãƒƒã‚·ãƒ¥ã«æ›¸ãè¾¼ã‚€
+ * å¼•æ•°ã¯æ·»ä»˜ãƒ•ã‚¡ã‚¤ãƒ«å, HTMLå¤‰æ›å¾Œã®ãƒ•ã‚¡ã‚¤ãƒ«
  */
 function _plugin_code_write_cache($fname, $html)
 {
-    global $vars;
-    // ÅºÉÕ¥Õ¥¡¥¤¥ë¤Î¤¢¤ë¥Ú¡¼¥¸: default¤Ï¸½ºß¤Î¥Ú¡¼¥¸Ì¾
-    $page = isset($vars['page']) ? $vars['page'] : '';
-    
-    // ¥Õ¥¡¥¤¥ëÌ¾¤Ë¥Ú¡¼¥¸Ì¾(¥Ú¡¼¥¸»²¾È¥Ñ¥¹)¤¬¹çÀ®¤µ¤ì¤Æ¤¤¤ë¤«
-    //   (Page_name/maybe-separated-with/slashes/ATTACHED_FILENAME)
-    if (preg_match('#^(.+)/([^/]+)$#', $fname, $matches)) {
-        if ($matches[1] == '.' || $matches[1] == '..')
-            $matches[1] .= '/'; // Restore relative paths
-            $fname = $matches[2];
-            $page = get_fullname(strip_bracket($matches[1]), $page); // strip is a compat
-            $file = encode($page) . '_' . encode($fname);
-    } else {
-        // Simple single argument
-        $file =  encode($page) . '_' . encode($fname);
-    }
-    $fp = fopen(CACHE_DIR.'code/'.$file.'.html', 'w') or
-        die_message('Cannot write cache file ' .
-                    CACHE_DIR.'code/'. $file .'.html'.
-                    '<br />Maybe permission is not writable or filename is too long');
-    
-    set_file_buffer($fp, 0);
-    flock($fp, LOCK_EX);
-    rewind($fp);
-    fputs($fp, $html);
-    flock($fp, LOCK_UN);
-    fclose($fp);
+	global $vars;
+	// æ·»ä»˜ãƒ•ã‚¡ã‚¤ãƒ«ã®ã‚ã‚‹ãƒšãƒ¼ã‚¸: defaultã¯ç¾åœ¨ã®ãƒšãƒ¼ã‚¸å
+	$page = isset($vars['page']) ? $vars['page'] : '';
+	
+	// ãƒ•ã‚¡ã‚¤ãƒ«åã«ãƒšãƒ¼ã‚¸å(ãƒšãƒ¼ã‚¸å‚ç…§ãƒ‘ã‚¹)ãŒåˆæˆã•ã‚Œã¦ã„ã‚‹ã‹
+	//   (Page_name/maybe-separated-with/slashes/ATTACHED_FILENAME)
+	if (preg_match('#^(.+)/([^/]+)$#', $fname, $matches)) {
+		if ($matches[1] == '.' || $matches[1] == '..')
+			$matches[1] .= '/'; // Restore relative paths
+			$fname = $matches[2];
+			$page = get_fullname(strip_bracket($matches[1]), $page); // strip is a compat
+			$file = encode($page) . '_' . encode($fname);
+	} else {
+		// Simple single argument
+		$file =  encode($page) . '_' . encode($fname);
+	}
+	$fp = fopen(CACHE_DIR.'code/'.$file.'.html', 'w') or
+		die_message('Cannot write cache file ' .
+					CACHE_DIR.'code/'. $file .'.html'.
+					'<br />Maybe permission is not writable or filename is too long');
+	
+	set_file_buffer($fp, 0);
+	flock($fp, LOCK_EX);
+	rewind($fp);
+	fputs($fp, $html);
+	flock($fp, LOCK_UN);
+	fclose($fp);
 }
 
 /**
- * ¥­¥ã¥Ã¥·¥å¤òÆÉ¤ß½Ğ¤¹
- * °ú¿ô¤ÏÅºÉÕ¥Õ¥¡¥¤¥ëÌ¾
- * ÊÑ´¹¤µ¤ì¤¿¥Õ¥¡¥¤¥ë¥Ç¡¼¥¿¤òÊÖ¤¹
+ * ã‚­ãƒ£ãƒƒã‚·ãƒ¥ã‚’èª­ã¿å‡ºã™
+ * å¼•æ•°ã¯æ·»ä»˜ãƒ•ã‚¡ã‚¤ãƒ«å
+ * å¤‰æ›ã•ã‚ŒãŸãƒ•ã‚¡ã‚¤ãƒ«ãƒ‡ãƒ¼ã‚¿ã‚’è¿”ã™
  */
 function _plugin_code_read_cache($fname)
 {
-    global $vars;
-    // ÅºÉÕ¥Õ¥¡¥¤¥ë¤Î¤¢¤ë¥Ú¡¼¥¸: default¤Ï¸½ºß¤Î¥Ú¡¼¥¸Ì¾
-    $page = isset($vars['page']) ? $vars['page'] : '';
-    
-    // ¥Õ¥¡¥¤¥ëÌ¾¤Ë¥Ú¡¼¥¸Ì¾(¥Ú¡¼¥¸»²¾È¥Ñ¥¹)¤¬¹çÀ®¤µ¤ì¤Æ¤¤¤ë¤«
-    //   (Page_name/maybe-separated-with/slashes/ATTACHED_FILENAME)
-    if (preg_match('#^(.+)/([^/]+)$#', $fname, $matches)) {
-        if ($matches[1] == '.' || $matches[1] == '..')
-            $matches[1] .= '/'; // Restore relative paths
-        $fname = $matches[2];
-        $page = get_fullname(strip_bracket($matches[1]), $page); // strip is a compat
-        $file = encode($page) . '_' . encode($fname);
-    } else {
-        // Simple single argument
-        $file =  encode($page) . '_' . encode($fname);
-    }
-    
-    /* Read file data */
-    $fdata = '';
-    $filelines = file(CACHE_DIR.'code/'.$file.'.html');
-    
-    foreach ($filelines as $line)
-        $fdata .= $line;
-    
-    return $fdata;
+	global $vars;
+	// æ·»ä»˜ãƒ•ã‚¡ã‚¤ãƒ«ã®ã‚ã‚‹ãƒšãƒ¼ã‚¸: defaultã¯ç¾åœ¨ã®ãƒšãƒ¼ã‚¸å
+	$page = isset($vars['page']) ? $vars['page'] : '';
+	
+	// ãƒ•ã‚¡ã‚¤ãƒ«åã«ãƒšãƒ¼ã‚¸å(ãƒšãƒ¼ã‚¸å‚ç…§ãƒ‘ã‚¹)ãŒåˆæˆã•ã‚Œã¦ã„ã‚‹ã‹
+	//   (Page_name/maybe-separated-with/slashes/ATTACHED_FILENAME)
+	if (preg_match('#^(.+)/([^/]+)$#', $fname, $matches)) {
+		if ($matches[1] == '.' || $matches[1] == '..')
+			$matches[1] .= '/'; // Restore relative paths
+		$fname = $matches[2];
+		$page = get_fullname(strip_bracket($matches[1]), $page); // strip is a compat
+		$file = encode($page) . '_' . encode($fname);
+	} else {
+		// Simple single argument
+		$file =  encode($page) . '_' . encode($fname);
+	}
+	
+	/* Read file data */
+	$fdata = '';
+	$filelines = file(CACHE_DIR.'code/'.$file.'.html');
+	
+	foreach ($filelines as $line)
+		$fdata .= $line;
+	
+	return $fdata;
 }
 
 
 /**
- * À°·ÁºÑ½ĞÎÏ
+ * æ•´å½¢æ¸ˆå‡ºåŠ›
  * @author sky
  *
  * Code.inc.php Ver. 0.5
  */
 function plugin_pre_convert()
 {
-    static $id_number = 0; // ¥×¥é¥°¥¤¥ó¤¬¸Æ¤Ğ¤ì¤¿²ó¿ô(ID¤ËÍøÍÑ)
-    $id_number++;
+	static $id_number = 0; // ãƒ—ãƒ©ã‚°ã‚¤ãƒ³ãŒå‘¼ã°ã‚ŒãŸå›æ•°(IDã«åˆ©ç”¨)
+	$id_number++;
 
-    $option = array(
-                  'number'      => 0,  // ¹ÔÈÖ¹æ¤òÉ½¼¨¤¹¤ë
-                  'nonumber'    => 0,  // ¹ÔÈÖ¹æ¤òÉ½¼¨¤·¤Ê¤¤
-                  'hard'        => 0,  // ¥¤¥ó¥é¥¤¥óÅ¸³«¤·¤Ê¤¤
-                  'soft'        => 0,  // ¥¤¥ó¥é¥¤¥óÅ¸³«¤¹¤ë
-                  'icon'        => 0,  // ¥¢¥¤¥³¥ó¤òÉ½¼¨¤¹¤ë
-                  'noicon'      => 0,  // ¥¢¥¤¥³¥ó¤òÉ½¼¨¤·¤Ê¤¤
-                  'link'        => 0,  // ¥ª¡¼¥È¥ê¥ó¥¯ Í­¸ú
-                  'nolink'      => 0,  // ¥ª¡¼¥È¥ê¥ó¥¯ Ìµ¸ú
-              );
-    $num_of_arg = func_num_args();
-    $args = func_get_args();
+	$option = array(
+				  'number'	  => 0,  // è¡Œç•ªå·ã‚’è¡¨ç¤ºã™ã‚‹
+				  'nonumber'	=> 0,  // è¡Œç•ªå·ã‚’è¡¨ç¤ºã—ãªã„
+				  'hard'		=> 0,  // ã‚¤ãƒ³ãƒ©ã‚¤ãƒ³å±•é–‹ã—ãªã„
+				  'soft'		=> 0,  // ã‚¤ãƒ³ãƒ©ã‚¤ãƒ³å±•é–‹ã™ã‚‹
+				  'icon'		=> 0,  // ã‚¢ã‚¤ã‚³ãƒ³ã‚’è¡¨ç¤ºã™ã‚‹
+				  'noicon'	  => 0,  // ã‚¢ã‚¤ã‚³ãƒ³ã‚’è¡¨ç¤ºã—ãªã„
+				  'link'		=> 0,  // ã‚ªãƒ¼ãƒˆãƒªãƒ³ã‚¯ æœ‰åŠ¹
+				  'nolink'	  => 0,  // ã‚ªãƒ¼ãƒˆãƒªãƒ³ã‚¯ ç„¡åŠ¹
+			  );
+	$num_of_arg = func_num_args();
+	$args = func_get_args();
 
-    $text = '';
-    $number = '';
+	$text = '';
+	$number = '';
 
-    $style = '';
-    $stylecnt = 0;
+	$style = '';
+	$stylecnt = 0;
 
-    $begin = 1;
-    $end = null;
-    $lang = null;
+	$begin = 1;
+	$end = null;
+	$lang = null;
 
-    $a = array();
-    
-    // ¥ª¥×¥·¥ç¥ó¤òÄ´¤Ù¤ë
-    for ($i = 0;$i < $num_of_arg-1; ++$i) {
-        if (! _plugin_code_check_argment($args[$i], $option)) {
-            if (! _plugin_code_get_region($args[$i], $end, $begin)) {
-                // style
-                if ($stylecnt == 0) {
-                    $color   = $args[$i];
-                    ++$stylecnt;
-                } else {
-                    $bgcolor = $args[$i];
-                }
-            }
-        }
-    }
-    if ($stylecnt) {
-        // Invalid color
-        foreach(array($color, $bgcolor) as $col){
-            if ($col != '' && ! preg_match(PLUGIN_PRE_COLOR_REGEX, $col))
-                return '<p class="error">#pre():Invalid color: '.htmlspecialchars($col).';</p>';
-        }
-        if ($color != '' ) {
-            $style   = ' style="color:'.$color;
-            if ($bgcolor != '') 
-                $style .= ';background-color:'.$bgcolor.'"';
-            else
-                $style .= '"';
-        } else {
-            if ($bgcolor != '') 
-                $style .= ' style="background-color:'.$bgcolor.'"';
-            else 
-                $style = '';
-        }
-    }
+	$a = array();
+	
+	// ã‚ªãƒ—ã‚·ãƒ§ãƒ³ã‚’èª¿ã¹ã‚‹
+	for ($i = 0;$i < $num_of_arg-1; ++$i) {
+		if (! _plugin_code_check_argment($args[$i], $option)) {
+			if (! _plugin_code_get_region($args[$i], $end, $begin)) {
+				// style
+				if ($stylecnt == 0) {
+					$color   = $args[$i];
+					++$stylecnt;
+				} else {
+					$bgcolor = $args[$i];
+				}
+			}
+		}
+	}
+	if ($stylecnt) {
+		// Invalid color
+		foreach(array($color, $bgcolor) as $col){
+			if ($col != '' && ! preg_match(PLUGIN_PRE_COLOR_REGEX, $col))
+				return '<p class="error">#pre():Invalid color: '.htmlsc($col).';</p>';
+		}
+		if ($color != '' ) {
+			$style   = ' style="color:'.$color;
+			if ($bgcolor != '') 
+				$style .= ';background-color:'.$bgcolor.'"';
+			else
+				$style .= '"';
+		} else {
+			if ($bgcolor != '') 
+				$style .= ' style="background-color:'.$bgcolor.'"';
+			else 
+				$style = '';
+		}
+	}
 
-    _plugin_code_multiline_argment($args[$num_of_arg-1], $data, $lang, $option, $end, $begin);
-    if (isset($data['_error']) && $data['_error'] != '') {
-        return $data['_error'];
-    }
-    $text = $data['data'];
-    $title = $data['title'];
+	_plugin_code_multiline_argment($args[$num_of_arg-1], $data, $lang, $option, $end, $begin);
+	if (isset($data['_error']) && $data['_error'] != '') {
+		return $data['_error'];
+	}
+	$text = $data['data'];
+	$title = $data['title'];
 
-    if ($end === null)
-        $end = substr_count($text, "\n") + $begin -1;
+	if ($end === null)
+		$end = substr_count($text, "\n") + $begin -1;
 
-    if (PLUGIN_PRE_VERVATIM_HARD  && ! $option['soft']  || $option['hard']) {
-        $text = htmlspecialchars($text);
-    } else {
-        $text = make_link($text);
-    }
-    $html = '<pre class="'.PLUGIN_PRE_HEADER.'body" '.$style.'>'.$text.'</pre>';
+	if (PLUGIN_PRE_VERVATIM_HARD  && ! $option['soft']  || $option['hard']) {
+		$text = htmlsc($text);
+	} else {
+		$text = make_link($text);
+	}
+	$html = '<pre class="'.PLUGIN_PRE_HEADER.'body" '.$style.'>'.$text.'</pre>';
 
-    if (PLUGIN_PRE_NUMBER  && ! $option['nonumber']  || $option['number']) {
-        $number = '<pre class="'.PLUGIN_PRE_HEADER.'number">'
-            ._plugin_code_makeNumber($end, $begin).'</pre>';
-        $html = '<div id="'.PLUGIN_PRE_HEADER.$id_number.'" class="'.PLUGIN_PRE_HEADER.'table">'
-            ._plugin_code_column($html, $number, null). '</div>';
-    }
-    
-    return $title.$html;
+	if (PLUGIN_PRE_NUMBER  && ! $option['nonumber']  || $option['number']) {
+		$number = '<pre class="'.PLUGIN_PRE_HEADER.'number">'
+			._plugin_code_makeNumber($end, $begin).'</pre>';
+		$html = '<div id="'.PLUGIN_PRE_HEADER.$id_number.'" class="'.PLUGIN_PRE_HEADER.'table">'
+			._plugin_code_column($html, $number, null). '</div>';
+	}
+	
+	return $title.$html;
 }
 
 
-/* pre.inc.php ¤È¶¦ÍÑ */
+/* pre.inc.php ã¨å…±ç”¨ */
 
  /**
- * ºÇ½ª°ú¿ô¤ò²òÀÏ¤¹¤ë
- * °ú¿ô¤Ï¥×¥é¥°¥¤¥ó¤Ø¤ÎºÇ¸å¤Î°ú¿ô¤ÎÆâÍÆ
- * Ê£¿ô¹Ô°ú¿ô¤Î¾ì¹ç¤Ë¿¿¤òÊÖ¤¹
+ * æœ€çµ‚å¼•æ•°ã‚’è§£æã™ã‚‹
+ * å¼•æ•°ã¯ãƒ—ãƒ©ã‚°ã‚¤ãƒ³ã¸ã®æœ€å¾Œã®å¼•æ•°ã®å†…å®¹
+ * è¤‡æ•°è¡Œå¼•æ•°ã®å ´åˆã«çœŸã‚’è¿”ã™
  */
 function _plugin_code_multiline_argment(& $arg, & $data, & $lang, & $option, $end = null, $begin = 1)
 {
-    // ²ş¹Ô¥³¡¼¥ÉÊÑ´¹
-    $arg = str_replace("\r\n", "\n", $arg);
-    $arg = strtr($arg,"\r", "\n");
+	// æ”¹è¡Œã‚³ãƒ¼ãƒ‰å¤‰æ›
+	$arg = str_replace("\r\n", "\n", $arg);
+	$arg = strtr($arg,"\r", "\n");
 
-    $data['title'] = '';
-    // ºÇ¸å¤ÎÊ¸»ú¤¬²ş¹Ô¤Ç¤Ê¤¤¾ì¹ç¤Ï³°Éô¥Õ¥¡¥¤¥ë
-    if ($arg[strlen($arg)-1] != "\n") {
-        // ¸À¸ì¼«Æ°È½Äê
-        if ($lang === null)
-            $lang = _plugin_code_extension($arg);
-        if ($lang === null)
-            if (_plugin_code_mimetype($arg)) {
-                $data['_error'] = '<p class="error">Maybe file extension like binary. '.htmlspecialchars($arg).';</p>';
-                return 0;
-            } else {
-                $lang = PLUGIN_CODE_LANGUAGE;
-            }
+	$data['title'] = '';
+	// è¨€èªè‡ªå‹•åˆ¤å®š
+	if ($lang === null)
+		$lang = _plugin_code_extension($arg);
+	// è¨€èªåã‚¨ã‚¤ãƒªã‚¢ã‚¹å¤‰æ›
+	foreach(PLUGIN_CODE_LANG_ALIAS as $key => $value) {
+		if ($lang == $key) {
+			$lang = $value;
+			break;
+		}
+	}
+	// æœ€å¾Œã®æ–‡å­—ãŒæ”¹è¡Œã§ãªã„å ´åˆã¯å¤–éƒ¨ãƒ•ã‚¡ã‚¤ãƒ«
+	if ($arg[strlen($arg)-1] != "\n") {
+		if ($lang === null)
+			if (_plugin_code_mimetype($arg)) {
+				$data['_error'] = '<p class="error">Maybe file extension like binary. '.htmlsc($arg).';</p>';
+				return 0;
+			} else {
+				$lang = PLUGIN_CODE_LANGUAGE;
+			}
 
-        $params = _plugin_code_read_file_data($arg, $end, $begin);
-        if (isset($params['_error']) && $params['_error'] != '') {
-            $data['_error'] = '<p class="error">'.$params['_error'].';</p>';
-            return 0;
-        }
-        $data['data'] = $params['data'];
-        if ($data['data'] == "\n" || $data['data'] == '' || $data['data'] == null) {
-            $data['_error'] ='<p class="error">file '.htmlspecialchars($params['title']).' is empty.</p>';
-            return 0;
-        }
-        if (PLUGIN_CODE_FILE_ICON && !$option['noicon'] || $option['icon']) $icon = FILE_ICON;
-        else                                                       $icon = '';
+		$params = _plugin_code_read_file_data($arg, $end, $begin);
+		if (isset($params['_error']) && $params['_error'] != '') {
+			$data['_error'] = '<p class="error">'.$params['_error'].';</p>';
+			return 0;
+		}
+		$data['data'] = $params['data'];
+		if ($data['data'] == "\n" || $data['data'] == '' || $data['data'] == null) {
+			$data['_error'] ='<p class="error">file '.htmlsc($params['title']).' is empty.</p>';
+			return 0;
+		}
+		if (PLUGIN_CODE_FILE_ICON && !$option['noicon'] || $option['icon']) $icon = FILE_ICON;
+		else													   $icon = '';
 
-        $data['title'] = '<h5 class="'.PLUGIN_CODE_HEADER.'title">'.'<a href="'.$params['url'].'" title="'.$params['info'].'">'
-            .$icon.$params['title'].'</a></h5>'."\n";
-    }
-    else {
-        $data['data'] = $arg;
-        return 1;
-    }
-    return 0;
+		$data['title'] = '<h5 class="'.PLUGIN_CODE_HEADER.'title">'.'<a href="'.$params['url'].'" title="'.$params['info'].'">'
+			.$icon.$params['title'].'</a></h5>'."\n";
+	}
+	else {
+		$data['data'] = $arg;
+		return 1;
+	}
+	return 0;
 }
 /**
- * ¥Ğ¥¤¥Ê¥ê¥Õ¥¡¥¤¥ë¤Î³ÈÄ¥»Ò¤ò¸¡º÷¤¹¤ë
+ * ãƒã‚¤ãƒŠãƒªãƒ•ã‚¡ã‚¤ãƒ«ã®æ‹¡å¼µå­ã‚’æ¤œç´¢ã™ã‚‹
  * 
  */
 function _plugin_code_mimetype($name)
 {
-    $extension = strtolower(substr($name, strrpos($name, '.')+1));
-    if (!$extension) return null;
+	$extension = strtolower(substr($name, strrpos($name, '.')+1));
+	if (!$extension) return null;
 
-    // mime-type°ìÍ÷É½¤ò¼èÆÀ
-    $config = new Config(PLUGIN_CODE_CONFIG_PAGE_MIME);
-    $table = $config->read() ? $config->get('mime-type') : array();
-    unset($config); // ¥á¥â¥êÀáÌó
+	// mime-typeä¸€è¦§è¡¨ã‚’å–å¾—
+	$config = new Config(PLUGIN_CODE_CONFIG_PAGE_MIME);
+	$table = $config->read() ? $config->get('mime-type') : array();
+	unset($config); // ãƒ¡ãƒ¢ãƒªç¯€ç´„
 
-    foreach ($table as $row) {
-        $_type = trim($row[0]);
-        $exts = preg_split('/\s+|,/', trim($row[1]), -1, PREG_SPLIT_NO_EMPTY);
-        foreach ($exts as $ext) {
-            if ($extension == $ext) return 1;
-        }
-    }
-    return 0;
+	foreach ($table as $row) {
+		$_type = trim($row[0]);
+		$exts = preg_split('/\s+|,/', trim($row[1]), -1, PREG_SPLIT_NO_EMPTY);
+		foreach ($exts as $ext) {
+			if ($extension == $ext) return 1;
+		}
+	}
+	return 0;
 }
 /**
- * ¥Õ¥¡¥¤¥ëÌ¾¤«¤éÂĞ±ş¸À¸ì¤ò¸¡º÷¤¹¤ë
+ * ãƒ•ã‚¡ã‚¤ãƒ«åã‹ã‚‰å¯¾å¿œè¨€èªã‚’æ¤œç´¢ã™ã‚‹
  *
  */
 function _plugin_code_extension($name)
 {
-    //$lang = PLUGIN_CODE_LANGUAGE; // default
-    
-    //if (! file_exists($filename)) return $lang;
+	//$lang = PLUGIN_CODE_LANGUAGE; // default
+	
+	//if (! file_exists($filename)) return $lang;
 
-    if (! strncasecmp($name, 'makefile', 8))
-        return 'make';
+	if (! strncasecmp($name, 'makefile', 8))
+		return 'make';
 
-    $extension = strtolower(substr($name, strrpos($name, '.')+1));
-    if (!$extension) return null;
+	$extension = strtolower(substr($name, strrpos($name, '.')+1));
+	if (!$extension) return null;
 
-    // extension °ìÍ÷É½¤ò¼èÆÀ
-    $config = new Config(PLUGIN_CODE_CONFIG_PAGE_EXTENSION);
-    $table = $config->read() ? $config->get('lang') : array();
-    unset($config); // ¥á¥â¥êÀáÌó
+	// extension ä¸€è¦§è¡¨ã‚’å–å¾—
+	$config = new Config(PLUGIN_CODE_CONFIG_PAGE_EXTENSION);
+	$table = $config->read() ? $config->get('lang') : array();
+	unset($config); // ãƒ¡ãƒ¢ãƒªç¯€ç´„
 
-    // search extension
-    foreach ($table as $row) {
-        $_lang = trim($row[0]);
-        $exts = preg_split('/\s+|,/', trim($row[1]), -1, PREG_SPLIT_NO_EMPTY);
-        foreach ($exts as $ext) {
-            if ($extension == $ext) return $_lang;
-        }
-    }
-    return null;
+	// search extension
+	foreach ($table as $row) {
+		$_lang = trim($row[0]);
+		$exts = preg_split('/\s+|,/', trim($row[1]), -1, PREG_SPLIT_NO_EMPTY);
+		foreach ($exts as $ext) {
+			if ($extension == $ext) return $_lang;
+		}
+	}
+	return null;
 }
 /**
- * °ú¿ô¤ËÍ¿¤¨¤é¤ì¤¿¥Õ¥¡¥¤¥ë¤ÎÆâÍÆ¤òÊ¸»úÎó¤ËÊÑ´¹¤·¤ÆÊÖ¤¹
- * Ê¸»ú¥³¡¼¥É¤Ï PukiWiki¤ÈÆ±°ì, ²ş¹Ô¤Ï \n ¤Ç¤¢¤ë
+ * å¼•æ•°ã«ä¸ãˆã‚‰ã‚ŒãŸãƒ•ã‚¡ã‚¤ãƒ«ã®å†…å®¹ã‚’æ–‡å­—åˆ—ã«å¤‰æ›ã—ã¦è¿”ã™
+ * æ–‡å­—ã‚³ãƒ¼ãƒ‰ã¯ PukiWikiã¨åŒä¸€, æ”¹è¡Œã¯ \n ã§ã‚ã‚‹
  */
 function _plugin_code_read_file_data(& $name, $end = null, $begin = 1) {
-    global $vars;
-    global $script;
-    // ÅºÉÕ¥Õ¥¡¥¤¥ë¤Î¤¢¤ë¥Ú¡¼¥¸: default¤Ï¸½ºß¤Î¥Ú¡¼¥¸Ì¾
-    $page = isset($vars['page']) ? $vars['page'] : '';
+	global $vars;
+	global $script;
+	// æ·»ä»˜ãƒ•ã‚¡ã‚¤ãƒ«ã®ã‚ã‚‹ãƒšãƒ¼ã‚¸: defaultã¯ç¾åœ¨ã®ãƒšãƒ¼ã‚¸å
+	$page = isset($vars['page']) ? $vars['page'] : '';
 
-    // ÅºÉÕ¥Õ¥¡¥¤¥ë¤Ş¤Ç¤Î¥Ñ¥¹¤ª¤è¤Ó(¼Âºİ¤Î)¥Õ¥¡¥¤¥ëÌ¾
-    $file = '';
-    $fname = $name;
+	// æ·»ä»˜ãƒ•ã‚¡ã‚¤ãƒ«ã¾ã§ã®ãƒ‘ã‚¹ãŠã‚ˆã³(å®Ÿéš›ã®)ãƒ•ã‚¡ã‚¤ãƒ«å
+	$file = '';
+	$fname = $name;
 
-    $is_url = is_url($fname);
+	$is_url = is_url($fname);
 
-    /* Check file location */
-    if ($is_url) { // URL
-        if (! PLUGIN_CODE_READ_URL || ini_get('allow_url_fopen') != 1) {
-            $params['_error'] = 'Cannot assign URL';
-            return $params;
-        }
-        $url = htmlspecialchars($fname);
-        $params['title'] = htmlspecialchars(preg_match('/([^\/]+)$/', $fname, $matches) ? $matches[1] : $url);
-    } else {  // ÅºÉÕ¥Õ¥¡¥¤¥ë
-        if (! is_dir(UPLOAD_DIR)) {
-            $params['_error'] = 'No UPLOAD_DIR';
-            return $params;
-        }
+	/* Check file location */
+	if ($is_url) { // URL
+		if (! PLUGIN_CODE_READ_URL || ini_get('allow_url_fopen') != 1) {
+			$params['_error'] = 'Cannot assign URL';
+			return $params;
+		}
+		$url = htmlsc($fname);
+		$params['title'] = htmlsc(preg_match('/([^\/]+)$/', $fname, $matches) ? $matches[1] : $url);
+	} else {  // æ·»ä»˜ãƒ•ã‚¡ã‚¤ãƒ«
+		if (! is_dir(UPLOAD_DIR)) {
+			$params['_error'] = 'No UPLOAD_DIR';
+			return $params;
+		}
 
-        $matches = array();
-        // ¥Õ¥¡¥¤¥ëÌ¾¤Ë¥Ú¡¼¥¸Ì¾(¥Ú¡¼¥¸»²¾È¥Ñ¥¹)¤¬¹çÀ®¤µ¤ì¤Æ¤¤¤ë¤«
-        //   (Page_name/maybe-separated-with/slashes/ATTACHED_FILENAME)
-        if (preg_match('#^(.+)/([^/]+)$#', $fname, $matches)) {
-            if ($matches[1] == '.' || $matches[1] == '..')
-                $matches[1] .= '/'; // Restore relative paths
-            $fname = $matches[2];
-            $page = get_fullname(strip_bracket($matches[1]), $page); // strip is a compat
-            $file = UPLOAD_DIR . encode($page) . '_' . encode($fname);
-            $is_file = is_file($file);
-        } else {
-            // Simple single argument
-            $file = UPLOAD_DIR . encode($page) . '_' . encode($fname);
-            $is_file = is_file($file);
-        }
+		$matches = array();
+		// ãƒ•ã‚¡ã‚¤ãƒ«åã«ãƒšãƒ¼ã‚¸å(ãƒšãƒ¼ã‚¸å‚ç…§ãƒ‘ã‚¹)ãŒåˆæˆã•ã‚Œã¦ã„ã‚‹ã‹
+		//   (Page_name/maybe-separated-with/slashes/ATTACHED_FILENAME)
+		if (preg_match('#^(.+)/([^/]+)$#', $fname, $matches)) {
+			if ($matches[1] == '.' || $matches[1] == '..')
+				$matches[1] .= '/'; // Restore relative paths
+			$fname = $matches[2];
+			$page = get_fullname(strip_bracket($matches[1]), $page); // strip is a compat
+			$file = UPLOAD_DIR . encode($page) . '_' . encode($fname);
+			$is_file = is_file($file);
+		} else {
+			// Simple single argument
+			$file = UPLOAD_DIR . encode($page) . '_' . encode($fname);
+			$is_file = is_file($file);
+		}
 
-        if (! $is_file) {
-            $params['_error'] = htmlspecialchars('File not found: "' .$fname . '" at page "' . $page . '"');
-            return $params;
-        }
-        $params['title'] = htmlspecialchars($fname);
-        $fname = $file;
+		if (! $is_file) {
+			$params['_error'] = htmlsc('File not found: "' .$fname . '" at page "' . $page . '"');
+			return $params;
+		}
+		$params['title'] = htmlsc($fname);
+		$fname = $file;
 
-        $url = $script . '?plugin=attach' . '&amp;refer=' . rawurlencode($page) .
-            '&amp;openfile=' . rawurlencode($name); // Show its filename at the last
-    }
+		$url = $script . '?plugin=attach' . '&amp;refer=' . rawurlencode($page) .
+			'&amp;openfile=' . rawurlencode($name); // Show its filename at the last
+	}
 
-    $params['url'] = $url;
-    $params['info'] = get_date('Y/m/d H:i:s', filemtime($file) - LOCALZONE)
-        . ' ' . sprintf('%01.1f', round(filesize($file)/1024, 1)) . 'KB';
+	$params['url'] = $url;
+	$params['info'] = get_date('Y/m/d H:i:s', filemtime($file) - LOCALZONE)
+		. ' ' . sprintf('%01.1f', round(filesize($file)/1024, 1)) . 'KB';
 
-    /* Read file data */
-    $fdata = '';
-    $filelines = file($fname);
-    if ($end === null) 
-        $end = count($filelines);
-    
-    for ($i=$begin-1; $i<$end; ++$i)
-        $fdata .= str_replace("\r\n", "\n", $filelines[$i]);
+	/* Read file data */
+	$fdata = '';
+	$filelines = file($fname);
+	if ($end === null) 
+		$end = count($filelines);
+	
+	for ($i=$begin-1; $i<$end; ++$i)
+		$fdata .= str_replace("\r\n", "\n", $filelines[$i]);
 
-    $fdata = strtr($fdata, "\r", "\n");
-    $fdata = mb_convert_encoding($fdata, SOURCE_ENCODING, "auto");
+	$fdata = strtr($fdata, "\r", "\n");
+	$fdata = mb_convert_encoding($fdata, SOURCE_ENCODING, "auto");
 
-    // ¥Õ¥¡¥¤¥ë¤ÎºÇ¸å¤ò²ş¹Ô¤Ë¤¹¤ë
-    if($fdata[strlen($fdata)-1] != "\n")
-        $fdata .= "\n";
+	// ãƒ•ã‚¡ã‚¤ãƒ«ã®æœ€å¾Œã‚’æ”¹è¡Œã«ã™ã‚‹
+	if($fdata[strlen($fdata)-1] != "\n")
+		$fdata .= "\n";
 
-    $params['data'] = $fdata;
+	$params['data'] = $fdata;
 
-    return $params;
+	return $params;
 }
 /**
- * ¥ª¥×¥·¥ç¥ó²òÀÏ
- * °ú¿ô¤ËÂĞ±ş¤¹¤ë¥­¡¼¤òOn¤Ë¤¹¤ë
- * ¥­¡¼¤ò¥»¥Ã¥È¤·¤¿¤é"1"¤òÊÖ¤¹
+ * ã‚ªãƒ—ã‚·ãƒ§ãƒ³è§£æ
+ * å¼•æ•°ã«å¯¾å¿œã™ã‚‹ã‚­ãƒ¼ã‚’Onã«ã™ã‚‹
+ * ã‚­ãƒ¼ã‚’ã‚»ãƒƒãƒˆã—ãŸã‚‰"1"ã‚’è¿”ã™
  */
 function _plugin_code_check_argment(& $arg, & $option) {
-    $arg = strtolower($arg);
-    if (isset($option[$arg])) {
-        $option[$arg] = 1;
-        return 1;
-    }
-    return 0;
+	$arg = strtolower($arg);
+	if (isset($option[$arg])) {
+		$option[$arg] = 1;
+		return 1;
+	}
+	return 0;
 }
 /**
- * ÈÏ°Ï»ØÄê¤ò²òÀÏ
- * ¸Æ¤Ó½Ğ¤·Â¦¤ÎÊÑ¿ô¤òÀßÄê¤¹¤ë
- * ÈÏ°Ï¤òÀßÄê¤·¤¿¤é"1"¤òÊÖ¤¹
+ * ç¯„å›²æŒ‡å®šã‚’è§£æ
+ * å‘¼ã³å‡ºã—å´ã®å¤‰æ•°ã‚’è¨­å®šã™ã‚‹
+ * ç¯„å›²ã‚’è¨­å®šã—ãŸã‚‰"1"ã‚’è¿”ã™
  */
 function _plugin_code_get_region(& $option, & $end, & $begin)
 {
-    if (false !== strpos($option, '-')) {
-        $array = explode('-', $option);
-    } else if (false !== strpos($option, '..')) {
-        $array = explode('..', $option);
-    } else {
-        return 0;
-    }
+	if (false !== strpos($option, '-')) {
+		$array = explode('-', $option);
+	} else if (false !== strpos($option, '..')) {
+		$array = explode('..', $option);
+	} else {
+		return 0;
+	}
 
-    if (is_numeric ($array[0]))
-        if ($array[0] < 1)
-            $begin = 1;
-        else
-            $begin = $array[0];
-    else
-        $begin = 1;
-    if (is_numeric ($array[1]))
-        $end = $array[1];
-    else
-        $end = null;
+	if (is_numeric ($array[0]))
+		if ($array[0] < 1)
+			$begin = 1;
+		else
+			$begin = $array[0];
+	else
+		$begin = 1;
+	if (is_numeric ($array[1]))
+		$end = $array[1];
+	else
+		$end = null;
 
-    return 1;
+	return 1;
 }
 
 /**
- * ¹ÔÈÖ¹æ¤òºîÀ®¤¹¤ë
- * °ú¿ô¤Ï¹ÔÈÖ¹æ¤ÎÈÏ°Ï
- * À°·Á¤µ¤ì¤¿¹ÔÈÖ¹æ¤òÊÖ¤¹
+ * è¡Œç•ªå·ã‚’ä½œæˆã™ã‚‹
+ * å¼•æ•°ã¯è¡Œç•ªå·ã®ç¯„å›²
+ * æ•´å½¢ã•ã‚ŒãŸè¡Œç•ªå·ã‚’è¿”ã™
  */
 function _plugin_code_makeNumber($end, $begin=1)
 {
-    $number='';
-    $str_len=max(3,strlen(''.$end));
-    for($i=$begin; $i<=$end; ++$i) {
-        $number.= sprintf('%'.$str_len.'d',($i))."\n";
-    }
-    return $number;
+	$number='';
+	$str_len=max(3,strlen(''.$end));
+	for($i=$begin; $i<=$end; ++$i) {
+		$number.= sprintf('%'.$str_len.'d',($i))."\n";
+	}
+	return $number;
 }
 /**
- * ÃÊÁÈ¤ß¤·¤Æ½ĞÎÏ¤¹¤ë
+ * æ®µçµ„ã¿ã—ã¦å‡ºåŠ›ã™ã‚‹
  * 
- * À°·ÁHTML¤òÊÖ¤¹
+ * æ•´å½¢HTMLã‚’è¿”ã™
  */
 function _plugin_code_column(& $text, $number=null, $outline=null)
 {
-    if ($number === null && $outline === null)
-        return $text;
+	if ($number === null && $outline === null)
+		return $text;
 
-    $html = '';
-    if (PLUGIN_CODE_TABLE) {
-        $html .= '<table class="'.PLUGIN_CODE_HEADER
-            .'table" border="0" cellpadding="0" cellspacing="0"><tr>';
-        if ($number !== null)
-            $html .= '<td>'.$number.'</td>';
-        if ($outline !== null)
-            $html .= '<td>'.$outline.'</td>';
-        $html .= '<td>'.$text.'</td></tr></table>';
-    } else {
-        if ($number !== null)
-            $html .= '<div class="'.PLUGIN_CODE_HEADER.'number">'.$number.'</div>';
-        if ($outline !== null)
-            $html .= '<div class="'.PLUGIN_CODE_HEADER.'outline">'.$outline.'</div>';
-        $html .= '<div class="'.PLUGIN_CODE_HEADER.'src">'.$text.'</div>'
-            . '<div style="clear:both;"><br style="display:none;" /></div>';
-    }
+	$html = '';
+	if (PLUGIN_CODE_TABLE) {
+		$html .= '<table class="'.PLUGIN_CODE_HEADER
+			.'table" border="0" cellpadding="0" cellspacing="0"><tr>';
+		if ($number !== null)
+			$html .= '<td>'.$number.'</td>';
+		if ($outline !== null)
+			$html .= '<td>'.$outline.'</td>';
+		$html .= '<td>'.$text.'</td></tr></table>';
+	} else {
+		if ($number !== null)
+			$html .= '<div class="'.PLUGIN_CODE_HEADER.'number">'.$number.'</div>';
+		if ($outline !== null)
+			$html .= '<div class="'.PLUGIN_CODE_HEADER.'outline">'.$outline.'</div>';
+		$html .= '<div class="'.PLUGIN_CODE_HEADER.'src">'.$text.'</div>'
+			. '<div style="clear:both;"><br style="display:none;" /></div>';
+	}
 
-    return $html;
+	return $html;
 }
 
 ?>

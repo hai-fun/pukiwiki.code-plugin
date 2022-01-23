@@ -1,24 +1,24 @@
 <?php
 /**
- *�����������ե�����
+ *キーワード定義ファイル
  */
 
-$switchHash['#'] = PLUGIN_CODE_BLOCK_START;  // ʣ���԰����б�
+$switchHash['#'] = PLUGIN_CODE_BLOCK_START;  // 複数行引数対応
 $switchHash['}'] = PLUGIN_CODE_BLOCK_END;
-$switchHash['&'] = PLUGIN_CODE_SPECIAL_IDENTIFIRE;  // & ����Ϥޤ�ͽ��줢��
-$switchHash['*'] = PLUGIN_CODE_IDENTIFIRE_CHAR;  // ���Ф�
-$switchHash[','] = PLUGIN_CODE_IDENTIFIRE_CHAR;  // ɽ
-$switchHash['|'] = PLUGIN_CODE_IDENTIFIRE_CHAR;  // ɽ
-$switchHash[' '] = PLUGIN_CODE_IDENTIFIRE_WORD;  // �����ѽ���
-$switchHash['-'] = PLUGIN_CODE_MULTILINE;        // �վ��
-$switchHash['+'] = PLUGIN_CODE_MULTILINE;        // �վ��
-$switchHash[':'] = PLUGIN_CODE_MULTILINE;        // �վ��
-$switchHash['<'] = PLUGIN_CODE_MULTILINE;        // ����
-$switchHash['>'] = PLUGIN_CODE_MULTILINE;        // ����
-// ʣ���Ԥν�ü����
+$switchHash['&'] = PLUGIN_CODE_SPECIAL_IDENTIFIRE;  // & から始まる予約語あり
+$switchHash['*'] = PLUGIN_CODE_IDENTIFIRE_CHAR;  // 見出し
+$switchHash[','] = PLUGIN_CODE_IDENTIFIRE_CHAR;  // 表
+$switchHash['|'] = PLUGIN_CODE_IDENTIFIRE_CHAR;  // 表
+$switchHash[' '] = PLUGIN_CODE_IDENTIFIRE_WORD;  // 整形済出力
+$switchHash['-'] = PLUGIN_CODE_MULTILINE;        // 箇条書
+$switchHash['+'] = PLUGIN_CODE_MULTILINE;        // 箇条書
+$switchHash[':'] = PLUGIN_CODE_MULTILINE;        // 箇条書
+$switchHash['<'] = PLUGIN_CODE_MULTILINE;        // 引用
+$switchHash['>'] = PLUGIN_CODE_MULTILINE;        // 引用
+// 複数行の終端記号
 $multilineEOL = Array(
 '#','*',',','|',' ','-','+',':','>','<','/',"\n");
-// ����Τߤι��к�
+// 空白のみの行対策
 $code_identifire = array(
 	 ' ' => Array(
 		  " \n",
@@ -27,13 +27,13 @@ $code_identifire = array(
 
 
 
-$capital = 1;                        // ͽ������ʸ����ʸ������̤��ʤ�
+$capital = 1;                        // 予約語の大文字小文字を区別しない
 
-// ���������
-$switchHash['/'] = PLUGIN_CODE_HEADW_COMMENT;        //  �����Ȥ� ��Ƭ�� // ������Ԥޤ�
+// コメント定義
+$switchHash['/'] = PLUGIN_CODE_HEADW_COMMENT;        //  コメントは 行頭の // から改行まで
 $commentpattern = '//';
 
-// �����ȥ饤��
+// アウトライン
 if($mkoutline){
 	// $switchHash['{'] = PLUGIN_CODE_BLOCK_START;
   $switchHash['}'] = PLUGIN_CODE_BLOCK_END;
@@ -41,15 +41,15 @@ if($mkoutline){
 
 
 $code_css = Array(
-  'operator',		// ���ڥ졼���ؿ�
-  'identifier',	// ����¾�μ��̻�
-  'pragma',		// module, import �� pragma
-  'system',		// �������Ȥ߹��ߤ��� __stdcall �Ȥ�
-  'header',       // ���Ф�
-  'table',        // ɽ
-  'list',         // �վ��
-  'pre',          // �����ѽ���
-  'quote',        // ����
+  'operator',		// オペレータ関数
+  'identifier',	// その他の識別子
+  'pragma',		// module, import と pragma
+  'system',		// 処理系組み込みの奴 __stdcall とか
+  'header',       // 見出し
+  'table',        // 表
+  'list',         // 箇条書
+  'pre',          // 整形済出力
+  'quote',        // 引用
   );
 
 $code_keyword = Array(
@@ -119,16 +119,16 @@ $code_keyword = Array(
 '&version' => 2,
 					  */
 
- '*' => 5,     // ���Ф�
- ',' => 6,     // ɽ
- '|' => 6,     // ɽ
- '-' => 7,     // �վ��
- '+' => 7,     // �վ��
- ':' => 7,     // �վ��
- ' ' => 8,     // �����ѽ���
- " \n" => 0,   // �ϥ��饤��̵��
- '<' => 9,     // ����
- '>' => 9,     // ����
+ '*' => 5,     // 見出し
+ ',' => 6,     // 表
+ '|' => 6,     // 表
+ '-' => 7,     // 箇条書
+ '+' => 7,     // 箇条書
+ ':' => 7,     // 箇条書
+ ' ' => 8,     // 整形済出力
+ " \n" => 0,   // ハイライト無効
+ '<' => 9,     // 引用
+ '>' => 9,     // 引用
 
   );
 ?>

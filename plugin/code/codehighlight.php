@@ -1,6 +1,6 @@
 <?php
 /**
- * ¥³¡¼¥É¥Ï¥¤¥é¥¤¥Èµ¡Ç½
+ * ã‚³ãƒ¼ãƒ‰ãƒã‚¤ãƒ©ã‚¤ãƒˆæ©Ÿèƒ½
  * Time-stamp: <07/11/20 09:34:09 sky>
  * Modified:   <09/11/13 ruche>
  * 
@@ -8,1434 +8,1439 @@
  *
  * code.inc.php r 0.6.0_pr3
  */
+ // v0.6.1 PHP8.0å¯¾å¿œ 2021-12-16 byã¯ã„ãµã‚“
 
 class CodeHighlight {
-    var $id_number;
-    var $blockno;
-    var $outline;
-    var $nestlevel;
-    function CodeHighlight()
-    {
-        if(!defined('CODE_HIGHLIGHT_DEFINE_DONE')){
-            define('CODE_HIGHLIGHT_DEFINE_DONE', true); //°ìÅÙ¤·¤«ÄÌ¤é¤Ê¤¤¤è¤¦¤Ë¡£
-            // common
-            define('PLUGIN_CODE_CODE_CANCEL',          0); // »ØÄê¤òÌµ¸ú²½¤¹¤ë
-            define('PLUGIN_CODE_IDENTIFIRE',           2); 
-            define('PLUGIN_CODE_SPECIAL_IDENTIFIRE',   3); 
-            define('PLUGIN_CODE_STRING_LITERAL',       5); 
-            define('PLUGIN_CODE_NONESCAPE_LITERAL',    7); 
-            define('PLUGIN_CODE_PAIR_LITERAL',         8); 
-            define('PLUGIN_CODE_ESCAPE',              10);
-            define('PLUGIN_CODE_COMMENT',             11);
-            define('PLUGIN_CODE_COMMENT_WORD',        12); // ¥³¥á¥ó¥È¤¬Ê¸»úÎó¤Ç»Ï¤Ş¤ë¤â¤Î
-            define('PLUGIN_CODE_FORMULA',             14); 
-            // outline
-            define('PLUGIN_CODE_BLOCK_START',         20);
-            define('PLUGIN_CODE_BLOCK_END',           21);
-            define('PLUGIN_CODE_STRING_CONCAT',       24);
-            // ¹Ô»Ø¸şÍÑ
-            define('PLUGIN_CODE_COMMENT_CHAR',        50); // 1Ê¸»ú¤Ç¥³¥á¥ó¥È¤È·èÄê¤Ç¤­¤ë¤â¤Î
-            define('PLUGIN_CODE_HEAD_COMMENT',        52); // ¥³¥á¥ó¥È¤¬¹ÔÆ¬¤À¤±¤Î¤â¤Î (1Ê¸»ú)  // fortran
-            define('PLUGIN_CODE_HEADW_COMMENT',       53); // ¥³¥á¥ó¥È¤¬¹ÔÆ¬¤À¤±¤Î¤â¤Î   // pukiwiki
-            define('PLUGIN_CODE_CHAR_COMMENT',        54); // ¥³¥á¥ó¥È¤¬¹ÔÆ¬¤À¤±¤«¤Ä±Ñ»ú¤Ç¤¢¤ë¤Î¤â¤Î (1Ê¸»ú) // fortran
-            define('PLUGIN_CODE_IDENTIFIRE_CHAR',     60); // 1Ê¸»ú¤ÇÌ¿Îá¤¬·èÄê¤¹¤ë¤â¤Î
-            define('PLUGIN_CODE_IDENTIFIRE_WORD',     61); // Ì¿Îá¤¬Ê¸»úÎó¤Ç·èÄê¤¹¤ë¤â¤Î
-            define('PLUGIN_CODE_MULTILINE',           62); // Ê£¿ôÊ¸»úÎó¤Ø¤ÎÌ¿Îá
+	var $id_number;
+	var $blockno;
+	var $outline;
+	var $nestlevel;
+	function __construct()
+	{
+		if(!defined('CODE_HIGHLIGHT_DEFINE_DONE')){
+			define('CODE_HIGHLIGHT_DEFINE_DONE', true); //ä¸€åº¦ã—ã‹é€šã‚‰ãªã„ã‚ˆã†ã«ã€‚
+			// common
+			define('PLUGIN_CODE_CODE_CANCEL',		  0); // æŒ‡å®šã‚’ç„¡åŠ¹åŒ–ã™ã‚‹
+			define('PLUGIN_CODE_IDENTIFIRE',		   2); 
+			define('PLUGIN_CODE_SPECIAL_IDENTIFIRE',   3); 
+			define('PLUGIN_CODE_STRING_LITERAL',	   5); 
+			define('PLUGIN_CODE_NONESCAPE_LITERAL',	7); 
+			define('PLUGIN_CODE_PAIR_LITERAL',		 8); 
+			define('PLUGIN_CODE_ESCAPE',			  10);
+			define('PLUGIN_CODE_COMMENT',			 11);
+			define('PLUGIN_CODE_COMMENT_WORD',		12); // ã‚³ãƒ¡ãƒ³ãƒˆãŒæ–‡å­—åˆ—ã§å§‹ã¾ã‚‹ã‚‚ã®
+			define('PLUGIN_CODE_FORMULA',			 14); 
+			// outline
+			define('PLUGIN_CODE_BLOCK_START',		 20);
+			define('PLUGIN_CODE_BLOCK_END',		   21);
+			define('PLUGIN_CODE_STRING_CONCAT',	   24);
+			// è¡ŒæŒ‡å‘ç”¨
+			define('PLUGIN_CODE_COMMENT_CHAR',		50); // 1æ–‡å­—ã§ã‚³ãƒ¡ãƒ³ãƒˆã¨æ±ºå®šã§ãã‚‹ã‚‚ã®
+			define('PLUGIN_CODE_HEAD_COMMENT',		52); // ã‚³ãƒ¡ãƒ³ãƒˆãŒè¡Œé ­ã ã‘ã®ã‚‚ã® (1æ–‡å­—)  // fortran
+			define('PLUGIN_CODE_HEADW_COMMENT',	   53); // ã‚³ãƒ¡ãƒ³ãƒˆãŒè¡Œé ­ã ã‘ã®ã‚‚ã®   // pukiwiki
+			define('PLUGIN_CODE_CHAR_COMMENT',		54); // ã‚³ãƒ¡ãƒ³ãƒˆãŒè¡Œé ­ã ã‘ã‹ã¤è‹±å­—ã§ã‚ã‚‹ã®ã‚‚ã® (1æ–‡å­—) // fortran
+			define('PLUGIN_CODE_IDENTIFIRE_CHAR',	 60); // 1æ–‡å­—ã§å‘½ä»¤ãŒæ±ºå®šã™ã‚‹ã‚‚ã®
+			define('PLUGIN_CODE_IDENTIFIRE_WORD',	 61); // å‘½ä»¤ãŒæ–‡å­—åˆ—ã§æ±ºå®šã™ã‚‹ã‚‚ã®
+			define('PLUGIN_CODE_MULTILINE',		   62); // è¤‡æ•°æ–‡å­—åˆ—ã¸ã®å‘½ä»¤
 
-            define('PLUGIN_CODE_CARRIAGERETURN',      70); // ¶õ¹Ô
-            define('PLUGIN_CODE_POST_IDENTIFIRE',     75); // Ê¸Ëö¤Î¸ì¤è¤Ã¤Æ·è¤Ş¤ë¥ë¡¼¥ë
-        }
-        $this->blockno = 0;
-        $this->outline = Array();// $outline[lineno][nest] $outline[lineno][blockno]¤¬¤¢¤ë¡£
-    }
-    //include_once(PLUGIN_DIR.'code/line.php');
+			define('PLUGIN_CODE_CARRIAGERETURN',	  70); // ç©ºè¡Œ
+			define('PLUGIN_CODE_POST_IDENTIFIRE',	 75); // æ–‡æœ«ã®èªã‚ˆã£ã¦æ±ºã¾ã‚‹ãƒ«ãƒ¼ãƒ«
+		}
+		$this->blockno = 0;
+		$this->outline = Array();// $outline[lineno][nest] $outline[lineno][blockno]ãŒã‚ã‚‹ã€‚
+	}
+	
+	function CodeHighlight() {
+		$this->__construct();
+	}
+	//include_once(PLUGIN_DIR.'code/line.php');
 
-    function highlight(& $lang, & $src, & $option, $end = null, $begin = 1) {
-        static $id = 0; // ¥×¥é¥°¥¤¥ó¤¬¸Æ¤Ğ¤ì¤¿²ó¿ô(ID¤ËÍøÍÑ)
-        $this->id_number = ++$id;
+	function highlight(& $lang, & $src, & $option, $end = null, $begin = 1) {
+		static $id = 0; // ãƒ—ãƒ©ã‚°ã‚¤ãƒ³ãŒå‘¼ã°ã‚ŒãŸå›æ•°(IDã«åˆ©ç”¨)
+		$this->id_number = ++$id;
 
-        if (strlen($lang) > 16)
-            $lang = '';
-        
-        $option['number']  = (PLUGIN_CODE_NUMBER      && ! $option['nonumber']  || $option['number']);
-        $option['outline'] = (PLUGIN_CODE_FOLD        && ! $option['nooutline'] || $option['outline']);
-        $option['block']   = (PLUGIN_CODE_FOLDBLOCK   && ! $option['noblock']   || $option['block']);
-        $option['literal'] = (PLUGIN_CODE_FOLDLITERAL && ! $option['noliteral'] || $option['literal']);
-        $option['comment'] = (PLUGIN_CODE_FOLDCOMMENT && ! $option['nocomment'] || $option['comment']);
-        $option['link']    = (PLUGIN_CODE_LINK        && ! $option['nolink']    || $option['link']);
+		if (strlen($lang) > 16)
+			$lang = '';
+		
+		$option['number']  = (PLUGIN_CODE_NUMBER	  && ! $option['nonumber']  || $option['number']);
+		$option['outline'] = (PLUGIN_CODE_FOLD		&& ! $option['nooutline'] || $option['outline']);
+		$option['block']   = (PLUGIN_CODE_FOLDBLOCK   && ! $option['noblock']   || $option['block']);
+		$option['literal'] = (PLUGIN_CODE_FOLDLITERAL && ! $option['noliteral'] || $option['literal']);
+		$option['comment'] = (PLUGIN_CODE_FOLDCOMMENT && ! $option['nocomment'] || $option['comment']);
+		$option['link']	= (PLUGIN_CODE_LINK		&& ! $option['nolink']	|| $option['link']);
 
-        // mozilla¤Î¶õÇò¹ÔÂĞºö
-        if($option['number'] || $option['outline']) {
-            // ¥é¥¤¥óÉ½¼¨ÍÑÊäÀµ
-            $src = preg_replace('/^$/m',' ',$src);
-        }
-        if (file_exists(PLUGIN_DIR.'code/keyword.'.$lang.'.php')) {
-            // ¸À¸ìÄêµÁ¥Õ¥¡¥¤¥ë¤¬Í­¤ë¸À¸ì
-            $data = $this->srcToHTML($src, $lang, $option, $end, $begin);
-            $src = '<pre class="code"><code class="'.$lang.'">'.$data['src'].'</code></pre>';
-        } else if (file_exists(PLUGIN_DIR.'code/line.'.$lang.'.php')) {
-            // ¹Ô»Ø¸ş²òÀÏÀßÄê¥Õ¥¡¥¤¥ë¤¬Í­¤ë¸À¸ì
-            $data = $this->lineToHTML($src, $lang, $option, $end, $begin);
-            $src = '<pre class="code"><code class="'.$lang.'">'.$data['src'].'</code></pre>';
-        } else {
-            // PHP ¤È Ì¤ÄêµÁ¸À¸ì
-            $option['outline'] = 0;
+		// mozillaã®ç©ºç™½è¡Œå¯¾ç­–
+		if($option['number'] || $option['outline']) {
+			// ãƒ©ã‚¤ãƒ³è¡¨ç¤ºç”¨è£œæ­£
+			$src = preg_replace('/^$/m',' ',$src);
+		}
+		if (file_exists(PLUGIN_DIR.'code/keyword.'.$lang.'.php')) {
+			// è¨€èªå®šç¾©ãƒ•ã‚¡ã‚¤ãƒ«ãŒæœ‰ã‚‹è¨€èª
+			$data = $this->srcToHTML($src, $lang, $option, $end, $begin);
+			$src = '<pre class="code"><code class="'.$lang.'">'.$data['src'].'</code></pre>';
+		} else if (file_exists(PLUGIN_DIR.'code/line.'.$lang.'.php')) {
+			// è¡ŒæŒ‡å‘è§£æè¨­å®šãƒ•ã‚¡ã‚¤ãƒ«ãŒæœ‰ã‚‹è¨€èª
+			$data = $this->lineToHTML($src, $lang, $option, $end, $begin);
+			$src = '<pre class="code"><code class="'.$lang.'">'.$data['src'].'</code></pre>';
+		} else {
+			// PHP ã¨ æœªå®šç¾©è¨€èª
+			$option['outline'] = 0;
 
-            // ºÇ¸å¤ÎÍ¾Ê¬¤Ê²ş¹Ô¤òºï½ü
-            if ($src[strlen($src)-2] == ' ')
-                $src = substr($src, 0, -2);
-            else
-                $src= substr($src, 0, -1);
+			// æœ€å¾Œã®ä½™åˆ†ãªæ”¹è¡Œã‚’å‰Šé™¤
+			if ($src[strlen($src)-2] == ' ')
+				$src = substr($src, 0, -2);
+			else
+				$src= substr($src, 0, -1);
 
-            if ($option['number']) {
-                if ($src[strlen($src)-1] == "\n")
-                    $src = substr($src,0,-1);
-                if ($end === null || $end < $begin) // ¹Ô¿ô¤òÆÀ¤ë
-                    $end = substr_count($src, "\n") + $begin;
-                $data = array('number' => '');
-                $data['number'] = _plugin_code_makeNumber($end, $begin);
-            }
-            if ('php' == $lang) // PHP¤ÏÉ¸½àµ¡Ç½¤ò»È¤¦
-                $src =  '<pre class="code">'.$this->highlightPHP($src). '</pre>';
-            else // Ì¤ÄêµÁ¸À¸ì
-                $src =  '<pre class="code"><code class="unknown">' .htmlspecialchars($src). '</code></pre>';
-        }
-        $option['menu']  = (PLUGIN_CODE_MENU  && ! $option['nomenu']  || $option['menu']);
-        $option['menu']  = ($option['menu'] && $option['outline']);
+			if ($option['number']) {
+				if ($src[strlen($src)-1] == "\n")
+					$src = substr($src,0,-1);
+				if ($end === null || $end < $begin) // è¡Œæ•°ã‚’å¾—ã‚‹
+					$end = substr_count($src, "\n") + $begin;
+				$data = array('number' => '');
+				$data['number'] = _plugin_code_makeNumber($end, $begin);
+			}
+			if ('php' == $lang) // PHPã¯æ¨™æº–æ©Ÿèƒ½ã‚’ä½¿ã†
+				$src =  '<pre class="code">'.$this->highlightPHP($src). '</pre>';
+			else // æœªå®šç¾©è¨€èª
+				$src =  '<pre class="code"><code class="unknown">' .htmlsc($src). '</code></pre>';
+		}
+		$option['menu']  = (PLUGIN_CODE_MENU  && ! $option['nomenu']  || $option['menu']);
+		$option['menu']  = ($option['menu'] && $option['outline']);
 
-        $menu = '';
-        if ($option['menu']) {
-            // ¥¢¥¤¥³¥ó¤ÎÀßÄê
-            $menu .= '<div class="'.PLUGIN_CODE_HEADER.'menu">';
-            if ($option['outline']) {
-                // ¥¢¥¦¥È¥é¥¤¥ó¤Î¥á¥Ë¥å¡¼
-                if ($option['block']) {
-                    $_code_expand = _('¤¹¤Ù¤Æ³«¤¯');
-                    $_code_short = _('¤¹¤Ù¤ÆÊÄ¤¸¤ë');
-                    $menu .= '<img src="'.PLUGIN_CODE_OUTLINE_OPEN_FILE.'" style="cursor: hand" alt="'.$_code_expand.'" title="'.$_code_expand.'" '
-                        .'onclick="javascript:code_classname(\''.PLUGIN_CODE_HEADER.$this->id_number.'\','.$data['blocknum'].',\'\',\'code_block\',\''.IMAGE_DIR.'\')" '
-                        .'onkeypress="javascript:code_classname(\''.PLUGIN_CODE_HEADER.$this->id_number.'\','.$data['blocknum'].',\'\',\'code_block\',\''.IMAGE_DIR.'\')" />'
-                        .'<img src="'.PLUGIN_CODE_OUTLINE_CLOSE_FILE.'" style="cursor: hand" alt="'.$_code_short.'" title="'.$_code_short.'" '
-                        .'onclick="javascript:code_classname(\''.PLUGIN_CODE_HEADER.$this->id_number.'\','.$data['blocknum'].',\'none\',\'code_block\',\''.IMAGE_DIR.'\')" '
-                        .'onkeypress="javascript:code_classname(\''.PLUGIN_CODE_HEADER.$this->id_number.'\','.$data['blocknum'].',\'none\',\'code_block\',\''.IMAGE_DIR.'\')" />';
-                }
-                /*
-                if ($option['comment']) {
-                    $menu .=  '<img src="'.PLUGIN_CODE_OUTLINE_CLOSE_FILE.'" style="cursor: hand" alt="'.$_code_short.'" title="'.$_code_short.'" '
-                        .'onclick="javascript:code_classname(\''.PLUGIN_CODE_HEADER.$this->id_number.'\','.$data['blocknum'].',\'none\',\'code_comment\',\''.IMAGE_DIR.'\')" '
-                        .'onkeypress="javascript:code_classname(\''.PLUGIN_CODE_HEADER.$this->id_number.'\','.$data['blocknum'].',\'none\',\'code_comment\',\''.IMAGE_DIR.'\')" />';
-                }
-                if ($option['literal']) {
-                    $menu .=  '<img src="'.PLUGIN_CODE_OUTLINE_CLOSE_FILE.'" style="cursor: hand" alt="'.$_code_short.'" title="'.$_code_short.'" '
-                        .'onclick="javascript:code_classname(\''.PLUGIN_CODE_HEADER.$this->id_number.'\','.$data['blocknum'].',\'none\',\'code_string\',\''.IMAGE_DIR.'\')" '
-                        .'onkeypress="javascript:code_classname(\''.PLUGIN_CODE_HEADER.$this->id_number.'\','.$data['blocknum'].',\'none\',\'code_string\',\''.IMAGE_DIR.'\')" />';
-                }
-                */
-            }
-            $menu .= '</div>';
-        }
+		$menu = '';
+		if ($option['menu']) {
+			// ã‚¢ã‚¤ã‚³ãƒ³ã®è¨­å®š
+			$menu .= '<div class="'.PLUGIN_CODE_HEADER.'menu">';
+			if ($option['outline']) {
+				// ã‚¢ã‚¦ãƒˆãƒ©ã‚¤ãƒ³ã®ãƒ¡ãƒ‹ãƒ¥ãƒ¼
+				if ($option['block']) {
+					$_code_expand = _('ã™ã¹ã¦é–‹ã');
+					$_code_short = _('ã™ã¹ã¦é–‰ã˜ã‚‹');
+					$menu .= '<img src="'.PLUGIN_CODE_OUTLINE_OPEN_FILE.'" style="cursor: hand" alt="'.$_code_expand.'" title="'.$_code_expand.'" '
+						.'onclick="javascript:code_classname(\''.PLUGIN_CODE_HEADER.$this->id_number.'\','.$data['blocknum'].',\'\',\'code_block\',\''.IMAGE_DIR.'\')" '
+						.'onkeypress="javascript:code_classname(\''.PLUGIN_CODE_HEADER.$this->id_number.'\','.$data['blocknum'].',\'\',\'code_block\',\''.IMAGE_DIR.'\')" />'
+						.'<img src="'.PLUGIN_CODE_OUTLINE_CLOSE_FILE.'" style="cursor: hand" alt="'.$_code_short.'" title="'.$_code_short.'" '
+						.'onclick="javascript:code_classname(\''.PLUGIN_CODE_HEADER.$this->id_number.'\','.$data['blocknum'].',\'none\',\'code_block\',\''.IMAGE_DIR.'\')" '
+						.'onkeypress="javascript:code_classname(\''.PLUGIN_CODE_HEADER.$this->id_number.'\','.$data['blocknum'].',\'none\',\'code_block\',\''.IMAGE_DIR.'\')" />';
+				}
+				/*
+				if ($option['comment']) {
+					$menu .=  '<img src="'.PLUGIN_CODE_OUTLINE_CLOSE_FILE.'" style="cursor: hand" alt="'.$_code_short.'" title="'.$_code_short.'" '
+						.'onclick="javascript:code_classname(\''.PLUGIN_CODE_HEADER.$this->id_number.'\','.$data['blocknum'].',\'none\',\'code_comment\',\''.IMAGE_DIR.'\')" '
+						.'onkeypress="javascript:code_classname(\''.PLUGIN_CODE_HEADER.$this->id_number.'\','.$data['blocknum'].',\'none\',\'code_comment\',\''.IMAGE_DIR.'\')" />';
+				}
+				if ($option['literal']) {
+					$menu .=  '<img src="'.PLUGIN_CODE_OUTLINE_CLOSE_FILE.'" style="cursor: hand" alt="'.$_code_short.'" title="'.$_code_short.'" '
+						.'onclick="javascript:code_classname(\''.PLUGIN_CODE_HEADER.$this->id_number.'\','.$data['blocknum'].',\'none\',\'code_string\',\''.IMAGE_DIR.'\')" '
+						.'onkeypress="javascript:code_classname(\''.PLUGIN_CODE_HEADER.$this->id_number.'\','.$data['blocknum'].',\'none\',\'code_string\',\''.IMAGE_DIR.'\')" />';
+				}
+				*/
+			}
+			$menu .= '</div>';
+		}
 
-        if ($option['number'])
-            $data['number'] = '<pre class="'.PLUGIN_CODE_HEADER.'number">'.$data['number'].'</pre>';
-        else
-            $data['number'] = null;
+		if ($option['number'])
+			$data['number'] = '<pre class="'.PLUGIN_CODE_HEADER.'number">'.$data['number'].'</pre>';
+		else
+			$data['number'] = null;
 
-        if ($option['outline'])
-            $data['outline'] = '<pre class="'.PLUGIN_CODE_HEADER.'outline">'.$data['outline'].'</pre>';
-        else
-            $data['outine'] = null;
+		if ($option['outline'])
+			$data['outline'] = '<pre class="'.PLUGIN_CODE_HEADER.'outline">'.$data['outline'].'</pre>';
+		else
+			$data['outine'] = null;
 
-        $html = '<div id="'.PLUGIN_CODE_HEADER.$this->id_number.'" class="'.PLUGIN_CODE_HEADER.'table">'
-            . $menu
-            . _plugin_code_column($src, $data['number'], $data['outline'])
-            . '</div>';
+		$html = '<div id="'.PLUGIN_CODE_HEADER.$this->id_number.'" class="'.PLUGIN_CODE_HEADER.'table">'
+			. $menu
+			. _plugin_code_column($src, $data['number'], $data['outline'])
+			. '</div>';
 
-        return $html;
-    }
+		return $html;
+	}
 
-    /**
-     * ¤³¤Î´Ø¿ô¤Ï1¹ÔÀÚ¤ê½Ğ¤¹
-     * Äê·¿¥Õ¥©¡¼¥Ş¥Ã¥È¤ò»ı¤Ä¸À¸ìÍÑ
-     */
-    function getline(& $string){
-        $line = '';
-        if(! isset($string[0])) return false;
-        $pos = strpos($string, "\n"); // ²ş¹Ô¤Ş¤ÇÀÚ¤ê½Ğ¤¹
-        if ($pos === false) { // ¸«¤Ä¤«¤é¤Ê¤¤¤È¤­¤Ï½ª¤ï¤ê¤Ş¤Ç
-            $line = $string;
-            $string = '';
-        } else {
-            $line = substr($string, 0, $pos+1);
-            $string = substr($string, $pos+1);
-        }
-        return $line;
-    }
+	/**
+	 * ã“ã®é–¢æ•°ã¯1è¡Œåˆ‡ã‚Šå‡ºã™
+	 * å®šå‹ãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆã‚’æŒã¤è¨€èªç”¨
+	 */
+	function getline(& $string){
+		$line = '';
+		if(! isset($string[0])) return false;
+		$pos = strpos($string, "\n"); // æ”¹è¡Œã¾ã§åˆ‡ã‚Šå‡ºã™
+		if ($pos === false) { // è¦‹ã¤ã‹ã‚‰ãªã„ã¨ãã¯çµ‚ã‚ã‚Šã¾ã§
+			$line = $string;
+			$string = '';
+		} else {
+			$line = substr($string, 0, $pos+1);
+			$string = substr($string, $pos+1);
+		}
+		return $line;
+	}
 
-    /**
-     * ¤³¤Î´Ø¿ô¤Ï¹ÔÆ¬¤ÎÊ¸»ú¤òÈ½Äê¤·¤Æ²òÀÏ¡¦ÊÑ´¹¤¹¤ë
-     * Äê·¿¥Õ¥©¡¼¥Ş¥Ã¥È¤ò»ı¤Ä¸À¸ìÍÑ
-     */
-    function lineToHTML(& $string, & $lang, & $option, $end = null, $begin = 1) {
+	/**
+	 * ã“ã®é–¢æ•°ã¯è¡Œé ­ã®æ–‡å­—ã‚’åˆ¤å®šã—ã¦è§£æãƒ»å¤‰æ›ã™ã‚‹
+	 * å®šå‹ãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆã‚’æŒã¤è¨€èªç”¨
+	 */
+	function lineToHTML(& $string, & $lang, & $option, $end = null, $begin = 1) {
 
-        // ¥Æ¡¼¥Ö¥ë¥¸¥ã¥ó¥×ÍÑ¥Ï¥Ã¥·¥å
-        $switchHash = Array();
-        $capital = false; // ÂçÊ¸»ú¾®Ê¸»ú¤ò¶èÊÌ¤·¤Ê¤¤
+		// ãƒ†ãƒ¼ãƒ–ãƒ«ã‚¸ãƒ£ãƒ³ãƒ—ç”¨ãƒãƒƒã‚·ãƒ¥
+		$switchHash = Array();
+		$capital = false; // å¤§æ–‡å­—å°æ–‡å­—ã‚’åŒºåˆ¥ã—ãªã„
 
-        // ²ş¹Ô
-        $switchHash["\n"] = PLUGIN_CODE_CARRIAGERETURN;
-        // ¥¨¥¹¥±¡¼¥×Ê¸»ú
-        $switchHash['\\'] = PLUGIN_CODE_ESCAPE;
-        // ¼±ÊÌ»Ò³«»ÏÊ¸»ú
-        for ($i = ord('a'); $i <= ord('z'); ++$i)
-            $switchHash[chr($i)] = PLUGIN_CODE_IDENTIFIRE;
-        for ($i = ord('A'); $i <= ord('Z'); ++$i)
-            $switchHash[chr($i)] = PLUGIN_CODE_IDENTIFIRE;
-        $switchHash['_'] = PLUGIN_CODE_IDENTIFIRE;
+		// æ”¹è¡Œ
+		$switchHash["\n"] = PLUGIN_CODE_CARRIAGERETURN;
+		// ã‚¨ã‚¹ã‚±ãƒ¼ãƒ—æ–‡å­—
+		$switchHash['\\'] = PLUGIN_CODE_ESCAPE;
+		// è­˜åˆ¥å­é–‹å§‹æ–‡å­—
+		for ($i = ord('a'); $i <= ord('z'); ++$i)
+			$switchHash[chr($i)] = PLUGIN_CODE_IDENTIFIRE;
+		for ($i = ord('A'); $i <= ord('Z'); ++$i)
+			$switchHash[chr($i)] = PLUGIN_CODE_IDENTIFIRE;
+		$switchHash['_'] = PLUGIN_CODE_IDENTIFIRE;
 
-        // Ê¸»úÎó³«»ÏÊ¸»ú
-        $switchHash['"'] = PLUGIN_CODE_STRING_LITERAL;
-        $linemode = false; // ¹ÔÆâ¤ò²òÀÏ¤¹¤ë¤«Èİ¤«
+		// æ–‡å­—åˆ—é–‹å§‹æ–‡å­—
+		$switchHash['"'] = PLUGIN_CODE_STRING_LITERAL;
+		$linemode = false; // è¡Œå†…ã‚’è§£æã™ã‚‹ã‹å¦ã‹
 
-        $str_len = strlen($string);
-        // Ê¸»ú->htmlÊÑ´¹ÍÑ¥Ï¥Ã¥·¥å
-        $htmlHash = Array('"' => '&quot;', '\'' => '&#039;', '<' => '&lt;', '>' => '&gt;', '&' => '&amp;');
-        $spaceHash = Array("\t" => PLUGIN_CODE_WIDTHOFTAB, ' ' => ' ');
+		$str_len = strlen($string);
+		// æ–‡å­—->htmlå¤‰æ›ç”¨ãƒãƒƒã‚·ãƒ¥
+		$htmlHash = Array('"' => '&quot;', '\'' => '&#039;', '<' => '&lt;', '>' => '&gt;', '&' => '&amp;');
+		$spaceHash = Array("\t" => PLUGIN_CODE_WIDTHOFTAB, ' ' => ' ');
  
-        // ¸À¸ìÄêµÁ¥Õ¥¡¥¤¥ëÆÉ¤ß¹ş¤ß
-        include(PLUGIN_DIR.'code/line.'.$lang.'.php');
-        
-        $html = '';   // ½ĞÎÏ¤µ¤ì¤ëHTML¥³¡¼¥ÉÉÕ¤­¥½¡¼¥¹
-        $num_of_line = $begin-1;  // ¹Ô¿ô¤ò¥«¥¦¥ó¥È
-        $this->nestlevel = 1;// ¥Í¥¹¥È
-        $this->blockno = 0;// ²¿ÈÖÌÜ¤Î¥Ö¥í¥Ã¥¯¤«¡©ID¤ò¥æ¥Ë¡¼¥¯¤Ë¤¹¤ë¤¿¤á¤ËÍÑ¤¤¤ë
-        $terminate = array();  // ¥Ö¥í¥Ã¥¯½ªÃ¼Ê¸»ú
-        $str_continue = 0; // ¥Ö¥í¥Ã¥¯¤Î¼ïÎà
+		// è¨€èªå®šç¾©ãƒ•ã‚¡ã‚¤ãƒ«èª­ã¿è¾¼ã¿
+		include(PLUGIN_DIR.'code/line.'.$lang.'.php');
+		
+		$html = '';   // å‡ºåŠ›ã•ã‚Œã‚‹HTMLã‚³ãƒ¼ãƒ‰ä»˜ãã‚½ãƒ¼ã‚¹
+		$num_of_line = $begin-1;  // è¡Œæ•°ã‚’ã‚«ã‚¦ãƒ³ãƒˆ
+		$this->nestlevel = 1;// ãƒã‚¹ãƒˆ
+		$this->blockno = 0;// ä½•ç•ªç›®ã®ãƒ–ãƒ­ãƒƒã‚¯ã‹ï¼ŸIDã‚’ãƒ¦ãƒ‹ãƒ¼ã‚¯ã«ã™ã‚‹ãŸã‚ã«ç”¨ã„ã‚‹
+		$terminate = array();  // ãƒ–ãƒ­ãƒƒã‚¯çµ‚ç«¯æ–‡å­—
+		$str_continue = 0; // ãƒ–ãƒ­ãƒƒã‚¯ã®ç¨®é¡
 
-        $line = $this->getline($string);
-        while($line !== false) {
-            ++$num_of_line;
-            while (isset($line[strlen($line)-2]) && $line[strlen($line)-2] == '\\') {
-                // ¹ÔËö¤¬¥¨¥¹¥±¡¼¥×Ê¸»ú¤Ê¤é¼¡¤Î¹Ô¤âÀÚ¤ê½Ğ¤¹
-                ++$num_of_line;
-                $line .= $this->getline($string);
-            }
-            // ¹ÔÆ¬Ê¸»ú¤ÎÈ½Äê
-            $hash_tmp = isset($switchHash[$line[0]]) ? $switchHash[$line[0]] : '';
-            switch ($hash_tmp) {
+		$line = $this->getline($string);
+		while($line !== false) {
+			++$num_of_line;
+			while (isset($line[strlen($line)-2]) && $line[strlen($line)-2] == '\\') {
+				// è¡Œæœ«ãŒã‚¨ã‚¹ã‚±ãƒ¼ãƒ—æ–‡å­—ãªã‚‰æ¬¡ã®è¡Œã‚‚åˆ‡ã‚Šå‡ºã™
+				++$num_of_line;
+				$line .= $this->getline($string);
+			}
+			// è¡Œé ­æ–‡å­—ã®åˆ¤å®š
+			$hash_tmp = isset($switchHash[$line[0]]) ? $switchHash[$line[0]] : '';
+			switch ($hash_tmp) {
 
-            case PLUGIN_CODE_CHAR_COMMENT:
-            case PLUGIN_CODE_HEAD_COMMENT:
-            case PLUGIN_CODE_COMMENT_CHAR:
-                // ¹ÔÆ¬¤Î1Ê¸»ú¤Ç¥³¥á¥ó¥È¤ÈÈ½ÃÇ¤Ç¤­¤ë¤â¤Î
-                $line = htmlspecialchars(substr($line,0,-1), ENT_QUOTES);
-                if ($option['link']) 
-                    $line = preg_replace('/(s?https?:\/\/|ftp:\/\/|mailto:)([-_.!~*()a-zA-Z0-9;\/:@?=+$,%#]|&amp;)+/',
-                                         '<a href="$0">$0</a>',$line);
-                
-                if($str_continue != PLUGIN_CODE_COMMENT) {
-                    if ($str_continue != 0) {
-                        $this->endRegion($num_of_line);
-                        $html .= '</span>';
-                    }
-                    if ($option['comment']) {
-                        $this->beginRegion($num_of_line);
-                        // ¥¢¥¦¥È¥é¥¤¥ó¤¬ÊÄ¤¸¤¿»ş¤ËÉ½¼¨¤¹¤ë²èÁü¤òËä¤á¹ş¤à¾ì½ê
-                        //$html .= '<span id="'.PLUGIN_CODE_HEADER.$this->id_number.'_'.$this->blockno.'_img" display="none"></span>';
-                        $html .= '<span id="'.PLUGIN_CODE_HEADER.$this->id_number.'_'.$this->blockno.'" class="'.PLUGIN_CODE_HEADER.'comment">';
-                        $str_continue = PLUGIN_CODE_COMMENT;
-                    }
-                }
-                // html¤ËÄÉ²Ã
-                $html .= '<span class="'.PLUGIN_CODE_HEADER.'comment">'.$line.'</span>'."\n";
+			case PLUGIN_CODE_CHAR_COMMENT:
+			case PLUGIN_CODE_HEAD_COMMENT:
+			case PLUGIN_CODE_COMMENT_CHAR:
+				// è¡Œé ­ã®1æ–‡å­—ã§ã‚³ãƒ¡ãƒ³ãƒˆã¨åˆ¤æ–­ã§ãã‚‹ã‚‚ã®
+				$line = htmlsc(substr($line,0,-1), ENT_QUOTES);
+				if ($option['link']) 
+					$line = preg_replace('/(s?https?:\/\/|ftp:\/\/|mailto:)([-_.!~*()a-zA-Z0-9;\/:@?=+$,%#]|&amp;)+/',
+										 '<a href="$0">$0</a>',$line);
+				
+				if($str_continue != PLUGIN_CODE_COMMENT) {
+					if ($str_continue != 0) {
+						$this->endRegion($num_of_line);
+						$html .= '</span>';
+					}
+					if ($option['comment']) {
+						$this->beginRegion($num_of_line);
+						// ã‚¢ã‚¦ãƒˆãƒ©ã‚¤ãƒ³ãŒé–‰ã˜ãŸæ™‚ã«è¡¨ç¤ºã™ã‚‹ç”»åƒã‚’åŸ‹ã‚è¾¼ã‚€å ´æ‰€
+						//$html .= '<span id="'.PLUGIN_CODE_HEADER.$this->id_number.'_'.$this->blockno.'_img" display="none"></span>';
+						$html .= '<span id="'.PLUGIN_CODE_HEADER.$this->id_number.'_'.$this->blockno.'" class="'.PLUGIN_CODE_HEADER.'comment">';
+						$str_continue = PLUGIN_CODE_COMMENT;
+					}
+				}
+				// htmlã«è¿½åŠ 
+				$html .= '<span class="'.PLUGIN_CODE_HEADER.'comment">'.$line.'</span>'."\n";
 
-                $line = $this->getline($string); // next line
-                continue 2;
-                
-            case PLUGIN_CODE_HEADW_COMMENT:
-            case PLUGIN_CODE_COMMENT_WORD:
-                // 2Ê¸»ú°Ê¾å¤Î¥Ñ¥¿¡¼¥ó¤«¤é»Ï¤Ş¤ë¥³¥á¥ó¥È
-                if (strncmp($line, $commentpattern, strlen($commentpattern)) == 0) {
-                    $line = htmlspecialchars(substr($line,0,-1), ENT_QUOTES);
-                    if ($option['link']) 
-                        $line = preg_replace('/(s?https?:\/\/|ftp:\/\/|mailto:)([-_.!~*()a-zA-Z0-9;\/:@?=+$,%#]|&amp;)+/',
-                                             '<a href="$0">$0</a>',$line);
-                    if($str_continue != PLUGIN_CODE_COMMENT) {
-                        if ($str_continue != 0) {
-                            $this->endRegion($num_of_line-1);
-                            $html .= '</span>';
-                        }
-                        if ($option['comment']) {
-                            $this->beginRegion($num_of_line);
-                            // ¥¢¥¦¥È¥é¥¤¥ó¤¬ÊÄ¤¸¤¿»ş¤ËÉ½¼¨¤¹¤ë²èÁü¤òËä¤á¹ş¤à¾ì½ê
-                            //$html .= '<span id="'.PLUGIN_CODE_HEADER.$this->id_number.'_'.$this->blockno.'_img" display="none"></span>';
-                            $html .= '<span id="'.PLUGIN_CODE_HEADER.$this->id_number.'_'.$this->blockno.'" class="'.PLUGIN_CODE_HEADER.'comment">';
-                            $str_continue = PLUGIN_CODE_COMMENT;
-                        }
-                    }
-                    // html¤ËÄÉ²Ã
-                    $html .= '<span class="'.PLUGIN_CODE_HEADER.'comment">'.$line.'</span>'."\n";
-                    
-                    $line = $this->getline($string); // next line
-                    continue 2;
-                }
-                // ¥³¥á¥ó¥È¤Ç¤Ï¤Ê¤¤
-                break;
+				$line = $this->getline($string); // next line
+				continue 2;
+				
+			case PLUGIN_CODE_HEADW_COMMENT:
+			case PLUGIN_CODE_COMMENT_WORD:
+				// 2æ–‡å­—ä»¥ä¸Šã®ãƒ‘ã‚¿ãƒ¼ãƒ³ã‹ã‚‰å§‹ã¾ã‚‹ã‚³ãƒ¡ãƒ³ãƒˆ
+				if (strncmp($line, $commentpattern, strlen($commentpattern)) == 0) {
+					$line = htmlsc(substr($line,0,-1), ENT_QUOTES);
+					if ($option['link']) 
+						$line = preg_replace('/(s?https?:\/\/|ftp:\/\/|mailto:)([-_.!~*()a-zA-Z0-9;\/:@?=+$,%#]|&amp;)+/',
+											 '<a href="$0">$0</a>',$line);
+					if($str_continue != PLUGIN_CODE_COMMENT) {
+						if ($str_continue != 0) {
+							$this->endRegion($num_of_line-1);
+							$html .= '</span>';
+						}
+						if ($option['comment']) {
+							$this->beginRegion($num_of_line);
+							// ã‚¢ã‚¦ãƒˆãƒ©ã‚¤ãƒ³ãŒé–‰ã˜ãŸæ™‚ã«è¡¨ç¤ºã™ã‚‹ç”»åƒã‚’åŸ‹ã‚è¾¼ã‚€å ´æ‰€
+							//$html .= '<span id="'.PLUGIN_CODE_HEADER.$this->id_number.'_'.$this->blockno.'_img" display="none"></span>';
+							$html .= '<span id="'.PLUGIN_CODE_HEADER.$this->id_number.'_'.$this->blockno.'" class="'.PLUGIN_CODE_HEADER.'comment">';
+							$str_continue = PLUGIN_CODE_COMMENT;
+						}
+					}
+					// htmlã«è¿½åŠ 
+					$html .= '<span class="'.PLUGIN_CODE_HEADER.'comment">'.$line.'</span>'."\n";
+					
+					$line = $this->getline($string); // next line
+					continue 2;
+				}
+				// ã‚³ãƒ¡ãƒ³ãƒˆã§ã¯ãªã„
+				break;
 
-            case PLUGIN_CODE_IDENTIFIRE_CHAR:
-                // ¹ÔÆ¬¤Î1Ê¸»ú¤¬°ÕÌ£¤ò»ı¤Ä¤â¤Î
-                if ($str_continue != 0) {
-                    $this->endRegion($num_of_line);
-                    $html .= '</span>';
-                    $str_continue = 0;
-                }
-                $index = $code_keyword[$line[0]];
-                $line = htmlspecialchars($line, ENT_QUOTES);
-                if ($option['link']) 
-                    $line = preg_replace('/(s?https?:\/\/|ftp:\/\/|mailto:)([-_.!~*()a-zA-Z0-9;\/:@?=+$,%#]|&amp;)+/',
-                                         '<a href="$0">$0</a>',$line);
-                if ($index != '')
-                    $html .= '<span class="'.PLUGIN_CODE_HEADER.$code_css[$index-1].'">'.$line.'</span>';
-                else
-                    $html .= $line;
+			case PLUGIN_CODE_IDENTIFIRE_CHAR:
+				// è¡Œé ­ã®1æ–‡å­—ãŒæ„å‘³ã‚’æŒã¤ã‚‚ã®
+				if ($str_continue != 0) {
+					$this->endRegion($num_of_line);
+					$html .= '</span>';
+					$str_continue = 0;
+				}
+				$index = $code_keyword[$line[0]];
+				$line = htmlsc($line, ENT_QUOTES);
+				if ($option['link']) 
+					$line = preg_replace('/(s?https?:\/\/|ftp:\/\/|mailto:)([-_.!~*()a-zA-Z0-9;\/:@?=+$,%#]|&amp;)+/',
+										 '<a href="$0">$0</a>',$line);
+				if ($index != '')
+					$html .= '<span class="'.PLUGIN_CODE_HEADER.$code_css[$index-1].'">'.$line.'</span>';
+				else
+					$html .= $line;
 
-                $line = $this->getline($string); // next line
-                continue 2;
+				$line = $this->getline($string); // next line
+				continue 2;
 
-            case PLUGIN_CODE_IDENTIFIRE_WORD:
-                if ($str_continue != 0) {
-                    $this->endRegion($num_of_line);
-                    $html .= '</span>';
-                    $str_continue = 0;
-                }
+			case PLUGIN_CODE_IDENTIFIRE_WORD:
+				if ($str_continue != 0) {
+					$this->endRegion($num_of_line);
+					$html .= '</span>';
+					$str_continue = 0;
+				}
 
-                if (strlen($line) < 2 && $line[0] == ' ') break; // ¶õ¹ÔÈ½Äê
-                // ¹ÔÆ¬¤Î¥Ñ¥¿¡¼¥ó¤òÄ´¤Ù¤ë
-                foreach ($code_identifire[$line[0]] as $pattern) {
-                    if (strncmp($line, $pattern, strlen($pattern)) == 0) {
-                        $index = $code_keyword[$pattern];
-                        // html¤ËÄÉ²Ã
-                        $line = htmlspecialchars($line, ENT_QUOTES);
-                        if ($option['link']) 
-                            $line = preg_replace('/(s?https?:\/\/|ftp:\/\/|mailto:)([-_.!~*()a-zA-Z0-9;\/:@?=+$,%#]|&amp;)+/',
-                                                 '<a href="$0">$0</a>',$line);
-                        if ($index != '')
-                            $html .= '<span class="'.PLUGIN_CODE_HEADER.$code_css[$index-1].'">'.$line.'</span>';
-                        else
-                            $html .= $line;
-                        
-                        $line = $this->getline($string); // next line
-                        continue 3;
-                    }
-                }
-                // ¹ÔÆ¬¤Î1Ê¸»ú¤¬°ÕÌ£¤ò»ı¤Ä¤â¤Î¤«È½Äê
-                $index = $code_keyword[$line[0]];
-                if ($index != '') {
-                    $line = htmlspecialchars($line, ENT_QUOTES);
-                    $html .= '<span class="'.PLUGIN_CODE_HEADER.$code_css[$index-1].'">'.$line.'</span>';
-                    $line = $this->getline($string); // next line
-                    continue 2;
-                }
-                else // IDENTIFIRE¤Ç¤Ï¤Ê¤¤
-                    break;
+				if (strlen($line) < 2 && $line[0] == ' ') break; // ç©ºè¡Œåˆ¤å®š
+				// è¡Œé ­ã®ãƒ‘ã‚¿ãƒ¼ãƒ³ã‚’èª¿ã¹ã‚‹
+				foreach ($code_identifire[$line[0]] as $pattern) {
+					if (strncmp($line, $pattern, strlen($pattern)) == 0) {
+						$index = $code_keyword[$pattern];
+						// htmlã«è¿½åŠ 
+						$line = htmlsc($line, ENT_QUOTES);
+						if ($option['link']) 
+							$line = preg_replace('/(s?https?:\/\/|ftp:\/\/|mailto:)([-_.!~*()a-zA-Z0-9;\/:@?=+$,%#]|&amp;)+/',
+												 '<a href="$0">$0</a>',$line);
+						if ($index != '')
+							$html .= '<span class="'.PLUGIN_CODE_HEADER.$code_css[$index-1].'">'.$line.'</span>';
+						else
+							$html .= $line;
+						
+						$line = $this->getline($string); // next line
+						continue 3;
+					}
+				}
+				// è¡Œé ­ã®1æ–‡å­—ãŒæ„å‘³ã‚’æŒã¤ã‚‚ã®ã‹åˆ¤å®š
+				$index = $code_keyword[$line[0]];
+				if ($index != '') {
+					$line = htmlsc($line, ENT_QUOTES);
+					$html .= '<span class="'.PLUGIN_CODE_HEADER.$code_css[$index-1].'">'.$line.'</span>';
+					$line = $this->getline($string); // next line
+					continue 2;
+				}
+				else // IDENTIFIREã§ã¯ãªã„
+					break;
 
-            case PLUGIN_CODE_POST_IDENTIFIRE:
-                if ($str_continue != 0) {
-                    $this->endRegion($num_of_line);
-                    $html .= '</span>';
-                    $str_continue = 0;
-                }
-                // ¹ÔÃæ¤ÎÆÃÄê¤Î¥Ñ¥¿¡¼¥ó¤ò¸¡º÷¤¹¤ë
-                // make¤Î¥¿¡¼¥²¥Ã¥ÈÍÑ ¼±ÊÌ»Ò(¥¢¥ë¥Õ¥¡¥Ù¥Ã¥È¤«¤é»Ï¤Ş¤Ã¤Æ¤¤¤ë)
-                $str_pos = strpos($line, $post_identifire);
-                if ($str_pos !== false) {
-                    $result  = htmlspecialchars(substr($line, 0, $str_pos), ENT_QUOTES);
-                    $result2 = htmlspecialchars(substr($line, $str_pos+1), ENT_QUOTES);
-                    $html .= '<span class="'.PLUGIN_CODE_HEADER.'target">'.$result.$post_identifire.'</span>'
-                        .'<span class="'.PLUGIN_CODE_HEADER.'src">'.$result2.'</span>';
-                    $line = $this->getline($string); // next line
-                    continue 2;
-                }
-                else // ³ºÅö¤·¤Ê¤¤
-                    break;
+			case PLUGIN_CODE_POST_IDENTIFIRE:
+				if ($str_continue != 0) {
+					$this->endRegion($num_of_line);
+					$html .= '</span>';
+					$str_continue = 0;
+				}
+				// è¡Œä¸­ã®ç‰¹å®šã®ãƒ‘ã‚¿ãƒ¼ãƒ³ã‚’æ¤œç´¢ã™ã‚‹
+				// makeã®ã‚¿ãƒ¼ã‚²ãƒƒãƒˆç”¨ è­˜åˆ¥å­(ã‚¢ãƒ«ãƒ•ã‚¡ãƒ™ãƒƒãƒˆã‹ã‚‰å§‹ã¾ã£ã¦ã„ã‚‹)
+				$str_pos = strpos($line, $post_identifire);
+				if ($str_pos !== false) {
+					$result  = htmlsc(substr($line, 0, $str_pos), ENT_QUOTES);
+					$result2 = htmlsc(substr($line, $str_pos+1), ENT_QUOTES);
+					$html .= '<span class="'.PLUGIN_CODE_HEADER.'target">'.$result.$post_identifire.'</span>'
+						.'<span class="'.PLUGIN_CODE_HEADER.'src">'.$result2.'</span>';
+					$line = $this->getline($string); // next line
+					continue 2;
+				}
+				else // è©²å½“ã—ãªã„
+					break;
 
-            case PLUGIN_CODE_MULTILINE:
-                // Ê£¿ô¹Ô¤ËÅÏ¤Ã¤Æ¸ú²Ì¤ò»ı¤Ä»ØÄê
-                if ($str_continue != 0) {
-                    $this->endRegion($num_of_line);
-                    $html .= '</span>';
-                    $str_continue = 0;
-                }
+			case PLUGIN_CODE_MULTILINE:
+				// è¤‡æ•°è¡Œã«æ¸¡ã£ã¦åŠ¹æœã‚’æŒã¤æŒ‡å®š
+				if ($str_continue != 0) {
+					$this->endRegion($num_of_line);
+					$html .= '</span>';
+					$str_continue = 0;
+				}
 
-                $index = $code_keyword[$line[0]];
-                $src = rtrim(htmlspecialchars($line, ENT_QUOTES));
-                if ($option['link']) 
-                    $src = preg_replace('/(s?https?:\/\/|ftp:\/\/|mailto:)([-_.!~*()a-zA-Z0-9;\/:@?=+$,%#]|&amp;)+/',
-                                        '<a href="$0">$0</a>',$src);
-                if ($index != '')
-                    $html .= '<span class="'.PLUGIN_CODE_HEADER.$code_css[$index-1].'">'.$src;
-                else
-                    $html .= $src;
-                // outline
-                ++$this->blockno;
-                $html .= '<span id="'.PLUGIN_CODE_HEADER.$this->id_number.'_'.$this->blockno.'_img" display="none"></span>'
-                    ."\n"
-                    .'<span id="'.PLUGIN_CODE_HEADER.$this->id_number.'_'.$this->blockno.'">';
+				$index = $code_keyword[$line[0]];
+				$src = rtrim(htmlsc($line, ENT_QUOTES));
+				if ($option['link']) 
+					$src = preg_replace('/(s?https?:\/\/|ftp:\/\/|mailto:)([-_.!~*()a-zA-Z0-9;\/:@?=+$,%#]|&amp;)+/',
+										'<a href="$0">$0</a>',$src);
+				if ($index != '')
+					$html .= '<span class="'.PLUGIN_CODE_HEADER.$code_css[$index-1].'">'.$src;
+				else
+					$html .= $src;
+				// outline
+				++$this->blockno;
+				$html .= '<span id="'.PLUGIN_CODE_HEADER.$this->id_number.'_'.$this->blockno.'_img" display="none"></span>'
+					."\n"
+					.'<span id="'.PLUGIN_CODE_HEADER.$this->id_number.'_'.$this->blockno.'">';
 
-                $line = $this->getline($string);
-                $multilines = 0;
-                $result = '';
-                while (in_array($line[0], $multilineEOL) === false && $line !== false) {
-                    // ¸ú²Ì¤ÎÈÏ°ÏÆâ¤ò¼èÆÀ¤¹¤ë
-                    $src = htmlspecialchars($line, ENT_QUOTES);
-                    if ($option['link']) 
-                        $src = preg_replace('/(s?https?:\/\/|ftp:\/\/|mailto:)([-_.!~*()a-zA-Z0-9;\/:@?=+$,%#]|&amp;)+/',
-                                             '<a href="$0">$0</a>',$src);
-                    $result .= $src;
-                    ++$multilines;
-                    $line = $this->getline($string);
-                }
-                if ($multilines >= 1) {
-                    if(! isset($this->outline[$num_of_line])) {
-                        $this->outline[$num_of_line]=Array();
-                    }
-                    array_push($this->outline[$num_of_line],Array('nest'=>($this->nestlevel+1), 'blockno'=>$this->blockno, 'state'=>1));
-                    $num_of_line += $multilines;
-                    $this->outline[$num_of_line] = Array();
-                    array_push($this->outline[$num_of_line],Array('nest'=>$this->nestlevel,'blockno'=>0, 'state'=>1));
-                }
-                
-                $html .= $result;
-                if ($index != '')
-                    $html .= '</span>';
-                $html .= '</span>';
-                continue 2;
+				$line = $this->getline($string);
+				$multilines = 0;
+				$result = '';
+				while (in_array($line[0], $multilineEOL) === false && $line !== false) {
+					// åŠ¹æœã®ç¯„å›²å†…ã‚’å–å¾—ã™ã‚‹
+					$src = htmlsc($line, ENT_QUOTES);
+					if ($option['link']) 
+						$src = preg_replace('/(s?https?:\/\/|ftp:\/\/|mailto:)([-_.!~*()a-zA-Z0-9;\/:@?=+$,%#]|&amp;)+/',
+											 '<a href="$0">$0</a>',$src);
+					$result .= $src;
+					++$multilines;
+					$line = $this->getline($string);
+				}
+				if ($multilines >= 1) {
+					if(! isset($this->outline[$num_of_line])) {
+						$this->outline[$num_of_line]=Array();
+					}
+					array_push($this->outline[$num_of_line],Array('nest'=>($this->nestlevel+1), 'blockno'=>$this->blockno, 'state'=>1));
+					$num_of_line += $multilines;
+					$this->outline[$num_of_line] = Array();
+					array_push($this->outline[$num_of_line],Array('nest'=>$this->nestlevel,'blockno'=>0, 'state'=>1));
+				}
+				
+				$html .= $result;
+				if ($index != '')
+					$html .= '</span>';
+				$html .= '</span>';
+				continue 2;
 
-            case PLUGIN_CODE_BLOCK_START:
-                // ÆÃ¼ìÊ¸»ú¤«¤é»Ï¤Ş¤ë¼±ÊÌ»Ò
-                if ($str_continue != 0) {
-                    $this->endRegion($num_of_line);
-                    $html .= '</span>';
-                    $str_continue = 0;
-                }
-                // ¼¡¤ÎÊ¸»ú¤¬±Ñ»ú¤«È½Äê
-                if (! ctype_alpha($line[1])) break;
-                $result = substr($line, 1);
-                preg_match('/[A-Za-z0-9_\-]+/', $result, $matches);
-                $str_pos = strlen($matches[0]);
-                $result = substr($line, 0, $str_pos+1);
-                $r_result = rtrim(substr($line, $str_pos+1));
-                // html¤ËÄÉ²Ã
-                if($capital)
-                    $index = $code_keyword[strtolower($result)];// ÂçÊ¸»ú¾®Ê¸»ú¤ò¶èÊÌ¤·¤Ê¤¤
-                else
-                    $index = $code_keyword[$result];
-                $result = htmlspecialchars($result, ENT_QUOTES);
-                 if ($index != '')
-                    $html .= '<span class="'.PLUGIN_CODE_HEADER.$code_css[$index-1].'">'.$result.'</span>';
-                else
-                    $html .= $result;
+			case PLUGIN_CODE_BLOCK_START:
+				// ç‰¹æ®Šæ–‡å­—ã‹ã‚‰å§‹ã¾ã‚‹è­˜åˆ¥å­
+				if ($str_continue != 0) {
+					$this->endRegion($num_of_line);
+					$html .= '</span>';
+					$str_continue = 0;
+				}
+				// æ¬¡ã®æ–‡å­—ãŒè‹±å­—ã‹åˆ¤å®š
+				if (! ctype_alpha($line[1])) break;
+				$result = substr($line, 1);
+				preg_match('/[A-Za-z0-9_\-]+/', $result, $matches);
+				$str_pos = strlen($matches[0]);
+				$result = substr($line, 0, $str_pos+1);
+				$r_result = rtrim(substr($line, $str_pos+1));
+				// htmlã«è¿½åŠ 
+				if($capital)
+					$index = $code_keyword[strtolower($result)];// å¤§æ–‡å­—å°æ–‡å­—ã‚’åŒºåˆ¥ã—ãªã„
+				else
+					$index = $code_keyword[$result];
+				$result = htmlsc($result, ENT_QUOTES);
+				 if ($index != '')
+					$html .= '<span class="'.PLUGIN_CODE_HEADER.$code_css[$index-1].'">'.$result.'</span>';
+				else
+					$html .= $result;
 
-                if ($option['block'] && $r_result[strlen($r_result)-1] == '{') {
-                    $this->beginRegion($num_of_line, 1);
-                    $terminate[$this->nestlevel] = strlen($r_result) - strpos($r_result,'{');
-                    $html .= $r_result;
-                    // ¥¢¥¦¥È¥é¥¤¥ó¤¬ÊÄ¤¸¤¿»ş¤ËÉ½¼¨¤¹¤ë²èÁü¤òËä¤á¹ş¤à¾ì½ê
-                    $html .= '<span id="'.PLUGIN_CODE_HEADER.$this->id_number.'_'.$this->blockno.'_img" display="none"></span>';
-                    $html .= '<span id="'.PLUGIN_CODE_HEADER.$this->id_number.'_'.$this->blockno.'" style="display:'.$display.'" class="'.PLUGIN_CODE_HEADER.'block">'."\n";
-                } else 
-                    $html .= $r_result."\n";
+				if ($option['block'] && $r_result[strlen($r_result)-1] == '{') {
+					$this->beginRegion($num_of_line, 1);
+					$terminate[$this->nestlevel] = strlen($r_result) - strpos($r_result,'{');
+					$html .= $r_result;
+					// ã‚¢ã‚¦ãƒˆãƒ©ã‚¤ãƒ³ãŒé–‰ã˜ãŸæ™‚ã«è¡¨ç¤ºã™ã‚‹ç”»åƒã‚’åŸ‹ã‚è¾¼ã‚€å ´æ‰€
+					$html .= '<span id="'.PLUGIN_CODE_HEADER.$this->id_number.'_'.$this->blockno.'_img" display="none"></span>';
+					$html .= '<span id="'.PLUGIN_CODE_HEADER.$this->id_number.'_'.$this->blockno.'" style="display:'.$display.'" class="'.PLUGIN_CODE_HEADER.'block">'."\n";
+				} else 
+					$html .= $r_result."\n";
 
-                $line = $this->getline($string); // next line
-                continue 2;
+				$line = $this->getline($string); // next line
+				continue 2;
 
-            case PLUGIN_CODE_BLOCK_END:
-                // outline É½¼¨½ªÎ»Ê¸»ú for PukiWikis
-                if ($option['block'] && $terminate[$this->nestlevel] == strlen(trim($line))) {
-                    $this->endRegion($num_of_line);
-                    $html .= '</span>';
-                }
-                $html .= $line;
-                $line = $this->getline($string); // next line
-                continue 2;
+			case PLUGIN_CODE_BLOCK_END:
+				// outline è¡¨ç¤ºçµ‚äº†æ–‡å­— for PukiWikis
+				if ($option['block'] && $terminate[$this->nestlevel] == strlen(trim($line))) {
+					$this->endRegion($num_of_line);
+					$html .= '</span>';
+				}
+				$html .= $line;
+				$line = $this->getline($string); // next line
+				continue 2;
 
-             default:
-                // ¹ÔÆâ¤ò²òÀÏ¤»¤º¤ËHTML¤ËÄÉ²Ã¤¹¤ë (diff)
-                if($linemode) {
-                    $line = htmlspecialchars($line, ENT_QUOTES);
-                    if ($option['link']) 
-                        $html .= preg_replace('/(s?https?:\/\/|ftp:\/\/|mailto:)([-_.!~*()a-zA-Z0-9;\/:@?=+$,%#]|&amp;)+/',
-                                              '<a href="$0">$0</a>',$line);
-                    
-                    $line = $this->getline($string); // next line
-                    continue 2;
-                }
-            } //switch
-                
-            // ¹ÔÆâ¤Î²òÀÏ 1Ê¸»ú¤º¤Ä²òÀÏ¤¹¤ë
-            $str_len = strlen($line);
-            $str_pos = 0;
-            if ($str_len == $str_pos) $code = false; else $code = $line[$str_pos++];// getc
-            while($code !== false) {
-                switch ($switchHash[$code]) {
-                case PLUGIN_CODE_CHAR_COMMENT: // ¹ÔÆ¬°Ê³°¤Ç¤Ï¥³¥á¥ó¥È¤Ë¤Ï¤Ê¤é¤Ê¤¤ (fortran)
-                case PLUGIN_CODE_IDENTIFIRE:
-                    // ¼±ÊÌ»Ò(¥¢¥ë¥Õ¥¡¥Ù¥Ã¥È¤«¤é»Ï¤Ş¤Ã¤Æ¤¤¤ë)
-                    if ($str_continue != 0) {
-                        $this->endRegion($num_of_line);
-                        $html .= '</span>';
-                        $str_continue = 0;
-                    }
-                    // ½ĞÍè¤ë¸Â¤êÄ¹¤¯¼±ÊÌ»Ò¤òÆÀ¤ë
-                    --$str_pos; // ¥¨¥é¡¼½èÍı¤·¤¿¤¯¤Ê¤¤¤«¤épreg_match¤ÇÉ¬¤º¸«¤Ä¤«¤ë¤è¤¦¤Ë¤¹¤ë
-                    $result = substr($line, $str_pos); 
-                    preg_match('/[A-Za-z0-9_\-]+/', $result, $matches);
-                    $str_pos += strlen($matches[0]);
-                    $result = $matches[0];
-                    
-                    if($capital)
-                        $index = $code_keyword[strtolower($result)];// ÂçÊ¸»ú¾®Ê¸»ú¤ò¶èÊÌ¤·¤Ê¤¤
-                    else
-                        $index = $code_keyword[$result];
-                    $result = htmlspecialchars($result, ENT_QUOTES);
+			 default:
+				// è¡Œå†…ã‚’è§£æã›ãšã«HTMLã«è¿½åŠ ã™ã‚‹ (diff)
+				if($linemode) {
+					$line = htmlsc($line, ENT_QUOTES);
+					if ($option['link']) 
+						$html .= preg_replace('/(s?https?:\/\/|ftp:\/\/|mailto:)([-_.!~*()a-zA-Z0-9;\/:@?=+$,%#]|&amp;)+/',
+											  '<a href="$0">$0</a>',$line);
+					
+					$line = $this->getline($string); // next line
+					continue 2;
+				}
+			} //switch
+				
+			// è¡Œå†…ã®è§£æ 1æ–‡å­—ãšã¤è§£æã™ã‚‹
+			$str_len = strlen($line);
+			$str_pos = 0;
+			if ($str_len == $str_pos) $code = false; else $code = $line[$str_pos++];// getc
+			while($code !== false) {
+				switch ($switchHash[$code]) {
+				case PLUGIN_CODE_CHAR_COMMENT: // è¡Œé ­ä»¥å¤–ã§ã¯ã‚³ãƒ¡ãƒ³ãƒˆã«ã¯ãªã‚‰ãªã„ (fortran)
+				case PLUGIN_CODE_IDENTIFIRE:
+					// è­˜åˆ¥å­(ã‚¢ãƒ«ãƒ•ã‚¡ãƒ™ãƒƒãƒˆã‹ã‚‰å§‹ã¾ã£ã¦ã„ã‚‹)
+					if ($str_continue != 0) {
+						$this->endRegion($num_of_line);
+						$html .= '</span>';
+						$str_continue = 0;
+					}
+					// å‡ºæ¥ã‚‹é™ã‚Šé•·ãè­˜åˆ¥å­ã‚’å¾—ã‚‹
+					--$str_pos; // ã‚¨ãƒ©ãƒ¼å‡¦ç†ã—ãŸããªã„ã‹ã‚‰preg_matchã§å¿…ãšè¦‹ã¤ã‹ã‚‹ã‚ˆã†ã«ã™ã‚‹
+					$result = substr($line, $str_pos); 
+					preg_match('/[A-Za-z0-9_\-]+/', $result, $matches);
+					$str_pos += strlen($matches[0]);
+					$result = $matches[0];
+					
+					if($capital)
+						$index = $code_keyword[strtolower($result)];// å¤§æ–‡å­—å°æ–‡å­—ã‚’åŒºåˆ¥ã—ãªã„
+					else
+						$index = $code_keyword[$result];
+					$result = htmlsc($result, ENT_QUOTES);
 
-                    if ($index!='')
-                        $html .= '<span class="'.PLUGIN_CODE_HEADER.$code_css[$index-1].'">'.$result.'</span>';
-                    else
-                        $html .= $result;
-                    
-                    // ¼¡¤Î¸¡º÷ÍÑ¤ËÆÉ¤ß¹ş¤ß
-                    if ($str_len == $str_pos) $code = false; else $code = $line[$str_pos++]; // getc
-                    continue 2;
-                    
-                case PLUGIN_CODE_SPECIAL_IDENTIFIRE:
-                    // ÆÃ¼ìÊ¸»ú¤«¤é»Ï¤Ş¤ë¼±ÊÌ»Ò
-                    // ¼¡¤ÎÊ¸»ú¤¬±Ñ»ú¤«È½Äê
-                    if ($str_continue != 0) {
-                        $this->endRegion($num_of_line);
-                        $html .= '</span>';
-                        $str_continue = 0;
-                    }
-                    if (! ctype_alpha($line[$str_pos])) break;
-                    $result = substr($line, $str_pos);
-                    preg_match('/[A-Za-z0-9_\-]+/', $result, $matches);
-                    $str_pos += strlen($matches[0]);
-                    $result = $code.$matches[0];
-                    // html¤ËÄÉ²Ã
-                    if($capital)
-                        $index = $code_keyword[strtolower($result)];// ÂçÊ¸»ú¾®Ê¸»ú¤ò¶èÊÌ¤·¤Ê¤¤
-                    else
-                        $index = $code_keyword[$result];
-                    $result = htmlspecialchars($result, ENT_QUOTES);
-                    if ($index != '')
-                        $html .= '<span class="'.PLUGIN_CODE_HEADER.$code_css[$index-1].'">'.$result.'</span>';
-                    else
-                        $html .= $result;
-                    
-                    // ¼¡¤Î¸¡º÷ÍÑ¤ËÆÉ¤ß¹ş¤ß
-                    if ($str_len == $str_pos) $code = false; else $code = $line[$str_pos++]; // getc
-                    continue 2;
+					if ($index!='')
+						$html .= '<span class="'.PLUGIN_CODE_HEADER.$code_css[$index-1].'">'.$result.'</span>';
+					else
+						$html .= $result;
+					
+					// æ¬¡ã®æ¤œç´¢ç”¨ã«èª­ã¿è¾¼ã¿
+					if ($str_len == $str_pos) $code = false; else $code = $line[$str_pos++]; // getc
+					continue 2;
+					
+				case PLUGIN_CODE_SPECIAL_IDENTIFIRE:
+					// ç‰¹æ®Šæ–‡å­—ã‹ã‚‰å§‹ã¾ã‚‹è­˜åˆ¥å­
+					// æ¬¡ã®æ–‡å­—ãŒè‹±å­—ã‹åˆ¤å®š
+					if ($str_continue != 0) {
+						$this->endRegion($num_of_line);
+						$html .= '</span>';
+						$str_continue = 0;
+					}
+					if (! ctype_alpha($line[$str_pos])) break;
+					$result = substr($line, $str_pos);
+					preg_match('/[A-Za-z0-9_\-]+/', $result, $matches);
+					$str_pos += strlen($matches[0]);
+					$result = $code.$matches[0];
+					// htmlã«è¿½åŠ 
+					if($capital)
+						$index = $code_keyword[strtolower($result)];// å¤§æ–‡å­—å°æ–‡å­—ã‚’åŒºåˆ¥ã—ãªã„
+					else
+						$index = $code_keyword[$result];
+					$result = htmlsc($result, ENT_QUOTES);
+					if ($index != '')
+						$html .= '<span class="'.PLUGIN_CODE_HEADER.$code_css[$index-1].'">'.$result.'</span>';
+					else
+						$html .= $result;
+					
+					// æ¬¡ã®æ¤œç´¢ç”¨ã«èª­ã¿è¾¼ã¿
+					if ($str_len == $str_pos) $code = false; else $code = $line[$str_pos++]; // getc
+					continue 2;
 
-                case PLUGIN_CODE_STRING_LITERAL:
-                case PLUGIN_CODE_NONESCAPE_LITERAL:
-                    if($str_continue != PLUGIN_CODE_STRING_LITERAL) {
-                        if ($str_continue != 0) {
-                            $this->endRegion($num_of_line);
-                            $html .= '</span>';
-                        }
-                        if ($option['literal']) {
-                            $this->beginRegion($num_of_line);
-                            // ¥¢¥¦¥È¥é¥¤¥ó¤¬ÊÄ¤¸¤¿»ş¤ËÉ½¼¨¤¹¤ë²èÁü¤òËä¤á¹ş¤à¾ì½ê
-                            //$html .= '<span id="'.PLUGIN_CODE_HEADER.$this->id_number.'_'.$this->blockno.'_img" display="none"></span>';
-                            $html .= '<span id="'.PLUGIN_CODE_HEADER.$this->id_number.'_'.$this->blockno.'" class="'.PLUGIN_CODE_HEADER.'string">';
-                            $str_continue = PLUGIN_CODE_STRING_LITERAL;
-                        }
-                    }
-                    // Ê¸»úÎó¥ê¥Æ¥é¥ë¤òÆÀ¤ë //¸½ºß¥¨¥¹¥±¡¼¥×¤¹¤ëÉ¬Í×¤¬Ìµ¤¤
-                    $pos = $str_pos;
-                    $result = substr($line, $str_pos);
-                    $pos1 = strpos($result, $code); // Ê¸»úÎó½ªÎ»Ê¸»ú¸¡º÷
-                    if ($pos1 === false) { // ¼¡¤ò¸¡º÷¤¹¤ë
-                        $pos1 = strpos($string, $code); // Ê¸»úÎó½ªÎ»Ê¸»ú¸¡º÷
-                        if ($pos1 === false) { // Ê¸»úÎó¤¬½ª¤ï¤é¤Ê¤«¤Ã¤¿¤Î¤ÇÁ´ÉôÊ¸»úÎó¤È¤¹¤ë
-                            $num_of_line += substr_count($string, "\n")+1; // ¥é¥¤¥ó¿ô¥«¥¦¥ó¥È
-                            // ºÇ¸å¤ÎÍ¾Ê¬¤Ê²ş¹Ô¤òºï½ü
-                            if ($string[strlen($string)-2] == ' ')
-                                $string = substr($string, 0, -2);
-                            else
-                                $string = substr($string, 0, -1);
-                            $result = $code.$result.$string;
-                            $str_len = 0;
-                            $str_pos = 0;
-                            $string = '';
-                            $code = false;
-                            $result = htmlspecialchars($result, ENT_QUOTES);
-                            if ($option['link']) 
-                                $result = preg_replace('/(s?https?:\/\/|ftp:\/\/|mailto:)([-_.!~*()a-zA-Z0-9;\/:@?=+$,%#]|&amp;)+/',
-                                                       '<a href="$0">$0</a>',$result);
-                            $html .= '<span class="'.PLUGIN_CODE_HEADER.'string">'.$result.'</span>';
-                            break 3;
-                        } else {
-                            $result = $code.$result.substr($string, 0, $pos1+2);
-                            $num_of_line += substr_count($result, "\n")-1; // ¥é¥¤¥ó¿ô¥«¥¦¥ó¥È
-                            $string = substr($string, $pos1+2);
-                            if ($string[$pos1+2] == "\n") {
-                                $str_len = 0;
-                                $str_pos = 0;
-                                $code = false;
-                            } else {
-                                $code = $line[$str_pos++]; // getc
-                                $line = $this->getline($string);
-                                $str_len = strlen($line);
-                                $str_pos = 0;
-                            }
-                        }
-                    } else {
-                        $str_pos += $pos1 + 1;
-                        $result = $code.substr($line, $pos, $str_pos - $pos);
-                    }
-                    // html¤ËÄÉ²Ã
-                    $result = htmlspecialchars($result, ENT_QUOTES);
-                    if ($option['link']) 
-                        $result = preg_replace('/(s?https?:\/\/|ftp:\/\/|mailto:)([-_.!~*()a-zA-Z0-9;\/:@?=+$,%#]|&amp;)+/',
-                                               '<a href="$0">$0</a>',$result);
-                    $html .= '<span class="'.PLUGIN_CODE_HEADER.'string">'.$result.'</span>';
-                    
-                    // ¼¡¤Î¸¡º÷ÍÑ¤ËÆÉ¤ß¹ş¤ß
-                    if ($str_len == $str_pos) $code = false; else $code = $line[$str_pos++]; // getc
-                    continue 2;
+				case PLUGIN_CODE_STRING_LITERAL:
+				case PLUGIN_CODE_NONESCAPE_LITERAL:
+					if($str_continue != PLUGIN_CODE_STRING_LITERAL) {
+						if ($str_continue != 0) {
+							$this->endRegion($num_of_line);
+							$html .= '</span>';
+						}
+						if ($option['literal']) {
+							$this->beginRegion($num_of_line);
+							// ã‚¢ã‚¦ãƒˆãƒ©ã‚¤ãƒ³ãŒé–‰ã˜ãŸæ™‚ã«è¡¨ç¤ºã™ã‚‹ç”»åƒã‚’åŸ‹ã‚è¾¼ã‚€å ´æ‰€
+							//$html .= '<span id="'.PLUGIN_CODE_HEADER.$this->id_number.'_'.$this->blockno.'_img" display="none"></span>';
+							$html .= '<span id="'.PLUGIN_CODE_HEADER.$this->id_number.'_'.$this->blockno.'" class="'.PLUGIN_CODE_HEADER.'string">';
+							$str_continue = PLUGIN_CODE_STRING_LITERAL;
+						}
+					}
+					// æ–‡å­—åˆ—ãƒªãƒ†ãƒ©ãƒ«ã‚’å¾—ã‚‹ //ç¾åœ¨ã‚¨ã‚¹ã‚±ãƒ¼ãƒ—ã™ã‚‹å¿…è¦ãŒç„¡ã„
+					$pos = $str_pos;
+					$result = substr($line, $str_pos);
+					$pos1 = strpos($result, $code); // æ–‡å­—åˆ—çµ‚äº†æ–‡å­—æ¤œç´¢
+					if ($pos1 === false) { // æ¬¡ã‚’æ¤œç´¢ã™ã‚‹
+						$pos1 = strpos($string, $code); // æ–‡å­—åˆ—çµ‚äº†æ–‡å­—æ¤œç´¢
+						if ($pos1 === false) { // æ–‡å­—åˆ—ãŒçµ‚ã‚ã‚‰ãªã‹ã£ãŸã®ã§å…¨éƒ¨æ–‡å­—åˆ—ã¨ã™ã‚‹
+							$num_of_line += substr_count($string, "\n")+1; // ãƒ©ã‚¤ãƒ³æ•°ã‚«ã‚¦ãƒ³ãƒˆ
+							// æœ€å¾Œã®ä½™åˆ†ãªæ”¹è¡Œã‚’å‰Šé™¤
+							if ($string[strlen($string)-2] == ' ')
+								$string = substr($string, 0, -2);
+							else
+								$string = substr($string, 0, -1);
+							$result = $code.$result.$string;
+							$str_len = 0;
+							$str_pos = 0;
+							$string = '';
+							$code = false;
+							$result = htmlsc($result, ENT_QUOTES);
+							if ($option['link']) 
+								$result = preg_replace('/(s?https?:\/\/|ftp:\/\/|mailto:)([-_.!~*()a-zA-Z0-9;\/:@?=+$,%#]|&amp;)+/',
+													   '<a href="$0">$0</a>',$result);
+							$html .= '<span class="'.PLUGIN_CODE_HEADER.'string">'.$result.'</span>';
+							break 3;
+						} else {
+							$result = $code.$result.substr($string, 0, $pos1+2);
+							$num_of_line += substr_count($result, "\n")-1; // ãƒ©ã‚¤ãƒ³æ•°ã‚«ã‚¦ãƒ³ãƒˆ
+							$string = substr($string, $pos1+2);
+							if ($string[$pos1+2] == "\n") {
+								$str_len = 0;
+								$str_pos = 0;
+								$code = false;
+							} else {
+								$code = $line[$str_pos++]; // getc
+								$line = $this->getline($string);
+								$str_len = strlen($line);
+								$str_pos = 0;
+							}
+						}
+					} else {
+						$str_pos += $pos1 + 1;
+						$result = $code.substr($line, $pos, $str_pos - $pos);
+					}
+					// htmlã«è¿½åŠ 
+					$result = htmlsc($result, ENT_QUOTES);
+					if ($option['link']) 
+						$result = preg_replace('/(s?https?:\/\/|ftp:\/\/|mailto:)([-_.!~*()a-zA-Z0-9;\/:@?=+$,%#]|&amp;)+/',
+											   '<a href="$0">$0</a>',$result);
+					$html .= '<span class="'.PLUGIN_CODE_HEADER.'string">'.$result.'</span>';
+					
+					// æ¬¡ã®æ¤œç´¢ç”¨ã«èª­ã¿è¾¼ã¿
+					if ($str_len == $str_pos) $code = false; else $code = $line[$str_pos++]; // getc
+					continue 2;
 
-                case PLUGIN_CODE_COMMENT_CHAR: // 1Ê¸»ú¤Ç·è¤Ş¤ë¥³¥á¥ó¥È
-                    $line = substr($line, $str_pos-1, $str_len-$str_pos);
-                    $line = htmlspecialchars($line, ENT_QUOTES);
-                    if ($option['link']) 
-                        $line = preg_replace('/(s?https?:\/\/|ftp:\/\/|mailto:)([-_.!~*()a-zA-Z0-9;\/:@?=+$,%#]|&amp;)+/',
-                                             '<a href="$0">$0</a>',$line);
-                    if ($str_continue != 0) {
-                        $this->endRegion($num_of_line);
-                        $html .= '</span>';
-                    }
-                    $html .= '<span class="'.PLUGIN_CODE_HEADER.'comment">'.$line.'</span>'."\n";
-                    
-                    $line = $this->getline($string); // next line
-                    continue 3;
-                } //switch
-                // ¤½¤ÎÂ¾¤ÎÊ¸»ú
-                $result = $spaceHash[$code];
-                if ($result) {
-                    $html .= $result;
-                } else {
-                    if ($str_continue != 0) {
-                        $this->endRegion($num_of_line);
-                        $html .= '</span>';
-                        $str_continue = 0;
-                    }
-                    $result = isset($htmlHash[$code]) ? $htmlHash[$code] : '';
-                    if ($result) {
-                        $html .= $result;
-                    } else {
-                        $html .= $code;
-                    }
-                }
-                // ¼¡¤Î¸¡º÷ÍÑ¤ËÆÉ¤ß¹ş¤ß
-                if ($str_len == $str_pos) $code = false; else $code = $line[$str_pos++]; // getc
+				case PLUGIN_CODE_COMMENT_CHAR: // 1æ–‡å­—ã§æ±ºã¾ã‚‹ã‚³ãƒ¡ãƒ³ãƒˆ
+					$line = substr($line, $str_pos-1, $str_len-$str_pos);
+					$line = htmlsc($line, ENT_QUOTES);
+					if ($option['link']) 
+						$line = preg_replace('/(s?https?:\/\/|ftp:\/\/|mailto:)([-_.!~*()a-zA-Z0-9;\/:@?=+$,%#]|&amp;)+/',
+											 '<a href="$0">$0</a>',$line);
+					if ($str_continue != 0) {
+						$this->endRegion($num_of_line);
+						$html .= '</span>';
+					}
+					$html .= '<span class="'.PLUGIN_CODE_HEADER.'comment">'.$line.'</span>'."\n";
+					
+					$line = $this->getline($string); // next line
+					continue 3;
+				} //switch
+				// ãã®ä»–ã®æ–‡å­—
+				$result = $spaceHash[$code];
+				if ($result) {
+					$html .= $result;
+				} else {
+					if ($str_continue != 0) {
+						$this->endRegion($num_of_line);
+						$html .= '</span>';
+						$str_continue = 0;
+					}
+					$result = isset($htmlHash[$code]) ? $htmlHash[$code] : '';
+					if ($result) {
+						$html .= $result;
+					} else {
+						$html .= $code;
+					}
+				}
+				// æ¬¡ã®æ¤œç´¢ç”¨ã«èª­ã¿è¾¼ã¿
+				if ($str_len == $str_pos) $code = false; else $code = $line[$str_pos++]; // getc
 
-            }// char
-            $line = $this->getline($string); // next line
-        } // line
-        
-        // ºÇ¸å¤ÎÍ¾Ê¬¤Ê²ş¹Ô¤òºï½ü
-        if ($html[strlen($html)-2] == ' ') {
-            $html = substr($html, 0, -2);
-            --$num_of_line;
-        } else {
-            $html = substr($html, 0, -1);
-        }
-        
-        $html = array('src' => $html, 'number' => '', 'outline' => '', 'blocknum' => $this->blockno);
-        if($option['outline']) 
-            return $this->makeOutline($html, $option['number'],$num_of_line-1, $begin); // ºÇ¸å¤Ë²ş¹Ô¤òºï½ü¤·¤¿¤¿¤á -1
-        if($option['number']) $html['number'] = _plugin_code_makeNumber($num_of_line-1, $begin); 
-        return $html;
-    }
-    /**
-      * ¥½¡¼¥¹¤«¤éHTMLÀ¸À®
-      */
-    function srcToHTML(& $string, & $lang, & $option, $end = null, $begin = 1) {
-        // ¥Æ¡¼¥Ö¥ë¥¸¥ã¥ó¥×ÍÑ¥Ï¥Ã¥·¥å
-        $switchHash = Array();
-        $capital = 0; // ÂçÊ¸»ú¾®Ê¸»ú¤ò¶èÊÌ¤·¤Ê¤¤
-        $mkoutline = $option['outline'];
-        $mknumber  = $option['number'];
+			}// char
+			$line = $this->getline($string); // next line
+		} // line
+		
+		// æœ€å¾Œã®ä½™åˆ†ãªæ”¹è¡Œã‚’å‰Šé™¤
+		if ($html[strlen($html)-2] == ' ') {
+			$html = substr($html, 0, -2);
+			--$num_of_line;
+		} else {
+			$html = substr($html, 0, -1);
+		}
+		
+		$html = array('src' => $html, 'number' => '', 'outline' => '', 'blocknum' => $this->blockno);
+		if($option['outline']) 
+			return $this->makeOutline($html, $option['number'],$num_of_line-1, $begin); // æœ€å¾Œã«æ”¹è¡Œã‚’å‰Šé™¤ã—ãŸãŸã‚ -1
+		if($option['number']) $html['number'] = _plugin_code_makeNumber($num_of_line-1, $begin); 
+		return $html;
+	}
+	/**
+	  * ã‚½ãƒ¼ã‚¹ã‹ã‚‰HTMLç”Ÿæˆ
+	  */
+	function srcToHTML(& $string, & $lang, & $option, $end = null, $begin = 1) {
+		// ãƒ†ãƒ¼ãƒ–ãƒ«ã‚¸ãƒ£ãƒ³ãƒ—ç”¨ãƒãƒƒã‚·ãƒ¥
+		$switchHash = Array();
+		$capital = 0; // å¤§æ–‡å­—å°æ–‡å­—ã‚’åŒºåˆ¥ã—ãªã„
+		$mkoutline = $option['outline'];
+		$mknumber  = $option['number'];
 
-        // ²ş¹Ô
-        $switchHash["\n"] = PLUGIN_CODE_CARRIAGERETURN;
+		// æ”¹è¡Œ
+		$switchHash["\n"] = PLUGIN_CODE_CARRIAGERETURN;
 
-        $switchHash['\\'] = PLUGIN_CODE_ESCAPE;
-        // ¼±ÊÌ»Ò³«»ÏÊ¸»ú
-        for ($i = ord('a'); $i <= ord('z'); ++$i)
-            $switchHash[chr($i)] = PLUGIN_CODE_IDENTIFIRE;
-        for ($i = ord('A'); $i <= ord('Z'); ++$i)
-            $switchHash[chr($i)] = PLUGIN_CODE_IDENTIFIRE;
-        $switchHash['_'] = PLUGIN_CODE_IDENTIFIRE;
+		$switchHash['\\'] = PLUGIN_CODE_ESCAPE;
+		// è­˜åˆ¥å­é–‹å§‹æ–‡å­—
+		for ($i = ord('a'); $i <= ord('z'); ++$i)
+			$switchHash[chr($i)] = PLUGIN_CODE_IDENTIFIRE;
+		for ($i = ord('A'); $i <= ord('Z'); ++$i)
+			$switchHash[chr($i)] = PLUGIN_CODE_IDENTIFIRE;
+		$switchHash['_'] = PLUGIN_CODE_IDENTIFIRE;
 
-        // Ê¸»úÎó³«»ÏÊ¸»ú
-        $switchHash['"'] = PLUGIN_CODE_STRING_LITERAL;
+		// æ–‡å­—åˆ—é–‹å§‹æ–‡å­—
+		$switchHash['"'] = PLUGIN_CODE_STRING_LITERAL;
 
-        // ¸À¸ìÄêµÁ¥Õ¥¡¥¤¥ëÆÉ¤ß¹ş¤ß
-        $code_space_keyword = Array(); // HACK: ¥¹¥Ú¡¼¥¹ÉÕ¤­¥­¡¼¥ï¡¼¥É
-        include(PLUGIN_DIR.'code/keyword.'.$lang.'.php');
+		// è¨€èªå®šç¾©ãƒ•ã‚¡ã‚¤ãƒ«èª­ã¿è¾¼ã¿
+		$code_space_keyword = Array(); // HACK: ã‚¹ãƒšãƒ¼ã‚¹ä»˜ãã‚­ãƒ¼ãƒ¯ãƒ¼ãƒ‰
+		include(PLUGIN_DIR.'code/keyword.'.$lang.'.php');
 
-        // HACK: ¥­¡¼¥ï¡¼¥É¹½À®Ê¸»ú(Àµµ¬É½¸½)
-        $keyword_letters = 'A-Za-z0-9_';
-        foreach ((array_keys($code_space_keyword) + array_keys($code_keyword)) as $kwd)
-        {
-            if (strpos($kwd, '-') !== false)
-            {
-                // ¥Ï¥¤¥Õ¥ó¤¬»È¤ï¤ì¤Æ¤¤¤ë¥­¡¼¥ï¡¼¥É¤¬¤¢¤ë¤Ê¤é¹½À®Ê¸»ú¤ËÄÉ²Ã
-                $keyword_letters .= '\-';
-                break;
-            }
-        }
+		// HACK: ã‚­ãƒ¼ãƒ¯ãƒ¼ãƒ‰æ§‹æˆæ–‡å­—(æ­£è¦è¡¨ç¾)
+		$keyword_letters = 'A-Za-z0-9_';
+		foreach ((array_keys($code_space_keyword) + array_keys($code_keyword)) as $kwd)
+		{
+			if (strpos($kwd, '-') !== false)
+			{
+				// ãƒã‚¤ãƒ•ãƒ³ãŒä½¿ã‚ã‚Œã¦ã„ã‚‹ã‚­ãƒ¼ãƒ¯ãƒ¼ãƒ‰ãŒã‚ã‚‹ãªã‚‰æ§‹æˆæ–‡å­—ã«è¿½åŠ 
+				$keyword_letters .= '\-';
+				break;
+			}
+		}
 
-        // Ê¸»ú->htmlÊÑ´¹ÍÑ¥Ï¥Ã¥·¥å
-        $htmlHash = Array('"' => '&quot;', '\'' => '&#039;', '<' => '&lt;', '>' => '&gt;', '&' => '&amp;');
-        $spaceHash = Array("\t" => PLUGIN_CODE_WIDTHOFTAB, ' ' => ' ');
+		// æ–‡å­—->htmlå¤‰æ›ç”¨ãƒãƒƒã‚·ãƒ¥
+		$htmlHash = Array('"' => '&quot;', '\'' => '&#039;', '<' => '&lt;', '>' => '&gt;', '&' => '&amp;');
+		$spaceHash = Array("\t" => PLUGIN_CODE_WIDTHOFTAB, ' ' => ' ');
 
-        $html = '';
-        $str_len = strlen($string);
-        $str_pos = 0;
-        $num_of_line = $begin;  // ¹Ô¿ô¤ò¥«¥¦¥ó¥È
-        $this->nestlevel = 1;// ¥Í¥¹¥È
-        $this->blockno = 0;// ²¿ÈÖÌÜ¤Î¥Ö¥í¥Ã¥¯¤«¡©ID¤ò¥æ¥Ë¡¼¥¯¤Ë¤¹¤ë¤¿¤á¤ËÍÑ¤¤¤ë
-        $terminate = array();  // ¥Ö¥í¥Ã¥¯½ªÃ¼Ê¸»ú
-        $str_continue = 0; // ¥Ö¥í¥Ã¥¯¤Î¼ïÎà
-        $startline = 1; // ¹ÔÆ¬È½Äê
-        //$indentlevel = 0; // ¥¤¥ó¥Ç¥ó¥È¤Î¿¼¤µ
+		$html = '';
+		$str_len = strlen($string);
+		$str_pos = 0;
+		$num_of_line = $begin;  // è¡Œæ•°ã‚’ã‚«ã‚¦ãƒ³ãƒˆ
+		$this->nestlevel = 1;// ãƒã‚¹ãƒˆ
+		$this->blockno = 0;// ä½•ç•ªç›®ã®ãƒ–ãƒ­ãƒƒã‚¯ã‹ï¼ŸIDã‚’ãƒ¦ãƒ‹ãƒ¼ã‚¯ã«ã™ã‚‹ãŸã‚ã«ç”¨ã„ã‚‹
+		$terminate = array();  // ãƒ–ãƒ­ãƒƒã‚¯çµ‚ç«¯æ–‡å­—
+		$str_continue = 0; // ãƒ–ãƒ­ãƒƒã‚¯ã®ç¨®é¡
+		$startline = 1; // è¡Œé ­åˆ¤å®š
+		//$indentlevel = 0; // ã‚¤ãƒ³ãƒ‡ãƒ³ãƒˆã®æ·±ã•
 
-        // ºÇ½é¤Î¸¡º÷ÍÑ¤ËÆÉ¤ß¹ş¤ß
-        if ($str_len == $str_pos) $code = false; else $code = $string[$str_pos++];// getc
-        while ($code !== false) {
+		// æœ€åˆã®æ¤œç´¢ç”¨ã«èª­ã¿è¾¼ã¿
+		if ($str_len == $str_pos) $code = false; else $code = $string[$str_pos++];// getc
+		while ($code !== false) {
 
-            $hash_tmp = isset($switchHash[$code]) ? $switchHash[$code] : '';
-            switch ($hash_tmp) {
+			$hash_tmp = isset($switchHash[$code]) ? $switchHash[$code] : '';
+			switch ($hash_tmp) {
 
-            case PLUGIN_CODE_CARRIAGERETURN: // ²ş¹Ô
-                $startline = 1;
-                if ($str_continue == PLUGIN_CODE_STRING_LITERAL) {
-                    $result = ltrim(substr($string, $str_pos));
-                    $code = $result[0];
-                    switch ($switchHash[$code]) {
-                    case PLUGIN_CODE_STRING_LITERAL:
-                    case PLUGIN_CODE_NONESCAPE_LITERAL:
-                    case PLUGIN_CODE_PAIR_LITERAL:
-                    case PLUGIN_CODE_STRING_CONCAT:
-                        break;
-                    default:
-                        $this->endRegion($num_of_line);
-                        $html .= '</span>';
-                        $str_continue = 0;
-                    }
-                } else if ($str_continue != 0) {
-                    $this->endRegion($num_of_line);
-                    $html .= '</span>';
-                    $str_continue = 0;
-                }
-                ++$num_of_line;
-                $html .="\n";
+			case PLUGIN_CODE_CARRIAGERETURN: // æ”¹è¡Œ
+				$startline = 1;
+				if ($str_continue == PLUGIN_CODE_STRING_LITERAL) {
+					$result = ltrim(substr($string, $str_pos));
+					$code = $result[0];
+					switch ($switchHash[$code]) {
+					case PLUGIN_CODE_STRING_LITERAL:
+					case PLUGIN_CODE_NONESCAPE_LITERAL:
+					case PLUGIN_CODE_PAIR_LITERAL:
+					case PLUGIN_CODE_STRING_CONCAT:
+						break;
+					default:
+						$this->endRegion($num_of_line);
+						$html .= '</span>';
+						$str_continue = 0;
+					}
+				} else if ($str_continue != 0) {
+					$this->endRegion($num_of_line);
+					$html .= '</span>';
+					$str_continue = 0;
+				}
+				++$num_of_line;
+				$html .="\n";
 
-                // ¼¡¤Î¸¡º÷ÍÑ¤ËÆÉ¤ß¹ş¤ß
-                if ($str_len == $str_pos) $code = false; else $code = $string[$str_pos++]; // getc
-                continue 2;
+				// æ¬¡ã®æ¤œç´¢ç”¨ã«èª­ã¿è¾¼ã¿
+				if ($str_len == $str_pos) $code = false; else $code = $string[$str_pos++]; // getc
+				continue 2;
 
-            case PLUGIN_CODE_ESCAPE:
-                $startline = 0;
-                if ($str_continue != 0) {
-                    $this->endRegion($num_of_line);
-                    $html .= '</span>';
-                    $str_continue = 0;
-                }
-                // escape charactor
-                $start = $code;
-                // È½ÄêÍÑ¤Ë¤â¤¦1Ê¸»úÆÉ¤ß¹ş¤à
-                if ($str_len == $str_pos)
-                    $code = false;
-                else
-                    $code = $string[$str_pos++]; // getc
-                if (ctype_alnum($code)) {
-                    // Ê¸»ú(ÊÑ¿ô)¤Ê¤é½ªÃ¼¤Ş¤Ç¸«ÉÕ¤±¤ë
-                    --$str_pos; // ¥¨¥é¡¼½èÍı¤·¤¿¤¯¤Ê¤¤¤«¤épreg_match¤ÇÉ¬¤º¸«¤Ä¤«¤ë¤è¤¦¤Ë¤¹¤ë
-                    $result = substr($string, $str_pos);
-                    preg_match('/[A-Za-z0-9_]+/', $result, $matches);
-                    $str_pos += strlen($matches[0]);
-                    $result = $matches[0];
-                } else {
-                    // µ­¹æ¤Ê¤é1Ê¸»ú¤À¤±ÀÚ¤ê½Ğ¤¹
-                    $result = $code;
-                    if ($code == "\n") ++$num_of_line;
-                }
-                // html¤ËÄÉ²Ã
-                $html .= htmlspecialchars($start.$result, ENT_QUOTES);
-                
-                // ¼¡¤Î¸¡º÷ÍÑ¤ËÆÉ¤ß¹ş¤ß
-                if ($str_len == $str_pos) $code = false; else $code = $string[$str_pos++]; // getc
-                continue 2;
-            case PLUGIN_CODE_COMMENT:
-                // ¥³¥á¥ó¥È
-                --$str_pos;
-                $result = substr($string, $str_pos);
-                foreach($code_comment[$code] as $pattern) {
-                    if (preg_match($pattern[0], $result)) {
-                        $pos = strpos($result, $pattern[1]);
-                        if ($pos === false) { // ¸«¤Ä¤«¤é¤Ê¤¤¤È¤­¤Ï½ª¤ï¤ê¤Ş¤Ç
-                            $str_pos = $str_len;
-                            //$result = $result; ¤Ã¤Æ¤³¤È¤Ç²¿¤â¤·¤Ê¤¤
-                        } else {
-                            $pos += $pattern[2];
-                            $str_pos += $pos;
-                            $result = substr($result, 0, $pos);
-                        }
-                        // ¥é¥¤¥ó¿ô¥«¥¦¥ó¥È
-                        $commentlines = substr_count($result,"\n");
-                        
-                        if ($pattern[1] == "\n") {
-                            if($str_continue != PLUGIN_CODE_COMMENT) {
-                                if ($str_continue != 0) {
-                                    $this->endRegion($num_of_line-1);
-                                    $html .= '</span>';
-                                }
-                                if ($option['comment'] && $startline) {
-                                    $this->beginRegion($num_of_line);
-                                    // ¥¢¥¦¥È¥é¥¤¥ó¤¬ÊÄ¤¸¤¿»ş¤ËÉ½¼¨¤¹¤ë²èÁü¤òËä¤á¹ş¤à¾ì½ê
-                                    //$html .= '<span id="'.PLUGIN_CODE_HEADER.$this->id_number.'_'.$this->blockno.'_img" display="none"></span>';
-                                    $html .= '<span id="'.PLUGIN_CODE_HEADER.$this->id_number.'_'.$this->blockno.'" class="'.PLUGIN_CODE_HEADER.'comment">';
-                                    $str_continue = PLUGIN_CODE_COMMENT;
-                                }
-                            }
-                            ++$num_of_line;
-                            $startline = 1;
-                        } else {
-                            if ($str_continue != 0) {
-                                $this->endRegion($num_of_line);
-                                $html .= '</span>';
-                                $str_continue = 0;
-                            }
-                            if ($option['comment']) {
-                                $is_comment = 0;
-                                if ($commentlines >= 1) {
-                                    if(! isset($this->outline[$num_of_line])) {
-                                        $this->outline[$num_of_line]=Array();
-                                    }
-                                    $this->beginRegion($num_of_line);
-                                    $num_of_line += $commentlines;
-                                    $this->endRegion($num_of_line);
-                                }
-                            } 
-                            else
-                                $num_of_line += $commentlines;
-                            $startline = 0;
-                        }
-                        
-                        // html¤ËÄÉ²Ã
-                        $result = str_replace("\t", PLUGIN_CODE_WIDTHOFTAB, htmlspecialchars($result, ENT_QUOTES));
-                        if ($option['link']) 
-                            $result = preg_replace('/(s?https?:\/\/|ftp:\/\/|mailto:)([-_.!~*()a-zA-Z0-9;\/:@?=+$,%#]|&amp;)+/',
-                                                   '<a href="$0">$0</a>',$result);
-                        // ¥¢¥¦¥È¥é¥¤¥ó¤¬ÊÄ¤¸¤¿»ş¤ËÉ½¼¨¤¹¤ë²èÁü¤òËä¤á¹ş¤à¾ì½ê
-                        //$html .= '<span id="'.PLUGIN_CODE_HEADER.$this->id_number.'_'.$this->blockno.'_img" display="none"></span>';
-                        $html .= '<span id="'.PLUGIN_CODE_HEADER.$this->id_number.'_'.$this->blockno.'" class="'.PLUGIN_CODE_HEADER.'comment">'
-                            .$result.'</span>';
-                        // ¼¡¤Î¸¡º÷ÍÑ¤ËÆÉ¤ß¹ş¤ß
-                        if ($str_len == $str_pos) $code = false; else $code = $string[$str_pos++]; // getc
-                        continue 3;
-                    }
-                }
-                // ¥³¥á¥ó¥È¤Ç¤Ï¤Ê¤¤
-                ++$str_pos;
-                break;
-                
-            case PLUGIN_CODE_COMMENT_WORD:
-                // Ê¸»úÎó¤«¤é»Ï¤Ş¤ë¥³¥á¥ó¥È
-                
-                // ½ĞÍè¤ë¸Â¤êÄ¹¤¯¼±ÊÌ»Ò¤òÆÀ¤ë
-                --$str_pos;
-                $result = substr($string, $str_pos);
-                foreach($code_comment[$code] as $pattern) {
-                    if (preg_match($pattern[0], $result)) {
-                        $pos = strpos($result, $pattern[1]);
-                        if ($pos === false) { // ¸«¤Ä¤«¤é¤Ê¤¤¤È¤­¤Ï½ª¤ï¤ê¤Ş¤Ç
-                            $str_pos = $str_len;
-                            //$result = $result; ¤Ã¤Æ¤³¤È¤Ç²¿¤â¤·¤Ê¤¤
-                        } else {
-                            $pos += $pattern[2];
-                            $str_pos += $pos;
-                            $result = substr($result, 0, $pos);
-                        }
+			case PLUGIN_CODE_ESCAPE:
+				$startline = 0;
+				if ($str_continue != 0) {
+					$this->endRegion($num_of_line);
+					$html .= '</span>';
+					$str_continue = 0;
+				}
+				// escape charactor
+				$start = $code;
+				// åˆ¤å®šç”¨ã«ã‚‚ã†1æ–‡å­—èª­ã¿è¾¼ã‚€
+				if ($str_len == $str_pos)
+					$code = false;
+				else
+					$code = $string[$str_pos++]; // getc
+				if (ctype_alnum($code)) {
+					// æ–‡å­—(å¤‰æ•°)ãªã‚‰çµ‚ç«¯ã¾ã§è¦‹ä»˜ã‘ã‚‹
+					--$str_pos; // ã‚¨ãƒ©ãƒ¼å‡¦ç†ã—ãŸããªã„ã‹ã‚‰preg_matchã§å¿…ãšè¦‹ã¤ã‹ã‚‹ã‚ˆã†ã«ã™ã‚‹
+					$result = substr($string, $str_pos);
+					preg_match('/[A-Za-z0-9_]+/', $result, $matches);
+					$str_pos += strlen($matches[0]);
+					$result = $matches[0];
+				} else {
+					// è¨˜å·ãªã‚‰1æ–‡å­—ã ã‘åˆ‡ã‚Šå‡ºã™
+					$result = $code;
+					if ($code == "\n") ++$num_of_line;
+				}
+				// htmlã«è¿½åŠ 
+				$html .= htmlsc($start.$result, ENT_QUOTES);
+				
+				// æ¬¡ã®æ¤œç´¢ç”¨ã«èª­ã¿è¾¼ã¿
+				if ($str_len == $str_pos) $code = false; else $code = $string[$str_pos++]; // getc
+				continue 2;
+			case PLUGIN_CODE_COMMENT:
+				// ã‚³ãƒ¡ãƒ³ãƒˆ
+				--$str_pos;
+				$result = substr($string, $str_pos);
+				foreach($code_comment[$code] as $pattern) {
+					if (preg_match($pattern[0], $result)) {
+						$pos = strpos($result, $pattern[1]);
+						if ($pos === false) { // è¦‹ã¤ã‹ã‚‰ãªã„ã¨ãã¯çµ‚ã‚ã‚Šã¾ã§
+							$str_pos = $str_len;
+							//$result = $result; ã£ã¦ã“ã¨ã§ä½•ã‚‚ã—ãªã„
+						} else {
+							$pos += $pattern[2];
+							$str_pos += $pos;
+							$result = substr($result, 0, $pos);
+						}
+						// ãƒ©ã‚¤ãƒ³æ•°ã‚«ã‚¦ãƒ³ãƒˆ
+						$commentlines = substr_count($result,"\n");
+						
+						if ($pattern[1] == "\n") {
+							if($str_continue != PLUGIN_CODE_COMMENT) {
+								if ($str_continue != 0) {
+									$this->endRegion($num_of_line-1);
+									$html .= '</span>';
+								}
+								if ($option['comment'] && $startline) {
+									$this->beginRegion($num_of_line);
+									// ã‚¢ã‚¦ãƒˆãƒ©ã‚¤ãƒ³ãŒé–‰ã˜ãŸæ™‚ã«è¡¨ç¤ºã™ã‚‹ç”»åƒã‚’åŸ‹ã‚è¾¼ã‚€å ´æ‰€
+									//$html .= '<span id="'.PLUGIN_CODE_HEADER.$this->id_number.'_'.$this->blockno.'_img" display="none"></span>';
+									$html .= '<span id="'.PLUGIN_CODE_HEADER.$this->id_number.'_'.$this->blockno.'" class="'.PLUGIN_CODE_HEADER.'comment">';
+									$str_continue = PLUGIN_CODE_COMMENT;
+								}
+							}
+							++$num_of_line;
+							$startline = 1;
+						} else {
+							if ($str_continue != 0) {
+								$this->endRegion($num_of_line);
+								$html .= '</span>';
+								$str_continue = 0;
+							}
+							if ($option['comment']) {
+								$is_comment = 0;
+								if ($commentlines >= 1) {
+									if(! isset($this->outline[$num_of_line])) {
+										$this->outline[$num_of_line]=Array();
+									}
+									$this->beginRegion($num_of_line);
+									$num_of_line += $commentlines;
+									$this->endRegion($num_of_line);
+								}
+							} 
+							else
+								$num_of_line += $commentlines;
+							$startline = 0;
+						}
+						
+						// htmlã«è¿½åŠ 
+						$result = str_replace("\t", PLUGIN_CODE_WIDTHOFTAB, htmlsc($result, ENT_QUOTES));
+						if ($option['link']) 
+							$result = preg_replace('/(s?https?:\/\/|ftp:\/\/|mailto:)([-_.!~*()a-zA-Z0-9;\/:@?=+$,%#]|&amp;)+/',
+												   '<a href="$0">$0</a>',$result);
+						// ã‚¢ã‚¦ãƒˆãƒ©ã‚¤ãƒ³ãŒé–‰ã˜ãŸæ™‚ã«è¡¨ç¤ºã™ã‚‹ç”»åƒã‚’åŸ‹ã‚è¾¼ã‚€å ´æ‰€
+						//$html .= '<span id="'.PLUGIN_CODE_HEADER.$this->id_number.'_'.$this->blockno.'_img" display="none"></span>';
+						$html .= '<span id="'.PLUGIN_CODE_HEADER.$this->id_number.'_'.$this->blockno.'" class="'.PLUGIN_CODE_HEADER.'comment">'
+							.$result.'</span>';
+						// æ¬¡ã®æ¤œç´¢ç”¨ã«èª­ã¿è¾¼ã¿
+						if ($str_len == $str_pos) $code = false; else $code = $string[$str_pos++]; // getc
+						continue 3;
+					}
+				}
+				// ã‚³ãƒ¡ãƒ³ãƒˆã§ã¯ãªã„
+				++$str_pos;
+				break;
+				
+			case PLUGIN_CODE_COMMENT_WORD:
+				// æ–‡å­—åˆ—ã‹ã‚‰å§‹ã¾ã‚‹ã‚³ãƒ¡ãƒ³ãƒˆ
+				
+				// å‡ºæ¥ã‚‹é™ã‚Šé•·ãè­˜åˆ¥å­ã‚’å¾—ã‚‹
+				--$str_pos;
+				$result = substr($string, $str_pos);
+				foreach($code_comment[$code] as $pattern) {
+					if (preg_match($pattern[0], $result)) {
+						$pos = strpos($result, $pattern[1]);
+						if ($pos === false) { // è¦‹ã¤ã‹ã‚‰ãªã„ã¨ãã¯çµ‚ã‚ã‚Šã¾ã§
+							$str_pos = $str_len;
+							//$result = $result; ã£ã¦ã“ã¨ã§ä½•ã‚‚ã—ãªã„
+						} else {
+							$pos += $pattern[2];
+							$str_pos += $pos;
+							$result = substr($result, 0, $pos);
+						}
 
-                        if($str_continue != PLUGIN_CODE_COMMENT) {
-                            if ($str_continue != 0) {
-                                $this->endRegion($num_of_line);
-                                $html .= '</span>';
-                            }
-                            if ($option['comment'] && $startline) {
-                                $this->beginRegion($num_of_line);
-                                // ¥¢¥¦¥È¥é¥¤¥ó¤¬ÊÄ¤¸¤¿»ş¤ËÉ½¼¨¤¹¤ë²èÁü¤òËä¤á¹ş¤à¾ì½ê
-                                //$html .= '<span id="'.PLUGIN_CODE_HEADER.$this->id_number.'_'.$this->blockno.'_img" display="none"></span>';
-                                $html .= '<span id="'.PLUGIN_CODE_HEADER.$this->id_number.'_'.$this->blockno.'" class="'.PLUGIN_CODE_HEADER.'comment">';
-                                $str_continue = PLUGIN_CODE_COMMENT;
-                            }
-                        }
-                        ++$num_of_line;
-                        $startline = 1;
-                        // html¤ËÄÉ²Ã
-                        $result = str_replace("\t", PLUGIN_CODE_WIDTHOFTAB, htmlspecialchars($result, ENT_QUOTES));
-                        if ($option['link']) 
-                            $result = preg_replace('/(s?https?:\/\/|ftp:\/\/|mailto:)([-_.!~*()a-zA-Z0-9;\/:@?=+$,%#]|&amp;)+/',
-                                                   '<a href="$0">$0</a>',$result);
-                        $html .= '<span class="'.PLUGIN_CODE_HEADER.'comment">'.$result.'</span>';
-                        // ¼¡¤Î¸¡º÷ÍÑ¤ËÆÉ¤ß¹ş¤ß
-                        if ($str_len == $str_pos) $code = false; else $code = $string[$str_pos++]; // getc
-                        continue 3;
-                    }
-                }
-                ++$str_pos;
-                // ¥³¥á¥ó¥È¤Ç¤Ê¤±¤ì¤ĞÊ¸»úÎó (break ¤ò»È¤ï¤Ê¤¤)
-            case PLUGIN_CODE_IDENTIFIRE:
-                // ¼±ÊÌ»Ò(¥¢¥ë¥Õ¥¡¥Ù¥Ã¥È¤«¤é»Ï¤Ş¤Ã¤Æ¤¤¤ë)
+						if($str_continue != PLUGIN_CODE_COMMENT) {
+							if ($str_continue != 0) {
+								$this->endRegion($num_of_line);
+								$html .= '</span>';
+							}
+							if ($option['comment'] && $startline) {
+								$this->beginRegion($num_of_line);
+								// ã‚¢ã‚¦ãƒˆãƒ©ã‚¤ãƒ³ãŒé–‰ã˜ãŸæ™‚ã«è¡¨ç¤ºã™ã‚‹ç”»åƒã‚’åŸ‹ã‚è¾¼ã‚€å ´æ‰€
+								//$html .= '<span id="'.PLUGIN_CODE_HEADER.$this->id_number.'_'.$this->blockno.'_img" display="none"></span>';
+								$html .= '<span id="'.PLUGIN_CODE_HEADER.$this->id_number.'_'.$this->blockno.'" class="'.PLUGIN_CODE_HEADER.'comment">';
+								$str_continue = PLUGIN_CODE_COMMENT;
+							}
+						}
+						++$num_of_line;
+						$startline = 1;
+						// htmlã«è¿½åŠ 
+						$result = str_replace("\t", PLUGIN_CODE_WIDTHOFTAB, htmlsc($result, ENT_QUOTES));
+						if ($option['link']) 
+							$result = preg_replace('/(s?https?:\/\/|ftp:\/\/|mailto:)([-_.!~*()a-zA-Z0-9;\/:@?=+$,%#]|&amp;)+/',
+												   '<a href="$0">$0</a>',$result);
+						$html .= '<span class="'.PLUGIN_CODE_HEADER.'comment">'.$result.'</span>';
+						// æ¬¡ã®æ¤œç´¢ç”¨ã«èª­ã¿è¾¼ã¿
+						if ($str_len == $str_pos) $code = false; else $code = $string[$str_pos++]; // getc
+						continue 3;
+					}
+				}
+				++$str_pos;
+				// ã‚³ãƒ¡ãƒ³ãƒˆã§ãªã‘ã‚Œã°æ–‡å­—åˆ— (break ã‚’ä½¿ã‚ãªã„)
+			case PLUGIN_CODE_IDENTIFIRE:
+				// è­˜åˆ¥å­(ã‚¢ãƒ«ãƒ•ã‚¡ãƒ™ãƒƒãƒˆã‹ã‚‰å§‹ã¾ã£ã¦ã„ã‚‹)
 
-                // HACK: ¥¹¥Ú¡¼¥¹ÉÕ¤­¥­¡¼¥ï¡¼¥É ->
-                $existSpaceKeyword = (count($code_space_keyword) > 0);
-                $loopCount = $existSpaceKeyword ? 3 : 1;
-                $str_pos_base = $str_pos - 1;
-                $str_base = substr($string, $str_pos_base);
+				// HACK: ã‚¹ãƒšãƒ¼ã‚¹ä»˜ãã‚­ãƒ¼ãƒ¯ãƒ¼ãƒ‰ ->
+				$existSpaceKeyword = (count($code_space_keyword) > 0);
+				$loopCount = $existSpaceKeyword ? 3 : 1;
+				$str_pos_base = $str_pos - 1;
+				$str_base = substr($string, $str_pos_base);
 
-                for ($loopIdx = 0; $loopIdx < $loopCount; ++$loopIdx) {
-                    // ½ĞÍè¤ë¸Â¤êÄ¹¤¯¼±ÊÌ»Ò¤òÆÀ¤ë
-                    $str_pos = $str_pos_base;
-                    $findSp = ($existSpaceKeyword && $loopIdx < 2);
-                    if ($findSp) {
-                        // ¤Ş¤º¤Ï¥¹¥Ú¡¼¥¹ÉÕ¤­¥­¡¼¥ï¡¼¥É¤òÄ´¤Ù¤ë
-                        // $loopIdx == 0 ¤Ê¤é¥¹¥Ú¡¼¥¹2¸Ä¡¢ $loopIdx == 1 ¤Ê¤é¥¹¥Ú¡¼¥¹1¸Ä
-                        $regText = '^[' . $keyword_letters . ']+\s+[' . $keyword_letters . ']+';
-                        if ($loopIdx == 0) { $regText .= '\s+[' . $keyword_letters . ']+'; }
-                        if (!preg_match('/' . $regText . '/', $str_base, $matches)) { continue; }
-                    }
-                    else {
-                        preg_match('/^[' . $keyword_letters . ']+/', $str_base, $matches);
-                    }
-                    $str_pos += strlen($matches[0]);
-                    $result = $matches[0];
+				for ($loopIdx = 0; $loopIdx < $loopCount; ++$loopIdx) {
+					// å‡ºæ¥ã‚‹é™ã‚Šé•·ãè­˜åˆ¥å­ã‚’å¾—ã‚‹
+					$str_pos = $str_pos_base;
+					$findSp = ($existSpaceKeyword && $loopIdx < 2);
+					if ($findSp) {
+						// ã¾ãšã¯ã‚¹ãƒšãƒ¼ã‚¹ä»˜ãã‚­ãƒ¼ãƒ¯ãƒ¼ãƒ‰ã‚’èª¿ã¹ã‚‹
+						// $loopIdx == 0 ãªã‚‰ã‚¹ãƒšãƒ¼ã‚¹2å€‹ã€ $loopIdx == 1 ãªã‚‰ã‚¹ãƒšãƒ¼ã‚¹1å€‹
+						$regText = '^[' . $keyword_letters . ']+\s+[' . $keyword_letters . ']+';
+						if ($loopIdx == 0) { $regText .= '\s+[' . $keyword_letters . ']+'; }
+						if (!preg_match('/' . $regText . '/', $str_base, $matches)) { continue; }
+					}
+					else {
+						preg_match('/^[' . $keyword_letters . ']+/', $str_base, $matches);
+					}
+					$str_pos += strlen($matches[0]);
+					$result = $matches[0];
 
-                    // ¥­¡¼¥ï¡¼¥ÉºîÀ®
-                    $keyText = '';
-                    $keywords = Array();
-                    if ($findSp) {
-                        // Ê£¿ô¤Î¥¹¥Ú¡¼¥¹¤Ï1¤Ä¤Ë¤Ş¤È¤á¤Æ¥­¡¼¥ï¡¼¥É¤È¤¹¤ë
-                        $keyText = preg_replace('/([' . $keyword_letters . ']+)\s+/', '\1 ', $result);
-	                    $keywords = $code_space_keyword;
-                    } else {
-                        $keyText = $result;
-	                    $keywords = $code_keyword;
-                    }
-                    if($capital) {
-                        // ÂçÊ¸»ú¡¦¾®Ê¸»ú¤ò¶èÊÌ¤·¤Ê¤¤
-                        $keyText = strtolower($keyText);
-                    }
+					// ã‚­ãƒ¼ãƒ¯ãƒ¼ãƒ‰ä½œæˆ
+					$keyText = '';
+					$keywords = Array();
+					if ($findSp) {
+						// è¤‡æ•°ã®ã‚¹ãƒšãƒ¼ã‚¹ã¯1ã¤ã«ã¾ã¨ã‚ã¦ã‚­ãƒ¼ãƒ¯ãƒ¼ãƒ‰ã¨ã™ã‚‹
+						$keyText = preg_replace('/([' . $keyword_letters . ']+)\s+/', '\1 ', $result);
+						$keywords = $code_space_keyword;
+					} else {
+						$keyText = $result;
+						$keywords = $code_keyword;
+					}
+					if($capital) {
+						// å¤§æ–‡å­—ãƒ»å°æ–‡å­—ã‚’åŒºåˆ¥ã—ãªã„
+						$keyText = strtolower($keyText);
+					}
 
-                    // ¥­¡¼¥ï¡¼¥É¸¡º÷
-                    $index = isset($keywords[$keyText]) ? $keywords[$keyText] : '';
+					// ã‚­ãƒ¼ãƒ¯ãƒ¼ãƒ‰æ¤œç´¢
+					$index = isset($keywords[$keyText]) ? $keywords[$keyText] : '';
 
-                    // ¥Õ¥©¡¼¥Ş¥Ã¥È
-                    $result = htmlspecialchars($result, ENT_QUOTES);
+					// ãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆ
+					$result = htmlsc($result, ENT_QUOTES);
 
-                    // Á°¤Î¥­¡¼¥ï¡¼¥É¤òÊÄ¤¸¤ë
-                    if ($str_continue != 0) {
-                        $this->endRegion($num_of_line);
-                        $html .= '</span>';
-                        $str_continue = 0;
-                    }
+					// å‰ã®ã‚­ãƒ¼ãƒ¯ãƒ¼ãƒ‰ã‚’é–‰ã˜ã‚‹
+					if ($str_continue != 0) {
+						$this->endRegion($num_of_line);
+						$html .= '</span>';
+						$str_continue = 0;
+					}
 
-                    // begin outline
-                    $htmlAdded = true;
-                    if ($option['block'] && isset($outline_def[$keyText])) {
-                        $status = $outline_def[$keyText];
-                        if ($option['outline'] && ! $status[1])
-                            $state = 0;
-                        else
-                            $state = 1;
-                        $display = $state?'':'none';
-                        if ($status[2] != 'startline' || $startline != 0) {
-                            $this->beginRegion($num_of_line, $state);
-                            $terminate[$this->nestlevel] = $status[0];
-                            $html .= '<span class="'.PLUGIN_CODE_HEADER.$code_css[$index-1].'">'.$result.'</span>'
-                                .'<span id="'.PLUGIN_CODE_HEADER.$this->id_number.'_'.$this->blockno.'_img" display="none"></span>'
-                                .'<span id="'.PLUGIN_CODE_HEADER.$this->id_number.'_'.$this->blockno.'" class="'.PLUGIN_CODE_HEADER.'block" style="display:'.$diplay.'">';
-                        } else {
-                            $html .= '<span class="'.PLUGIN_CODE_HEADER.$code_css[$index-1].'">'.$result.'</span>';
-                        }
-                    } else if (isset($terminate[$this->nestlevel]) && $keyText == $terminate[$this->nestlevel]) {
-                        $this->endRegion($num_of_line);
-                        $html .= '</span>';
-                        $html .= '<span class="'.PLUGIN_CODE_HEADER.$code_css[$index-1].'">'.$result.'</span>';
-                        //$pos1 = strpos($result2, "\n");
-                        // end outline
-                    } else if ($index != '') {
-                        $html .= '<span class="'.PLUGIN_CODE_HEADER.$code_css[$index-1].'">'.$result.'</span>';
-                    } else if (!$findSp) {
-                        $html .= $result;
-                    } else {
-                        $htmlAdded = false;
-                    }
+					// begin outline
+					$htmlAdded = true;
+					if ($option['block'] && isset($outline_def[$keyText])) {
+						$status = $outline_def[$keyText];
+						if ($option['outline'] && ! $status[1])
+							$state = 0;
+						else
+							$state = 1;
+						$display = $state?'':'none';
+						if ($status[2] != 'startline' || $startline != 0) {
+							$this->beginRegion($num_of_line, $state);
+							$terminate[$this->nestlevel] = $status[0];
+							$html .= '<span class="'.PLUGIN_CODE_HEADER.$code_css[$index-1].'">'.$result.'</span>'
+								.'<span id="'.PLUGIN_CODE_HEADER.$this->id_number.'_'.$this->blockno.'_img" display="none"></span>'
+								.'<span id="'.PLUGIN_CODE_HEADER.$this->id_number.'_'.$this->blockno.'" class="'.PLUGIN_CODE_HEADER.'block" style="display:'.$diplay.'">';
+						} else {
+							$html .= '<span class="'.PLUGIN_CODE_HEADER.$code_css[$index-1].'">'.$result.'</span>';
+						}
+					} else if (isset($terminate[$this->nestlevel]) && $keyText == $terminate[$this->nestlevel]) {
+						$this->endRegion($num_of_line);
+						$html .= '</span>';
+						$html .= '<span class="'.PLUGIN_CODE_HEADER.$code_css[$index-1].'">'.$result.'</span>';
+						//$pos1 = strpos($result2, "\n");
+						// end outline
+					} else if ($index != '') {
+						$html .= '<span class="'.PLUGIN_CODE_HEADER.$code_css[$index-1].'">'.$result.'</span>';
+					} else if (!$findSp) {
+						$html .= $result;
+					} else {
+						$htmlAdded = false;
+					}
 
-                    // HTMLÄÉ²ÃºÑ¤ß¤Ê¤é¤ĞÈ´¤±¤ë
-                    if ($htmlAdded) { break; }
-                }
-                // <- ¥¹¥Ú¡¼¥¹ÉÕ¤­¥­¡¼¥ï¡¼¥É
+					// HTMLè¿½åŠ æ¸ˆã¿ãªã‚‰ã°æŠœã‘ã‚‹
+					if ($htmlAdded) { break; }
+				}
+				// <- ã‚¹ãƒšãƒ¼ã‚¹ä»˜ãã‚­ãƒ¼ãƒ¯ãƒ¼ãƒ‰
 
-                $startline = 0;
-                // ¼¡¤Î¸¡º÷ÍÑ¤ËÆÉ¤ß¹ş¤ß
-                if ($str_len == $str_pos) $code = false; else $code = $string[$str_pos++]; // getc
-                continue 2;
-                
-            case PLUGIN_CODE_SPECIAL_IDENTIFIRE:
-                // ÆÃ¼ìÊ¸»ú¤«¤é»Ï¤Ş¤ë¼±ÊÌ»Ò
-                // ¼¡¤ÎÊ¸»ú¤¬±Ñ»ú¤«È½Äê
-                if (! ctype_alpha($string[$str_pos])) break;
-                $result = substr($string, $str_pos);
-                preg_match('/[A-Za-z0-9_\-]+/', $result, $matches);
-                $str_pos += strlen($matches[0]);
-                $result = $code.$matches[0];
-                // html¤ËÄÉ²Ã
-                if($capital)
-                    $index = $code_keyword[strtolower($result)];// ÂçÊ¸»ú¾®Ê¸»ú¤ò¶èÊÌ¤·¤Ê¤¤
-                else
-                    $index = $code_keyword[$result];
-                $result = htmlspecialchars($result, ENT_QUOTES);
-                
-                if ($str_continue != 0) {
-                    $this->endRegion($num_of_line);
-                    $html .= '</span>';
-                    $str_continue = 0;
-                }
-                // begin outline
-                if ($option['block'] && isset($outline_def[$result])) {
-                    $status = $outline_def[$result];
-                    if ($option['outline'] && ! $status[1])
-                        $state = 0;
-                    else
-                        $state = 1;
-                    $display = $state ? '' : 'none';
+				$startline = 0;
+				// æ¬¡ã®æ¤œç´¢ç”¨ã«èª­ã¿è¾¼ã¿
+				if ($str_len == $str_pos) $code = false; else $code = $string[$str_pos++]; // getc
+				continue 2;
+				
+			case PLUGIN_CODE_SPECIAL_IDENTIFIRE:
+				// ç‰¹æ®Šæ–‡å­—ã‹ã‚‰å§‹ã¾ã‚‹è­˜åˆ¥å­
+				// æ¬¡ã®æ–‡å­—ãŒè‹±å­—ã‹åˆ¤å®š
+				if (! ctype_alpha($string[$str_pos])) break;
+				$result = substr($string, $str_pos);
+				preg_match('/[A-Za-z0-9_\-]+/', $result, $matches);
+				$str_pos += strlen($matches[0]);
+				$result = $code.$matches[0];
+				// htmlã«è¿½åŠ 
+				if($capital)
+					$index = $code_keyword[strtolower($result)];// å¤§æ–‡å­—å°æ–‡å­—ã‚’åŒºåˆ¥ã—ãªã„
+				else
+					$index = $code_keyword[$result];
+				$result = htmlsc($result, ENT_QUOTES);
+				
+				if ($str_continue != 0) {
+					$this->endRegion($num_of_line);
+					$html .= '</span>';
+					$str_continue = 0;
+				}
+				// begin outline
+				if ($option['block'] && isset($outline_def[$result])) {
+					$status = $outline_def[$result];
+					if ($option['outline'] && ! $status[1])
+						$state = 0;
+					else
+						$state = 1;
+					$display = $state ? '' : 'none';
 
-                    $this->beginRegion($num_of_line, $state);
-                    $terminate[$this->nestlevel] = $status[0];
+					$this->beginRegion($num_of_line, $state);
+					$terminate[$this->nestlevel] = $status[0];
 
-                    $html .= '<span class="'.PLUGIN_CODE_HEADER.$code_css[$index-1].'">'.$result.'</span>'
-                        .'<span id="'.PLUGIN_CODE_HEADER.$this->id_number.'_'.$this->blockno.'_img" display="none"></span>'
-                        .'<span id="'.PLUGIN_CODE_HEADER.$this->id_number.'_'.$this->blockno.'" class="'.PLUGIN_CODE_HEADER.'block" style="display:'.$display.'">';
-                } else if ($result == $terminate[$this->nestlevel]) {
-                    $result2 = substr($string, $str_pos);
-                    $html .= '</span>';
-                    $html .= '<span class="'.PLUGIN_CODE_HEADER.$code_css[$index-1].'">'.$result.'</span>';
-                    //$pos1 = strpos($result2, "\n");
-                    $this->endRegion($num_of_line);
-                    // end outline
-                } else if ($index!='')
-                    $html .= '<span class="'.PLUGIN_CODE_HEADER.$code_css[$index-1].'">'.$result.'</span>';
-                else
-                    $html .= $result;
+					$html .= '<span class="'.PLUGIN_CODE_HEADER.$code_css[$index-1].'">'.$result.'</span>'
+						.'<span id="'.PLUGIN_CODE_HEADER.$this->id_number.'_'.$this->blockno.'_img" display="none"></span>'
+						.'<span id="'.PLUGIN_CODE_HEADER.$this->id_number.'_'.$this->blockno.'" class="'.PLUGIN_CODE_HEADER.'block" style="display:'.$display.'">';
+				} else if ($result == $terminate[$this->nestlevel]) {
+					$result2 = substr($string, $str_pos);
+					$html .= '</span>';
+					$html .= '<span class="'.PLUGIN_CODE_HEADER.$code_css[$index-1].'">'.$result.'</span>';
+					//$pos1 = strpos($result2, "\n");
+					$this->endRegion($num_of_line);
+					// end outline
+				} else if ($index!='')
+					$html .= '<span class="'.PLUGIN_CODE_HEADER.$code_css[$index-1].'">'.$result.'</span>';
+				else
+					$html .= $result;
 
-                $startline = 0;
-                // ¼¡¤Î¸¡º÷ÍÑ¤ËÆÉ¤ß¹ş¤ß
-                if ($str_len == $str_pos) $code = false; else $code = $string[$str_pos++]; // getc
-                continue 2;
-            case PLUGIN_CODE_STRING_LITERAL:
-                // Ê¸»úÎó¥ê¥Æ¥é¥ë¤òÆÀ¤ë
-                $pos = $str_pos;
-                do {
-                    $result = substr($string, $str_pos);
-                    $pos1 = strpos($result, $code); // Ê¸»úÎó½ªÎ»Ê¸»ú¸¡º÷
-                    if ($pos1 === false) { // Ê¸»úÎó¤¬½ª¤ï¤é¤Ê¤«¤Ã¤¿¤Î¤ÇÁ´ÉôÊ¸»úÎó¤È¤¹¤ë
-                        $str_pos = $str_len-1;
-                        break;
-                    }
-                    $str_pos += $pos1 + 1;
-                } while ($string[$str_pos-2] == '\\'); // Á°¤ÎÊ¸»ú¤¬¥¨¥¹¥±¡¼¥×Ê¸»ú¤Ê¤éÂ³¤±¤ë
-                $result = $code.substr($string, $pos, $str_pos - $pos);
-                if($str_continue != PLUGIN_CODE_STRING_LITERAL) {
-                    if ($str_continue != 0) {
-                        $this->endRegion($num_of_line);
-                        $html .= '</span>';
-                    }
-                    if ($option['literal'] && $startline) {
-                        $this->beginRegion($num_of_line);
-                        // ¥¢¥¦¥È¥é¥¤¥ó¤¬ÊÄ¤¸¤¿»ş¤ËÉ½¼¨¤¹¤ë²èÁü¤òËä¤á¹ş¤à¾ì½ê
-                        //$html .= '<span id="'.PLUGIN_CODE_HEADER.$this->id_number.'_'.$this->blockno.'_img" display="none"></span>';
-                        $html .= '<span id="'.PLUGIN_CODE_HEADER.$this->id_number.'_'.$this->blockno.'" class="'.PLUGIN_CODE_HEADER.'string">';
-                        $str_continue = PLUGIN_CODE_STRING_LITERAL;
-                    }
-                }
-                // ¥é¥¤¥ó¿ô¥«¥¦¥ó¥È
-                $num_of_line += substr_count($result,"\n");
-                $startline = 0;        
-                // html¤ËÄÉ²Ã
-                $result = htmlspecialchars($result, ENT_QUOTES);
-                if ($option['link']) 
-                    $result = preg_replace('/(s?https?:\/\/|ftp:\/\/|mailto:)([-_.!~*()a-zA-Z0-9;\/:@?=+$,%#]|&amp;)+/',
-                                           '<a href="$0">$0</a>',$result);
-                $html .= '<span class="'.PLUGIN_CODE_HEADER.'string">'.$result.'</span>';
-                
-                // ¼¡¤Î¸¡º÷ÍÑ¤ËÆÉ¤ß¹ş¤ß
-                if ($str_len == $str_pos) $code = false; else $code = $string[$str_pos++]; // getc
-                continue 2;
-                
-            case PLUGIN_CODE_NONESCAPE_LITERAL:
-                // ¥¨¥¹¥±¡¼¥×Ê¸»ú¤È¼°Å¸³«¤òÌµ»ë¤·¤¿Ê¸»úÎó
-                // Ê¸»úÎó¥ê¥Æ¥é¥ë¤òÆÀ¤ë
+				$startline = 0;
+				// æ¬¡ã®æ¤œç´¢ç”¨ã«èª­ã¿è¾¼ã¿
+				if ($str_len == $str_pos) $code = false; else $code = $string[$str_pos++]; // getc
+				continue 2;
+			case PLUGIN_CODE_STRING_LITERAL:
+				// æ–‡å­—åˆ—ãƒªãƒ†ãƒ©ãƒ«ã‚’å¾—ã‚‹
+				$pos = $str_pos;
+				do {
+					$result = substr($string, $str_pos);
+					$pos1 = strpos($result, $code); // æ–‡å­—åˆ—çµ‚äº†æ–‡å­—æ¤œç´¢
+					if ($pos1 === false) { // æ–‡å­—åˆ—ãŒçµ‚ã‚ã‚‰ãªã‹ã£ãŸã®ã§å…¨éƒ¨æ–‡å­—åˆ—ã¨ã™ã‚‹
+						$str_pos = $str_len-1;
+						break;
+					}
+					$str_pos += $pos1 + 1;
+				} while ($string[$str_pos-2] == '\\'); // å‰ã®æ–‡å­—ãŒã‚¨ã‚¹ã‚±ãƒ¼ãƒ—æ–‡å­—ãªã‚‰ç¶šã‘ã‚‹
+				$result = $code.substr($string, $pos, $str_pos - $pos);
+				if($str_continue != PLUGIN_CODE_STRING_LITERAL) {
+					if ($str_continue != 0) {
+						$this->endRegion($num_of_line);
+						$html .= '</span>';
+					}
+					if ($option['literal'] && $startline) {
+						$this->beginRegion($num_of_line);
+						// ã‚¢ã‚¦ãƒˆãƒ©ã‚¤ãƒ³ãŒé–‰ã˜ãŸæ™‚ã«è¡¨ç¤ºã™ã‚‹ç”»åƒã‚’åŸ‹ã‚è¾¼ã‚€å ´æ‰€
+						//$html .= '<span id="'.PLUGIN_CODE_HEADER.$this->id_number.'_'.$this->blockno.'_img" display="none"></span>';
+						$html .= '<span id="'.PLUGIN_CODE_HEADER.$this->id_number.'_'.$this->blockno.'" class="'.PLUGIN_CODE_HEADER.'string">';
+						$str_continue = PLUGIN_CODE_STRING_LITERAL;
+					}
+				}
+				// ãƒ©ã‚¤ãƒ³æ•°ã‚«ã‚¦ãƒ³ãƒˆ
+				$num_of_line += substr_count($result,"\n");
+				$startline = 0;		
+				// htmlã«è¿½åŠ 
+				$result = htmlsc($result, ENT_QUOTES);
+				if ($option['link']) 
+					$result = preg_replace('/(s?https?:\/\/|ftp:\/\/|mailto:)([-_.!~*()a-zA-Z0-9;\/:@?=+$,%#]|&amp;)+/',
+										   '<a href="$0">$0</a>',$result);
+				$html .= '<span class="'.PLUGIN_CODE_HEADER.'string">'.$result.'</span>';
+				
+				// æ¬¡ã®æ¤œç´¢ç”¨ã«èª­ã¿è¾¼ã¿
+				if ($str_len == $str_pos) $code = false; else $code = $string[$str_pos++]; // getc
+				continue 2;
+				
+			case PLUGIN_CODE_NONESCAPE_LITERAL:
+				// ã‚¨ã‚¹ã‚±ãƒ¼ãƒ—æ–‡å­—ã¨å¼å±•é–‹ã‚’ç„¡è¦–ã—ãŸæ–‡å­—åˆ—
+				// æ–‡å­—åˆ—ãƒªãƒ†ãƒ©ãƒ«ã‚’å¾—ã‚‹
 
-                $pos = $str_pos;
-                $result = substr($string, $str_pos);
-                $pos1 = strpos($result, $code); // Ê¸»úÎó½ªÎ»Ê¸»ú¸¡º÷
-                if ($pos1 === false) { // Ê¸»úÎó¤¬½ª¤ï¤é¤Ê¤«¤Ã¤¿¤Î¤ÇÁ´ÉôÊ¸»úÎó¤È¤¹¤ë
-                    $str_pos = $str_len-1;
-                } else {
-                    $str_pos += $pos1 + 1;
-                }
-                $result = $code.substr($string, $pos, $str_pos - $pos);
-                if($str_continue != PLUGIN_CODE_STRING_LITERAL) {
-                    if ($str_continue != 0) {
-                        $this->endRegion($num_of_line);
-                        $html .= '</span>';
-                    }
-                    if ($option['literal'] && $startline) {
-                        $this->beginRegion($num_of_line);
-                        // ¥¢¥¦¥È¥é¥¤¥ó¤¬ÊÄ¤¸¤¿»ş¤ËÉ½¼¨¤¹¤ë²èÁü¤òËä¤á¹ş¤à¾ì½ê
-                        //$html .= '<span id="'.PLUGIN_CODE_HEADER.$this->id_number.'_'.$this->blockno.'_img" display="none"></span>';
-                        $html .= '<span id="'.PLUGIN_CODE_HEADER.$this->id_number.'_'.$this->blockno.'" class="'.PLUGIN_CODE_HEADER.'string">';
-                        $str_continue = PLUGIN_CODE_STRING_LITERAL;
-                    }
-                }
-                // ¥é¥¤¥ó¿ô¥«¥¦¥ó¥È
-                $num_of_line+=substr_count($result,"\n");
-                $startline = 0;
-                // html¤ËÄÉ²Ã
-                $result = htmlspecialchars($result, ENT_QUOTES);
-                if ($option['link']) 
-                    $result = preg_replace('/(s?https?:\/\/|ftp:\/\/|mailto:)([-_.!~*()a-zA-Z0-9;\/:@?=+$,%#]|&amp;)+/',
-                                           '<a href="$0">$0</a>',$result);
-                $html .= '<span class="'.PLUGIN_CODE_HEADER.'string">'.$result.'</span>';
-                
-                // ¼¡¤Î¸¡º÷ÍÑ¤ËÆÉ¤ß¹ş¤ß
-                if ($str_len == $str_pos) $code = false; else $code = $string[$str_pos++]; // getc
-                continue 2;
-                
-            case PLUGIN_CODE_PAIR_LITERAL:
-                $startline = 0;
-                // ÂĞµ­¹æ¤Ç°Ï¤Ş¤ì¤¿Ê¸»úÎó¥ê¥Æ¥é¥ë¤òÆÀ¤ë PostScript
-                $pos = $str_pos;
-                do {
-                    $result = substr($string, $str_pos);
-                    $pos1 = strpos($result, $literal_delimiter); // Ê¸»úÎó½ªÎ»Ê¸»ú¸¡º÷
-                    if ($pos1 === false) { // Ê¸»úÎó¤¬½ª¤ï¤é¤Ê¤«¤Ã¤¿¤Î¤ÇÁ´ÉôÊ¸»úÎó¤È¤¹¤ë
-                        $str_pos = $str_len-1;
-                        break;
-                    }
-                    $str_pos += $pos1 + 1;
-                } while ($string[$str_pos-2] == '\\'); // Á°¤ÎÊ¸»ú¤¬¥¨¥¹¥±¡¼¥×Ê¸»ú¤Ê¤éÂ³¤±¤ë
-                $result = $code.substr($string, $pos, $str_pos - $pos);
-                
-                if($str_continue != PLUGIN_CODE_STRING_LITERAL) {
-                    if ($str_continue != 0) {
-                        $this->endRegion($num_of_line);
-                        $html .= '</span>';
-                    }
-                    if ($option['literal']) {
-                        $this->beginRegion($num_of_line);
-                        // ¥¢¥¦¥È¥é¥¤¥ó¤¬ÊÄ¤¸¤¿»ş¤ËÉ½¼¨¤¹¤ë²èÁü¤òËä¤á¹ş¤à¾ì½ê
-                        //$html .= '<span id="'.PLUGIN_CODE_HEADER.$this->id_number.'_'.$this->blockno.'_img" display="none"></span>';
-                        $html .= '<span id="'.PLUGIN_CODE_HEADER.$this->id_number.'_'.$this->blockno.'" class="'.PLUGIN_CODE_HEADER.'string">';
-                        $str_continue = PLUGIN_CODE_STRING_LITERAL;
-                    }
-                }
-                // ¥é¥¤¥ó¿ô¥«¥¦¥ó¥È
-                $num_of_line+=substr_count($result,"\n");
-                
-                // html¤ËÄÉ²Ã
-                $result = htmlspecialchars($result, ENT_QUOTES);
-                if ($option['link']) 
-                    $result = preg_replace('/(s?https?:\/\/|ftp:\/\/|mailto:)([-_.!~*()a-zA-Z0-9;\/:@?=+$,%#]|&amp;)+/',
-                                           '<a href="$0">$0</a>',$result);
-                $html .= '<span class="'.PLUGIN_CODE_HEADER.'string">'.$result.'</span>';
-                
-                // ¼¡¤Î¸¡º÷ÍÑ¤ËÆÉ¤ß¹ş¤ß
-                if ($str_len == $str_pos) $code = false; else $code = $string[$str_pos++]; // getc
-                continue 2;
-            case PLUGIN_CODE_STRING_CONCAT:
-                $startline = 0;
-                $result = isset($htmlHash[$code]) ? $htmlHash[$code] : '';
-                if ($result) 
-                    $html .= $result;
-                else
-                    $html .= $code;
-                
-                // ¼¡¤Î¸¡º÷ÍÑ¤ËÆÉ¤ß¹ş¤ß
-                if ($str_len == $str_pos) $code = false; else $code = $string[$str_pos++]; // getc
-                continue 2;
-            case PLUGIN_CODE_FORMULA:
-                $startline = 0;
-                if ($str_continue != 0) {
-                    $this->endRegion($num_of_line);
-                    $html .= '</span>';
-                }
-                // TeX¤Î¿ô¼°¤Ë»ÈÍÑ ¾­ÍèÅª¤Ë¤ÏÈÆÍÑÀ­¤ò»ı¤¿¤»¤ë 
-                $pos = $str_pos;
-                $result = substr($string, $str_pos);
-                $pos1 = strpos($result, $code); // Ê¸»úÎó½ªÎ»Ê¸»ú¸¡º÷
-                if ($pos1 === false) { // Ê¸»úÎó¤¬½ª¤ï¤é¤Ê¤«¤Ã¤¿¤Î¤ÇÁ´ÉôÊ¸»úÎó¤È¤¹¤ë
-                    $str_pos = $str_len-1;
-                } else {
-                    $str_pos += $pos1 + 1;
-                }
-                $result = $code.substr($string, $pos, $str_pos - $pos);
-                
-                // html¤ËÄÉ²Ã
-                $result = htmlspecialchars($result, ENT_QUOTES);
-                if ($option['link']) 
-                    $result = preg_replace('/(s?https?:\/\/|ftp:\/\/|mailto:)([-_.!~*()a-zA-Z0-9;\/:@?=+$,%#]|&amp;)+/',
-                                           '<a href="$0">$0</a>',$result);
-                $html .= '<span class="'.PLUGIN_CODE_HEADER.'formula">'.$result.'</span>';
-                
-                // ¼¡¤Î¸¡º÷ÍÑ¤ËÆÉ¤ß¹ş¤ß
-                if ($str_len == $str_pos) $code = false; else $code = $string[$str_pos++]; // getc
-                continue 2;
-                
-            case PLUGIN_CODE_BLOCK_START:
-                $startline = 0;
-                if ($str_continue != 0) {
-                    $this->endRegion($num_of_line);
-                    $html .= '</span>';
-                }
-                $html .= $code;
-                if ($option['block']) {
-                    // outline É½¼¨ÍÑ³«»ÏÊ¸»ú {, (
-                    $this->beginRegion($num_of_line);
-                    // ¥¢¥¦¥È¥é¥¤¥ó¤¬ÊÄ¤¸¤¿»ş¤ËÉ½¼¨¤¹¤ë²èÁü¤òËä¤á¹ş¤à¾ì½ê
-                    $html .= '<span id="'.PLUGIN_CODE_HEADER.$this->id_number.'_'.$this->blockno.'_img" display="none"></span>'
-                        .'<span id="'.PLUGIN_CODE_HEADER.$this->id_number.'_'.$this->blockno.'" class="'.PLUGIN_CODE_HEADER.'block">';
-                }
-                if ($str_len == $str_pos)
-                    $code = false;
-                else
-                    $code = $string[$str_pos++]; // getc
-                continue 2;
-                
-            case PLUGIN_CODE_BLOCK_END:
-                $startline = 0;
-                if ($str_continue != 0) {
-                    $this->endRegion($num_of_line);
-                    $html .= '</span>';
-                }
-                if ($option['block']) {
-                    // outline É½¼¨½ªÎ»Ê¸»ú }, )
-                    $this->endRegion($num_of_line);
-                    $html .= '</span>';
-                }
-                $html .= $code;
-                if ($str_len == $str_pos)
-                    $code = false;
-                else
-                    $code = $string[$str_pos++]; // getc
-                continue 2;
-                
-            }// switch
-            // ¤½¤ÎÂ¾¤ÎÊ¸»ú
-            $result = isset($spaceHash[$code]) ? $spaceHash[$code] : '';
-            if ($result) {
-                  $html .= $result;
-            } else {
-                $startline = 0;
-                if ($str_continue != 0) {
-                    $this->endRegion($num_of_line);
-                    $html .= '</span>';
-                    $str_continue = 0;
-                }
-                $result = isset($htmlHash[$code]) ? $htmlHash[$code] : '';
-                if ($result) {
-                    $html .= $result;
-                } else {
-                    $html .= $code;
-                }
-            }
-            // ¼¡¤Î¸¡º÷ÍÑ¤ËÆÉ¤ß¹ş¤ß
-            if ($str_len == $str_pos) $code = false; else $code = $string[$str_pos++]; // getc
+				$pos = $str_pos;
+				$result = substr($string, $str_pos);
+				$pos1 = strpos($result, $code); // æ–‡å­—åˆ—çµ‚äº†æ–‡å­—æ¤œç´¢
+				if ($pos1 === false) { // æ–‡å­—åˆ—ãŒçµ‚ã‚ã‚‰ãªã‹ã£ãŸã®ã§å…¨éƒ¨æ–‡å­—åˆ—ã¨ã™ã‚‹
+					$str_pos = $str_len-1;
+				} else {
+					$str_pos += $pos1 + 1;
+				}
+				$result = $code.substr($string, $pos, $str_pos - $pos);
+				if($str_continue != PLUGIN_CODE_STRING_LITERAL) {
+					if ($str_continue != 0) {
+						$this->endRegion($num_of_line);
+						$html .= '</span>';
+					}
+					if ($option['literal'] && $startline) {
+						$this->beginRegion($num_of_line);
+						// ã‚¢ã‚¦ãƒˆãƒ©ã‚¤ãƒ³ãŒé–‰ã˜ãŸæ™‚ã«è¡¨ç¤ºã™ã‚‹ç”»åƒã‚’åŸ‹ã‚è¾¼ã‚€å ´æ‰€
+						//$html .= '<span id="'.PLUGIN_CODE_HEADER.$this->id_number.'_'.$this->blockno.'_img" display="none"></span>';
+						$html .= '<span id="'.PLUGIN_CODE_HEADER.$this->id_number.'_'.$this->blockno.'" class="'.PLUGIN_CODE_HEADER.'string">';
+						$str_continue = PLUGIN_CODE_STRING_LITERAL;
+					}
+				}
+				// ãƒ©ã‚¤ãƒ³æ•°ã‚«ã‚¦ãƒ³ãƒˆ
+				$num_of_line+=substr_count($result,"\n");
+				$startline = 0;
+				// htmlã«è¿½åŠ 
+				$result = htmlsc($result, ENT_QUOTES);
+				if ($option['link']) 
+					$result = preg_replace('/(s?https?:\/\/|ftp:\/\/|mailto:)([-_.!~*()a-zA-Z0-9;\/:@?=+$,%#]|&amp;)+/',
+										   '<a href="$0">$0</a>',$result);
+				$html .= '<span class="'.PLUGIN_CODE_HEADER.'string">'.$result.'</span>';
+				
+				// æ¬¡ã®æ¤œç´¢ç”¨ã«èª­ã¿è¾¼ã¿
+				if ($str_len == $str_pos) $code = false; else $code = $string[$str_pos++]; // getc
+				continue 2;
+				
+			case PLUGIN_CODE_PAIR_LITERAL:
+				$startline = 0;
+				// å¯¾è¨˜å·ã§å›²ã¾ã‚ŒãŸæ–‡å­—åˆ—ãƒªãƒ†ãƒ©ãƒ«ã‚’å¾—ã‚‹ PostScript
+				$pos = $str_pos;
+				do {
+					$result = substr($string, $str_pos);
+					$pos1 = strpos($result, $literal_delimiter); // æ–‡å­—åˆ—çµ‚äº†æ–‡å­—æ¤œç´¢
+					if ($pos1 === false) { // æ–‡å­—åˆ—ãŒçµ‚ã‚ã‚‰ãªã‹ã£ãŸã®ã§å…¨éƒ¨æ–‡å­—åˆ—ã¨ã™ã‚‹
+						$str_pos = $str_len-1;
+						break;
+					}
+					$str_pos += $pos1 + 1;
+				} while ($string[$str_pos-2] == '\\'); // å‰ã®æ–‡å­—ãŒã‚¨ã‚¹ã‚±ãƒ¼ãƒ—æ–‡å­—ãªã‚‰ç¶šã‘ã‚‹
+				$result = $code.substr($string, $pos, $str_pos - $pos);
+				
+				if($str_continue != PLUGIN_CODE_STRING_LITERAL) {
+					if ($str_continue != 0) {
+						$this->endRegion($num_of_line);
+						$html .= '</span>';
+					}
+					if ($option['literal']) {
+						$this->beginRegion($num_of_line);
+						// ã‚¢ã‚¦ãƒˆãƒ©ã‚¤ãƒ³ãŒé–‰ã˜ãŸæ™‚ã«è¡¨ç¤ºã™ã‚‹ç”»åƒã‚’åŸ‹ã‚è¾¼ã‚€å ´æ‰€
+						//$html .= '<span id="'.PLUGIN_CODE_HEADER.$this->id_number.'_'.$this->blockno.'_img" display="none"></span>';
+						$html .= '<span id="'.PLUGIN_CODE_HEADER.$this->id_number.'_'.$this->blockno.'" class="'.PLUGIN_CODE_HEADER.'string">';
+						$str_continue = PLUGIN_CODE_STRING_LITERAL;
+					}
+				}
+				// ãƒ©ã‚¤ãƒ³æ•°ã‚«ã‚¦ãƒ³ãƒˆ
+				$num_of_line+=substr_count($result,"\n");
+				
+				// htmlã«è¿½åŠ 
+				$result = htmlsc($result, ENT_QUOTES);
+				if ($option['link']) 
+					$result = preg_replace('/(s?https?:\/\/|ftp:\/\/|mailto:)([-_.!~*()a-zA-Z0-9;\/:@?=+$,%#]|&amp;)+/',
+										   '<a href="$0">$0</a>',$result);
+				$html .= '<span class="'.PLUGIN_CODE_HEADER.'string">'.$result.'</span>';
+				
+				// æ¬¡ã®æ¤œç´¢ç”¨ã«èª­ã¿è¾¼ã¿
+				if ($str_len == $str_pos) $code = false; else $code = $string[$str_pos++]; // getc
+				continue 2;
+			case PLUGIN_CODE_STRING_CONCAT:
+				$startline = 0;
+				$result = isset($htmlHash[$code]) ? $htmlHash[$code] : '';
+				if ($result) 
+					$html .= $result;
+				else
+					$html .= $code;
+				
+				// æ¬¡ã®æ¤œç´¢ç”¨ã«èª­ã¿è¾¼ã¿
+				if ($str_len == $str_pos) $code = false; else $code = $string[$str_pos++]; // getc
+				continue 2;
+			case PLUGIN_CODE_FORMULA:
+				$startline = 0;
+				if ($str_continue != 0) {
+					$this->endRegion($num_of_line);
+					$html .= '</span>';
+				}
+				// TeXã®æ•°å¼ã«ä½¿ç”¨ å°†æ¥çš„ã«ã¯æ±ç”¨æ€§ã‚’æŒãŸã›ã‚‹ 
+				$pos = $str_pos;
+				$result = substr($string, $str_pos);
+				$pos1 = strpos($result, $code); // æ–‡å­—åˆ—çµ‚äº†æ–‡å­—æ¤œç´¢
+				if ($pos1 === false) { // æ–‡å­—åˆ—ãŒçµ‚ã‚ã‚‰ãªã‹ã£ãŸã®ã§å…¨éƒ¨æ–‡å­—åˆ—ã¨ã™ã‚‹
+					$str_pos = $str_len-1;
+				} else {
+					$str_pos += $pos1 + 1;
+				}
+				$result = $code.substr($string, $pos, $str_pos - $pos);
+				
+				// htmlã«è¿½åŠ 
+				$result = htmlsc($result, ENT_QUOTES);
+				if ($option['link']) 
+					$result = preg_replace('/(s?https?:\/\/|ftp:\/\/|mailto:)([-_.!~*()a-zA-Z0-9;\/:@?=+$,%#]|&amp;)+/',
+										   '<a href="$0">$0</a>',$result);
+				$html .= '<span class="'.PLUGIN_CODE_HEADER.'formula">'.$result.'</span>';
+				
+				// æ¬¡ã®æ¤œç´¢ç”¨ã«èª­ã¿è¾¼ã¿
+				if ($str_len == $str_pos) $code = false; else $code = $string[$str_pos++]; // getc
+				continue 2;
+				
+			case PLUGIN_CODE_BLOCK_START:
+				$startline = 0;
+				if ($str_continue != 0) {
+					$this->endRegion($num_of_line);
+					$html .= '</span>';
+				}
+				$html .= $code;
+				if ($option['block']) {
+					// outline è¡¨ç¤ºç”¨é–‹å§‹æ–‡å­— {, (
+					$this->beginRegion($num_of_line);
+					// ã‚¢ã‚¦ãƒˆãƒ©ã‚¤ãƒ³ãŒé–‰ã˜ãŸæ™‚ã«è¡¨ç¤ºã™ã‚‹ç”»åƒã‚’åŸ‹ã‚è¾¼ã‚€å ´æ‰€
+					$html .= '<span id="'.PLUGIN_CODE_HEADER.$this->id_number.'_'.$this->blockno.'_img" display="none"></span>'
+						.'<span id="'.PLUGIN_CODE_HEADER.$this->id_number.'_'.$this->blockno.'" class="'.PLUGIN_CODE_HEADER.'block">';
+				}
+				if ($str_len == $str_pos)
+					$code = false;
+				else
+					$code = $string[$str_pos++]; // getc
+				continue 2;
+				
+			case PLUGIN_CODE_BLOCK_END:
+				$startline = 0;
+				if ($str_continue != 0) {
+					$this->endRegion($num_of_line);
+					$html .= '</span>';
+				}
+				if ($option['block']) {
+					// outline è¡¨ç¤ºçµ‚äº†æ–‡å­— }, )
+					$this->endRegion($num_of_line);
+					$html .= '</span>';
+				}
+				$html .= $code;
+				if ($str_len == $str_pos)
+					$code = false;
+				else
+					$code = $string[$str_pos++]; // getc
+				continue 2;
+				
+			}// switch
+			// ãã®ä»–ã®æ–‡å­—
+			$result = isset($spaceHash[$code]) ? $spaceHash[$code] : '';
+			if ($result) {
+				  $html .= $result;
+			} else {
+				$startline = 0;
+				if ($str_continue != 0) {
+					$this->endRegion($num_of_line);
+					$html .= '</span>';
+					$str_continue = 0;
+				}
+				$result = isset($htmlHash[$code]) ? $htmlHash[$code] : '';
+				if ($result) {
+					$html .= $result;
+				} else {
+					$html .= $code;
+				}
+			}
+			// æ¬¡ã®æ¤œç´¢ç”¨ã«èª­ã¿è¾¼ã¿
+			if ($str_len == $str_pos) $code = false; else $code = $string[$str_pos++]; // getc
 
-        }// while
+		}// while
 
-        // ºÇ¸å¤ÎÍ¾Ê¬¤Ê²ş¹Ô¤òºï½ü
-        if ($html[strlen($html)-2] == ' ') {
-            $html = substr($html, 0, -2);
-            --$num_of_line;
-        } else {
-            $html = substr($html, 0, -1);
-        }
-        $html = array('src' => $html, 'number' => '', 'outline' => '', 'blocknum' => $this->blockno);
-        if($option['outline']) 
-            return $this->makeOutline($html, $option['number'],$num_of_line-1, $begin); // ºÇ¸å¤Ë²ş¹Ô¤òºï½ü¤·¤¿¤¿¤á -1
-        if($option['number']) $html['number'] = _plugin_code_makeNumber($num_of_line-1, $begin); 
-        return $html;
-    }
+		// æœ€å¾Œã®ä½™åˆ†ãªæ”¹è¡Œã‚’å‰Šé™¤
+		if ($html[strlen($html)-2] == ' ') {
+			$html = substr($html, 0, -2);
+			--$num_of_line;
+		} else {
+			$html = substr($html, 0, -1);
+		}
+		$html = array('src' => $html, 'number' => '', 'outline' => '', 'blocknum' => $this->blockno);
+		if($option['outline']) 
+			return $this->makeOutline($html, $option['number'],$num_of_line-1, $begin); // æœ€å¾Œã«æ”¹è¡Œã‚’å‰Šé™¤ã—ãŸãŸã‚ -1
+		if($option['number']) $html['number'] = _plugin_code_makeNumber($num_of_line-1, $begin); 
+		return $html;
+	}
 
-    /**
-     * ¥¢¥¦¥È¥é¥¤¥ó¤Î³«»ÏÀßÄê
-     */
-    function beginRegion($line, $state=1) 
-    {
-        ++$this->blockno;
-        ++$this->nestlevel;
+	/**
+	 * ã‚¢ã‚¦ãƒˆãƒ©ã‚¤ãƒ³ã®é–‹å§‹è¨­å®š
+	 */
+	function beginRegion($line, $state=1) 
+	{
+		++$this->blockno;
+		++$this->nestlevel;
 
-        if(! isset($this->outline[$line])) {
-            $this->outline[$line]=Array();
-        }
-        array_push($this->outline[$line],Array('nest'=>$this->nestlevel, 'blockno'=>$this->blockno, 'state'=>$state));
-    }
-    /**
-     * ¥¢¥¦¥È¥é¥¤¥ó¤Î½ªÎ»ÀßÄê
-     */
-    function endRegion($line) 
-    {
-        --$this->nestlevel;
-        if(! isset($this->outline[$line])) {
-            $this->outline[$line]=Array();
-            array_push($this->outline[$line],Array('nest'=>$this->nestlevel,'blockno'=>0, 'state'=>1));
-        } else {
-            $old = array_pop($this->outline[$line]);
-            if($old['blockno']!=0 && ($this->nestlevel+1) == $old['nest']) {
-            } else {
-                if(! is_null($old))
-                    array_push($this->outline[$line],$old);
-                array_push($this->outline[$line],Array('nest'=>$this->nestlevel,'blockno'=>0, 'state'=>1));
-            }
-        }
-    }
+		if(! isset($this->outline[$line])) {
+			$this->outline[$line]=Array();
+		}
+		array_push($this->outline[$line],Array('nest'=>$this->nestlevel, 'blockno'=>$this->blockno, 'state'=>$state));
+	}
+	/**
+	 * ã‚¢ã‚¦ãƒˆãƒ©ã‚¤ãƒ³ã®çµ‚äº†è¨­å®š
+	 */
+	function endRegion($line) 
+	{
+		--$this->nestlevel;
+		if(! isset($this->outline[$line])) {
+			$this->outline[$line]=Array();
+			array_push($this->outline[$line],Array('nest'=>$this->nestlevel,'blockno'=>0, 'state'=>1));
+		} else {
+			$old = array_pop($this->outline[$line]);
+			if($old['blockno']!=0 && ($this->nestlevel+1) == $old['nest']) {
+			} else {
+				if(! is_null($old))
+					array_push($this->outline[$line],$old);
+				array_push($this->outline[$line],Array('nest'=>$this->nestlevel,'blockno'=>0, 'state'=>1));
+			}
+		}
+	}
 
-    /**
-     * outline ¤Î·ÁÀ®
-     */
-    function makeOutline(& $html, $mknumber, $end, $begin = 1)
-    {
-        while($this->nestlevel>1) {// ¥Í¥¹¥È¤¬¤Á¤ã¤ó¤È¤·¤Æ¤Ê¤«¤Ã¤¿¾ì¹ç¤ÎÂĞºö
-            $html['src'] .= '</span>';
-            --$this->nestlevel;
-        }
-        $outline = '';
-        $number = '';
-        $this->nestlevel = 1;
+	/**
+	 * outline ã®å½¢æˆ
+	 */
+	function makeOutline(& $html, $mknumber, $end, $begin = 1)
+	{
+		while($this->nestlevel>1) {// ãƒã‚¹ãƒˆãŒã¡ã‚ƒã‚“ã¨ã—ã¦ãªã‹ã£ãŸå ´åˆã®å¯¾ç­–
+			$html['src'] .= '</span>';
+			--$this->nestlevel;
+		}
+		$outline = '';
+		$number = '';
+		$this->nestlevel = 1;
 
-        //$linelen=$line+1;
-        $str_len = max(3, strlen(''.$end-1));
+		//$linelen=$line+1;
+		$str_len = max(3, strlen(''.$end-1));
 
-        for($i=$begin; $i<=$end; ++$i) {
-            $plus = '';
-            $plus1 = '';
-            $plus2 = '';
-            $minus = '';
-            if(isset($this->outline[$i])) {
-                while(1) {
-                    $array = array_shift($this->outline[$i]);
-                    if (is_null($array))
-                        break;
-                    if ($this->nestlevel <= $array['nest']) {
-                        $id = $this->id_number.'_'.$array['blockno'];
-                        $display = $array['state'] ? '' : 'none';
-                        $letter = $array['state'] ? '-' : '+';
-                        //$letter = $array['state'] ? '<img src="'.IMAGE_DIR.'treemenu_triangle_open.png"  width="9" height="9" alt="-" title="close"  class="treemenu" />' : '<img src="'.IMAGE_DIR.'treemenu_triangle_close.png" width="9" height="9" alt="+" title="open" class="treemenu" />';
-                        if($plus == '')
-                            $plus = '<a class="'.PLUGIN_CODE_HEADER.'outline" href="javascript:code_outline(\''
-                                .PLUGIN_CODE_HEADER.$id.'\',\''.IMAGE_DIR.'\')" id="'.PLUGIN_CODE_HEADER.$id.'a">'.$letter.'</a>';
-                        $plus1 .= '<span id="'.PLUGIN_CODE_HEADER.$id.'o" style="display:'.$display.'">';
-                        $plus2 .= '<span id="'.PLUGIN_CODE_HEADER.$id.'n" style="display:'.$display.'">';
-                        $this->nestlevel = $array['nest'];
-                    } else {
-                        $this->nestlevel = $array['nest'];
-                        $minus .= '</span>';
-                    }
-                }
-            }
-            if($mknumber) {
-                $number.= sprintf('%'.$str_len.'d',($i)).$minus.$plus2."\n";
-            }
-            if($plus == '' && $minus == '') {
-                if($this->nestlevel == 1)
-                    $outline.=' ';
-                else
-                    $outline .= '|';
-            } else if($plus != '' && $minus == '') {
-                $outline.= $plus.$plus1;
-            } else if($plus == '' && $minus != '') {
-                $outline .=  '!'.$minus;
-            } else if($plus != '' && $minus != '') {
-                $outline .= $plus.$minus.$plus1;
-            }
-            $outline.="\n";
-        }
-        while ($this->nestlevel>1) {// ¥Í¥¹¥È¤¬¤Á¤ã¤ó¤È¤·¤Æ¤Ê¤«¤Ã¤¿¾ì¹ç¤ÎÂĞºö
-            $number .= '</span>';
-            $outline .= '</span>';
-            --$this->nestlevel;
-        }
-        $html['number'] = $number;
-        $html['outline'] = $outline;
-        return $html;
-    }
+		for($i=$begin; $i<=$end; ++$i) {
+			$plus = '';
+			$plus1 = '';
+			$plus2 = '';
+			$minus = '';
+			if(isset($this->outline[$i])) {
+				while(1) {
+					$array = array_shift($this->outline[$i]);
+					if (is_null($array))
+						break;
+					if ($this->nestlevel <= $array['nest']) {
+						$id = $this->id_number.'_'.$array['blockno'];
+						$display = $array['state'] ? '' : 'none';
+						$letter = $array['state'] ? '-' : '+';
+						//$letter = $array['state'] ? '<img src="'.IMAGE_DIR.'treemenu_triangle_open.png"  width="9" height="9" alt="-" title="close"  class="treemenu" />' : '<img src="'.IMAGE_DIR.'treemenu_triangle_close.png" width="9" height="9" alt="+" title="open" class="treemenu" />';
+						if($plus == '')
+							$plus = '<a class="'.PLUGIN_CODE_HEADER.'outline" href="javascript:code_outline(\''
+								.PLUGIN_CODE_HEADER.$id.'\',\''.IMAGE_DIR.'\')" id="'.PLUGIN_CODE_HEADER.$id.'a">'.$letter.'</a>';
+						$plus1 .= '<span id="'.PLUGIN_CODE_HEADER.$id.'o" style="display:'.$display.'">';
+						$plus2 .= '<span id="'.PLUGIN_CODE_HEADER.$id.'n" style="display:'.$display.'">';
+						$this->nestlevel = $array['nest'];
+					} else {
+						$this->nestlevel = $array['nest'];
+						$minus .= '</span>';
+					}
+				}
+			}
+			if($mknumber) {
+				$number.= sprintf('%'.$str_len.'d',($i)).$minus.$plus2."\n";
+			}
+			if($plus == '' && $minus == '') {
+				if($this->nestlevel == 1)
+					$outline.=' ';
+				else
+					$outline .= '|';
+			} else if($plus != '' && $minus == '') {
+				$outline.= $plus.$plus1;
+			} else if($plus == '' && $minus != '') {
+				$outline .=  '!'.$minus;
+			} else if($plus != '' && $minus != '') {
+				$outline .= $plus.$minus.$plus1;
+			}
+			$outline.="\n";
+		}
+		while ($this->nestlevel>1) {// ãƒã‚¹ãƒˆãŒã¡ã‚ƒã‚“ã¨ã—ã¦ãªã‹ã£ãŸå ´åˆã®å¯¾ç­–
+			$number .= '</span>';
+			$outline .= '</span>';
+			--$this->nestlevel;
+		}
+		$html['number'] = $number;
+		$html['outline'] = $outline;
+		return $html;
+	}
 
-    /**
-     * PHP¤òÉ¸½à´Ø¿ô¤Ç¥Ï¥¤¥é¥¤¥È¤¹¤ë
-     */
-    function highlightPHP($src) {
-        // php¥¿¥°¤¬Â¸ºß¤¹¤ë¤«¡©
-        $phptagf = 0;
+	/**
+	 * PHPã‚’æ¨™æº–é–¢æ•°ã§ãƒã‚¤ãƒ©ã‚¤ãƒˆã™ã‚‹
+	 */
+	function highlightPHP($src) {
+		// phpã‚¿ã‚°ãŒå­˜åœ¨ã™ã‚‹ã‹ï¼Ÿ
+		$phptagf = 0;
 
-        // HACK: 2009-11-13 ruche -- strpos ¤ËÊÑ¹¹
-        // Ê¸»úÎó¥ê¥Æ¥é¥ëÆâ¤Ëphp¥¿¥°¤¬¤¢¤ë¤È¸í¸¡½Ğ¤·¤Æ¤·¤Ş¤¤¤Ş¤¹¤¬¡¢ÌÌÅİ¤Ê¤Î¤ÇÌµ»ë¡Ä¡£
-        //if(! strstr($src,'<'.'?php')) {
-        if (strpos($src, '<'.'?php') === false) {
-            $phptagf = 1;
-            $src = '<'.'?php '.$src.' ?'.'>';
-        }
+		// HACK: 2009-11-13 ruche -- strpos ã«å¤‰æ›´
+		// æ–‡å­—åˆ—ãƒªãƒ†ãƒ©ãƒ«å†…ã«phpã‚¿ã‚°ãŒã‚ã‚‹ã¨èª¤æ¤œå‡ºã—ã¦ã—ã¾ã„ã¾ã™ãŒã€é¢å€’ãªã®ã§ç„¡è¦–â€¦ã€‚
+		//if(! strstr($src,'<'.'?php')) {
+		if (strpos($src, '<'.'?php') === false) {
+			$phptagf = 1;
+			$src = '<'.'?php '.$src.' ?'.'>';
+		}
 
-        // HACK: 2009-11-13 ruche -- ½ĞÎÏ½èÍı¤Î½¤Àµ(ob_startÆâ¤Ç»ÈÍÑ¤¹¤Ù¤­¤Ç¤Ê¤¤°Ù)
-        //ob_start(); //½ĞÎÏ¤Î¥Ğ¥Ã¥Õ¥¡¥ê¥ó¥°¤òÍ­¸ú¤Ë
-        //highlight_string($src); //php¤ÏÉ¸½à´Ø¿ô¤Ç¥Ï¥¤¥é¥¤¥È
-        //$html = ob_get_contents(); //¥Ğ¥Ã¥Õ¥¡¤ÎÆâÍÆ¤òÆÀ¤ë
-        //ob_end_clean(); //¥Ğ¥Ã¥Õ¥¡¥¯¥ê¥¢?
-        $html = highlight_string($src, true); // php¤ÏÉ¸½à´Ø¿ô¤Ç¥Ï¥¤¥é¥¤¥È
+		// HACK: 2009-11-13 ruche -- å‡ºåŠ›å‡¦ç†ã®ä¿®æ­£(ob_startå†…ã§ä½¿ç”¨ã™ã¹ãã§ãªã„ç‚º)
+		//ob_start(); //å‡ºåŠ›ã®ãƒãƒƒãƒ•ã‚¡ãƒªãƒ³ã‚°ã‚’æœ‰åŠ¹ã«
+		//highlight_string($src); //phpã¯æ¨™æº–é–¢æ•°ã§ãƒã‚¤ãƒ©ã‚¤ãƒˆ
+		//$html = ob_get_contents(); //ãƒãƒƒãƒ•ã‚¡ã®å†…å®¹ã‚’å¾—ã‚‹
+		//ob_end_clean(); //ãƒãƒƒãƒ•ã‚¡ã‚¯ãƒªã‚¢?
+		$html = highlight_string($src, true); // phpã¯æ¨™æº–é–¢æ•°ã§ãƒã‚¤ãƒ©ã‚¤ãƒˆ
 
-        // HACK: 2009-11-13 ruche -- PHP4¤Î¥Õ¥©¡¼¥Ş¥Ã¥È¤òPHP5¤Î¥Õ¥©¡¼¥Ş¥Ã¥È¤ËÃÖ´¹¡õpre¥¿¥°ÍÑ¤ËÃÖ´¹
-        $before = array('<font color="'      , 'font>', "\n", '&nbsp;', '<br /></span>', '<br />');
-        $after  = array('<span style="color:', 'span>', ''  , ' '     , "</span>\n"    , "\n"    );
-        $html = str_replace($before, $after, $html);
+		// HACK: 2009-11-13 ruche -- PHP4ã®ãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆã‚’PHP5ã®ãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆã«ç½®æ›ï¼†preã‚¿ã‚°ç”¨ã«ç½®æ›
+		$before = array('<font color="'	  , 'font>', "\n", '&nbsp;', '<br /></span>', '<br />');
+		$after  = array('<span style="color:', 'span>', ''  , ' '	 , "</span>\n"	, "\n"	);
+		$html = str_replace($before, $after, $html);
 
-        // ÉÕ¤±¤¿php¥¿¥°¤ò¼è¤ê½ü¤¯¡£
-        if ($phptagf) {
-            // HACK: 2009-11-13 ruche -- php¥¿¥°¤¬Àµ¾ï¤Ë¼è¤ê½ü¤±¤Ê¤¤¥Ğ¥°¤ò½¤Àµ
-            //$html = preg_replace('/&lt;\?php (.*)?(<font[^>]*>\?&gt;<\/font>|\?&gt;)/m','$1',$html);
+		// ä»˜ã‘ãŸphpã‚¿ã‚°ã‚’å–ã‚Šé™¤ãã€‚
+		if ($phptagf) {
+			// HACK: 2009-11-13 ruche -- phpã‚¿ã‚°ãŒæ­£å¸¸ã«å–ã‚Šé™¤ã‘ãªã„ãƒã‚°ã‚’ä¿®æ­£
+			//$html = preg_replace('/&lt;\?php (.*)?(<font[^>]*>\?&gt;<\/font>|\?&gt;)/m','$1',$html);
 
-            // Ä¾¸å/Ä¾Á°¤ÎPHP¥³¡¼¥É¤È°ì½ï¤Ë span ¥¿¥°¤Ç°Ï¤Ş¤ì¤ë¾ì¹ç¤â¤¢¤ë¤¿¤á¡¢
-            // Ã±½ã¤Ë°ìÈÖºÇ½é¤Î³«»Ï¥¿¥°¤È°ìÈÖºÇ¸å¤Î½ªÃ¼¥¿¥°¤ò¼è¤ê½ü¤¯¡£
-            // ¤½¤Î¸å¡¢´Ö¤Ë²¿¤âÆş¤Ã¤Æ¤¤¤Ê¤¤ span ¥¿¥°¤¬¤¢¤ì¤Ğ¤½¤ì¤â¼è¤ê½ü¤¯¡£
-            $before = array('{^(.*?)&lt;\?php([^ ]*) }', '{ ([^ ]*)\?&gt;(.*?)$}', '{<span[^>]*></span>}');
-            $after  = array('$1$2'                     , '$1$2'                  , ''                    );
-            $html = preg_replace($before, $after, $html);
-        }
+			// ç›´å¾Œ/ç›´å‰ã®PHPã‚³ãƒ¼ãƒ‰ã¨ä¸€ç·’ã« span ã‚¿ã‚°ã§å›²ã¾ã‚Œã‚‹å ´åˆã‚‚ã‚ã‚‹ãŸã‚ã€
+			// å˜ç´”ã«ä¸€ç•ªæœ€åˆã®é–‹å§‹ã‚¿ã‚°ã¨ä¸€ç•ªæœ€å¾Œã®çµ‚ç«¯ã‚¿ã‚°ã‚’å–ã‚Šé™¤ãã€‚
+			// ãã®å¾Œã€é–“ã«ä½•ã‚‚å…¥ã£ã¦ã„ãªã„ span ã‚¿ã‚°ãŒã‚ã‚Œã°ãã‚Œã‚‚å–ã‚Šé™¤ãã€‚
+			$before = array('{^(.*?)&lt;\?php([^ ]*) }', '{ ([^ ]*)\?&gt;(.*?)$}', '{<span[^>]*></span>}');
+			$after  = array('$1$2'					 , '$1$2'				  , ''					);
+			$html = preg_replace($before, $after, $html);
+		}
 
-        // HACK: 2009-11-13 ruche -- ¾å¤ÇÃÖ´¹¤·¤Æ¤¤¤ë¤Î¤ÇÉÔÍ×
-        //$html = str_replace('&nbsp;', ' ', $html);
-        //$html = str_replace("\n", '', $html); //$htmlÆâ¤Î"\n"¤ò''¤ÇÃÖ¤­´¹¤¨¤ë
-        //$html = str_replace('<br />', "\n", $html);
-        ////Vaild XHTML 1.1 Patch (thanks miko)
-        //$html = str_replace('<font color="', '<span style="color:', $html);
-        //$html = str_replace('</font>', '</span>', $html);
+		// HACK: 2009-11-13 ruche -- ä¸Šã§ç½®æ›ã—ã¦ã„ã‚‹ã®ã§ä¸è¦
+		//$html = str_replace('&nbsp;', ' ', $html);
+		//$html = str_replace("\n", '', $html); //$htmlå†…ã®"\n"ã‚’''ã§ç½®ãæ›ãˆã‚‹
+		//$html = str_replace('<br />', "\n", $html);
+		////Vaild XHTML 1.1 Patch (thanks miko)
+		//$html = str_replace('<font color="', '<span style="color:', $html);
+		//$html = str_replace('</font>', '</span>', $html);
 
-        return $html;
-    }
+		return $html;
+	}
 }
 
 ?>

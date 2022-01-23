@@ -1,58 +1,66 @@
 ============================================================
-code.inc.php 0.6.0pr3i �C����C++/CLI�Ή���
+code.inc.php: 0.6.1 PHP8、1.5.4対応(1.5系のみ)
+last update: 2021-12-17
+modified by: はいふん
+============================================================
+
+
+
+============================================================
+code.inc.php 0.6.0pr3i 修正＆C++/CLI対応版
 
 modified by : ruche
 last update : 2015-02-13
 ============================================================
-[�͂��߂�]
+[はじめに]
 
-����PukiWiki�v���O�C���́Asky���Asakurai���A�y�уA�N�A����
-���삵�� code.inc.php �ɑ΂��A����̕ύX���s�������̂ł��B
-�ύX�_�ɂ��Ă͌�q���܂��B
+このPukiWikiプラグインは、sky氏、sakurai氏、及びアクア氏が
+製作した code.inc.php に対し、幾つかの変更を行ったものです。
+変更点については後述します。
 
-code.inc.php �ɂ��Ă̊T�v�͎��̃y�[�W���������������B
+code.inc.php についての概要は次のページをご覧ください。
 
-����v���O�C��/codehighlight.inc.php  - PukiWiki-official:
+自作プラグイン/codehighlight.inc.php  - PukiWiki-official:
   http://pukiwiki.sourceforge.jp/?%E8%87%AA%E4%BD%9C%E3%83%97%E3%83%A9%E3%82%B0%E3%82%A4%E3%83%B3%2Fcodehighlight.inc.php
 
 Code - Code.dev!:
   http://codeincphp.sourceforge.jp/?Code
 
 ============================================================
-[�������@]
+[導入方法]
 
-�I���W�i���� code.inc.php �Ɠ����ł��B
-�O�q�̃y�[�W���������������B
+オリジナルの code.inc.php と同じです。
+前述のページをご覧ください。
 
-���ɃI���W�i���� code.inc.php ���g���Ă���ꍇ��
-plugin �f�B���N�g���ȉ������㏑�������OK�ł��B
+既にオリジナルの code.inc.php を使っている場合は
+plugin ディレクトリ以下だけ上書きすればOKです。
 
 ============================================================
-[�ύX�_]
+[変更点]
 
-01. �o�O�C��
-  plugin/code/codehighlight.php �̃o�O���C�����܂����B
-  �o�O���e:
-    �\�[�X�R�[�h���� '<' ����� '>' ��HTML�^�O�Ƃ���
-    �����Ă��܂��A���̒��g���\������Ȃ��Ȃ�B
+01. バグ修正
+  plugin/code/codehighlight.php のバグを修正しました。
+  バグ内容:
+    ソースコード中の '<' および '>' がHTMLタグとして
+    扱われてしまい、その中身が表示されなくなる。
 
-02. PHP�p�n�C���C�g�����̏C��
-  plugin/code/codehighlight.php ��PHP�p�n�C���C�g������
-  �S�̓I�ɏC�����܂����B
-  <?php �` ?> �ň͂�ł��Ȃ��R�[�h������Ɉ͂܂�Ă��܂�
-  �o�O���C�����Ă���܂��B
+02. PHP用ハイライト処理の修正
+  plugin/code/codehighlight.php のPHP用ハイライト処理を
+  全体的に修正しました。
+  <?php ～ ?> で囲んでいないコードが勝手に囲まれてしまう
+  バグも修正してあります。
 
-03. C/C++�̃L�[���[�h�ǉ��A�ύX
-  ��Ɏ��̃L�[���[�h��ǉ����܂����B
-   - C++�̃L���X�g���Z�q
-   - C�̕W���}�N��
-   - Visual C++ �̃L�[���[�h
-   - C++11�̃L�[���[�h
-  �܂��A�ꕔ�L�[���[�h�̋敪��ύX���܂���(typedef ��)�B
-  �ڍׂ� plugin/code/keyword.c.php ���������������B
+03. C/C++のキーワード追加、変更
+  主に次のキーワードを追加しました。
+   - C++のキャスト演算子
+   - Cの標準マクロ
+   - Visual C++ のキーワード
+   - C++11のキーワード
+  また、一部キーワードの区分を変更しました(typedef 等)。
+  詳細は plugin/code/keyword.c.php をご覧ください。
 
-04. C#�̃L�[���[�h�ǉ�
-  ���̃L�[���[�h��ǉ����܂����B
+04. C#のキーワード追加
+  次のキーワードを追加しました。
    - get
    - set
    - dynamic
@@ -60,120 +68,120 @@ plugin �f�B���N�g���ȉ������㏑�������OK�ł��B
    - yield return
    - yield break
    - partial class
-  �v���p�e�B�Ŏg���� value ��Linq�Ŏg���� from �Ȃǂ�
-  �ʏ�̕ϐ����Ƃ��Ďg���邱�Ƃ��������߁A�L�[���[�h�ɂ�
-  �����Ċ܂߂Ă��܂���B
+  プロパティで使われる value やLinqで使われる from などは
+  通常の変数名として使われることも多いため、キーワードには
+  敢えて含めていません。
 
-05. C/C++�AC++/CLI�AC#�̕������e�����Ή�
-  C/C++�AC++/CLI�AC#�̕������e�����̐F�����ɑΉ����܂����B
-  �����I�ɂ͕����񃊃e�����Ƃ��ĔF�������Ă��܂��B
-  ���܂ŁA�V���O���N�H�[�g(')�ň͂܂ꂽ�������e�����͒P�Ȃ�
-  ���Ӗ��ȕ����񈵂��ł���A����̕������e����('"' �Ȃ�)��
-  �L�q����ƊԈ�����������s����\��������܂����B
+05. C/C++、C++/CLI、C#の文字リテラル対応
+  C/C++、C++/CLI、C#の文字リテラルの色分けに対応しました。
+  内部的には文字列リテラルとして認識させています。
+  今まで、シングルクォート(')で囲まれた文字リテラルは単なる
+  無意味な文字列扱いであり、特定の文字リテラル('"' など)を
+  記述すると間違った処理が行われる可能性がありました。
 
-06. �Ή������C++/CLI�ǉ�
-  �ǉ��t�@�C���� plugin/code/keyword.cppcli.php �ł��B
-  �v���O�C���Ɏw�肷�錾�ꖼ�� cppcli �ƂȂ�܂��B
-  ��:
+06. 対応言語にC++/CLI追加
+  追加ファイルは plugin/code/keyword.cppcli.php です。
+  プラグインに指定する言語名は cppcli となります。
+  例:
     #code(cppcli){{
-    // ���e��
+    // 内容略
     }}
 
-07. �X�y�[�X�t���L�[���[�h�Ή�
-  C++/CLI�Ή��̈�Ƃ��āA�r���ɃX�y�[�X���܂ރL�[���[�h��
-  �Ή������܂���(��: ref class, for each, etc...)�B
-  �C���t�@�C���� plugin/code/codehighlight.php �ł��B
+07. スペース付きキーワード対応
+  C++/CLI対応の一環として、途中にスペースを含むキーワードに
+  対応させました(例: ref class, for each, etc...)。
+  修正ファイルは plugin/code/codehighlight.php です。
 
-08. �Ή������Squirrel�ǉ�
-  �ǉ��t�@�C���� plugin/code/keyword.squirrel.php �ł��B
-  �v���O�C���Ɏw�肷�錾�ꖼ�� squirrel �ƂȂ�܂��B
-  �����_�ł� Squirrel 2.x ��ΏۂƂ��Ă��܂��B
-  �g�ݍ��݊֐��͊���ł͐F�������܂���B
+08. 対応言語にSquirrel追加
+  追加ファイルは plugin/code/keyword.squirrel.php です。
+  プラグインに指定する言語名は squirrel となります。
+  現時点では Squirrel 2.x を対象としています。
+  組み込み関数は既定では色分けしません。
 
-09. �L�[���[�h�Ƀn�C�t�����܂܂Ȃ�����ւ̑Ή�
-  �����̌���ł̓n�C�t�� - �̓L�[���[�h�ł͂Ȃ����Z�q�ł��B
-  �L�[���[�h��`�Ƀn�C�t�����܂܂Ȃ�����ɂ��āA
-  �L�[���[�h�����Ώۂɂ��n�C�t�����܂܂Ȃ��悤�ɂ��܂����B
+09. キーワードにハイフンを含まない言語への対応
+  多くの言語ではハイフン - はキーワードではなく演算子です。
+  キーワード定義にハイフンを含まない言語について、
+  キーワード検索対象にもハイフンを含まないようにしました。
 
-10. CSS�t�@�C���C��
-  �s����������킯�ł͂Ȃ��A�l�I�n�D�ł��B
-  �I���W�i���� skin/code.orig.css �Ƃ��ē������Ă��܂��B
+10. CSSファイル修正
+  不具合があったわけではなく、個人的嗜好です。
+  オリジナルも skin/code.orig.css として同梱しています。
 
 ============================================================
-[���̑����L����]
+[その他特記事項]
 
--. �s�ԍ��̎w��
-  ���Ɍ����̃}�j���A�����ɂ͋L�ڂ���Ă��܂��񂪁A
-  �I�v�V�����Ŏ��̂悤�� ���l- �܂��� ���l.. ���L�q�����
-  �s�ԍ������̐��l����J�n���邱�Ƃ��ł��܂��B
-  ��:
+-. 行番号の指定
+  特に公式のマニュアル等には記載されていませんが、
+  オプションで次のように 数値- または 数値.. を記述すると
+  行番号をその数値から開始することができます。
+  例:
     #code(c,101-){{
-    // �����̍s�̍s�ԍ��� 101 �ɂȂ�
-    // ���e��
+    // ←この行の行番号は 101 になる
+    // 内容略
     }}
     #code(c,1000..){{
-    // �����̍s�̍s�ԍ��� 1000 �ɂȂ�
-    // ���e��
+    // ←この行の行番号は 1000 になる
+    // 内容略
     }}
 
 ============================================================
-[���C�Z���X]
+[ライセンス]
 
-�I���W�i���ɏ]���AGPL�Ƃ��܂��B
-�R�[�h���̏C���͎��R�ł����A�C���̗L���Ɋւ�炸�ĔЕz��
-�s���ꍇ�͓�����GPL�Ń��C�Z���X����Ȃ���΂Ȃ�܂���B
+オリジナルに従い、GPLとします。
+コード等の修正は自由ですが、修正の有無に関わらず再頒布を
+行う場合は同じくGPLでライセンスされなければなりません。
 
-GPL���� (�p��):
+GPL原文 (英語):
   http://www.gnu.org/licenses/gpl.html
 
-Wikipedia : GNU General Public License (���{��):
+Wikipedia : GNU General Public License (日本語):
   http://ja.wikipedia.org/wiki/GNU_General_Public_License
 
 ============================================================
-[�ӎ�]
+[謝辞]
 
-�I���W�i���̐���҂ł���sky���Asakurai���A�y�уA�N�A����
-���̏���؂�Ă���\���グ�܂��B
+オリジナルの製作者であるsky氏、sakurai氏、及びアクア氏に
+この場を借りてお礼申し上げます。
 
 ============================================================
-[�X�V����]
+[更新履歴]
 
 2015-02-13
- - C++/CLI�̃R�[�h�u���b�N�𕡐��z�u����Ɛ���Ƀy�[�W��
-   �\������Ȃ��Ȃ�o�O���C���B
+ - C++/CLIのコードブロックを複数配置すると正常にページが
+   表示されなくなるバグを修正。
 
 2014-01-11
- - C/C++�̃L�[���[�h�ǉ��B(C++11�̃L�[���[�h��)
- - C#�̃L�[���[�h�ǉ��B(partial class)
- - JavaScript�̃L�[���[�h�ǉ��B(instanceof ��)
- - �X�y�[�X��2�܂ރL�[���[�h�ɑΉ��B
- - �L�[���[�h�Ƀn�C�t�����܂܂Ȃ�����ւ̑Ή��B
+ - C/C++のキーワード追加。(C++11のキーワード等)
+ - C#のキーワード追加。(partial class)
+ - JavaScriptのキーワード追加。(instanceof 等)
+ - スペースを2つ含むキーワードに対応。
+ - キーワードにハイフンを含まない言語への対応。
 
 2012-09-27
- - C/C++�̃L�[���[�h�ǉ��B(C++11�̃L�[���[�h)
- - C#�̃L�[���[�h�ǉ��B(dynamic, var)
- - �s�ԍ��̎w��ɂ��ċL�ځB
+ - C/C++のキーワード追加。(C++11のキーワード)
+ - C#のキーワード追加。(dynamic, var)
+ - 行番号の指定について記載。
 
 2011-05-28
- - C#�̃L�[���[�h�ǉ��B
+ - C#のキーワード追加。
 
 2009-11-20:
- - C/C++�̈ꕔ�L�[���[�h�̐F������ύX�B
- - �Ή������Squirrel��ǉ��B
+ - C/C++の一部キーワードの色分けを変更。
+ - 対応言語にSquirrelを追加。
 
 2009-11-19:
- - C/C++�AC++/CLI�AC#�̕������e�����̐F�����ɑΉ��B
+ - C/C++、C++/CLI、C#の文字リテラルの色分けに対応。
 
 2009-11-13:
- - PHP�p�n�C���C�g������S�̓I�ɏC���B
+ - PHP用ハイライト処理を全体的に修正。
 
 2009-11-09:
- - code.inc.php 0.6.0pr3i �Ɉȉ��̕ύX���s�����Ō��J�B
-   - �o�O�C��: <> ��HTML�^�O�Ƃ��Ĉ����Ă��܂�
-   - C/C++�̃L�[���[�h�ǉ�
-   - �Ή������C++/CLI�ǉ�
-   - �X�y�[�X�t���L�[���[�h�Ή�
-   - CSS�t�@�C���C��
+ - code.inc.php 0.6.0pr3i に以下の変更を行い初版公開。
+   - バグ修正: <> がHTMLタグとして扱われてしまう
+   - C/C++のキーワード追加
+   - 対応言語にC++/CLI追加
+   - スペース付きキーワード対応
+   - CSSファイル修正
 
 ============================================================
 EOF
